@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE motorent>
+
+<motorent>
+
+<!-- LOCALS -->
+   <locals>
+       <local id="l1" capacitat="6">
+           	<gestorID>g1</gestorID>
+           	<adreca>Gran Via 585, 08007, Barcelona</adreca>
+			<motos>
+				<moto id="m1" matricula="1111AAA" marca="BMW" model="F 800 GT" color="rosa" estat="disponible"></moto>
+			</motos>
+       </local>
+       
+       <local id="l2" capacitat="8">
+                <gestorID>g2</gestorID>
+		<adreca>Gran Via 585, 08007, Barcelona</adreca>
+			<motos>
+				<moto id="m2" matricula="1234ABC" marca="Peugeot" model="Django Heritage 50" color="rosa" estat="disponible"></moto>
+				<moto id="m3" matricula="4321ABC" marca="Peugeot" model="Django Heritage 50" color="verd" estat="disponible"></moto>
+				<moto id="m4" matricula="1122BBA" marca="Peugeot" model="Django Heritage 50" color="vermell" estat="disponible"></moto>
+				<moto id="m5" matricula="8899CCA" marca="Peugeot" model="Django Heritage 50" color="lila" estat="disponible"></moto>
+				<moto id="m6" matricula="2345CBA" marca="Peugeot" model="Django Heritage 50" color="marro" estat="disponible"></moto>
+				<moto id="m7" matricula="4567DER" marca="Peugeot" model="Django Heritage 50" color="blau" estat="disponible"></moto>
+				<moto id="m8" matricula="7654DER" marca="Peugeot" model="Django Heritage 50" color="rosa" estat="avariada"></moto>
+				<moto id="m9" matricula="4576DER" marca="Peugeot" model="Django Heritage 50" color="rosa" estat="avariada"></moto>
+			</motos>
+       </local>
+       
+       <local id="l3" capacitat="8">
+                <gestorID>g3</gestorID>
+           	<adreca>Diagonal 900, 08037, Barcelona</adreca>
+			<motos>
+				<moto id="m10" matricula="0012DDD" marca="Piaggio" model="Liberty 50" color="rosa" estat="disponible"></moto>
+				<moto id="m11" matricula="2256EEE" marca="Piaggio" model="Liberty 50" color="verd" estat="disponible"></moto>
+				<moto id="m12" matricula="3321DED" marca="Piaggio" model="Liberty 50" color="vermell" estat="avariada"></moto>
+				<moto id="m13" matricula="6548EDE" marca="Piaggio" model="Liberty 50" color="lila" estat="disponible"></moto>
+			</motos>
+       </local>
+       
+       <local id="l4" capacitat="6">
+                <gestorID>g4</gestorID>
+		<adreca>Hospital 1, 08001, Barcelona</adreca>
+			<motos>
+				<moto id="m14" matricula="1234FEF" marca="Vespa" model="Sprint 50 2T" color="rosa" estat="disponible"></moto>
+				<moto id="m15" matricula="1234FFE" marca="Vespa" model="Sprint 50 2T" color="verd" estat="disponible"></moto>
+				<moto id="m16" matricula="1234FEE" marca="Vespa" model="Sprint 50 2T" color="vermell" estat="disponible"></moto>
+				<moto id="m17" matricula="1234EFF" marca="Vespa" model="Sprint 50 2T" color="lila" estat="disponible"></moto>
+				<moto id="m18" matricula="1234FFF" marca="Vespa" model="Sprint 50 2T" color="rosa" estat="disponible"></moto>
+			</motos>
+       </local>
+   </locals>
+    
+   	<!-- RESERVES -->
+ 	<reserves>
+		<reserva id="r1" client="c1" moto="m7" cost="10" falta="3">
+			<inici hora="10:00:01" local="l1" data="03/12/2015"></inici>
+			<fi hora="14:03:54" local="l2" data="03/12/2015"></fi>
+		</reserva>
+		<reserva id="r2" client="c3" moto="m18" cost="5" falta="2">
+			<inici hora="01:20:01" local="l3" data="05/12/2015"></inici>
+			<fi hora="02:03:54" local="l4" data="05/12/2015"></fi>
+		</reserva>
+                <reserva id="r2" client="c3" moto="m16" cost="1" falta="0">
+			<inici hora="09:20:06" local="l1" data="07/12/2015"></inici>
+			<fi hora="10:15:34" local="l4" data="07/12/2015"></fi>
+		</reserva>
+	</reserves>
+	
+	<!-- ADMINISTRADORS -->
+	<admins>
+		<admin id="a1">
+			<nom>Pierre Nodoyuna</nom>
+			<usuari>pierre</usuari>
+			<password>pierre</password>
+		</admin>
+	</admins>
+	
+	<!-- GESTORS -->
+	<gestors>
+		<gestor id="g1">
+			<nom>Francisco Lorin Colorado</nom>
+			<usuari>florin</usuari>
+			<password>florin</password>
+		</gestor>
+		<gestor id="g2">
+			<nom>Elena Nito del Norte</nom>
+			<usuari>elnito</usuari>
+			<password>elnito</password>
+		</gestor>
+		<gestor id="g3">
+			<nom>Paco Gerlo</nom>
+			<usuari>pgerlo</usuari>
+			<password>pgerlo</password>
+		</gestor>
+		<gestor id="g4">
+			<nom>Elsa Pato</nom>
+			<usuari>epato</usuari>
+			<password>epato</password>
+		</gestor>
+	</gestors>
+	
+	<!-- CLIENTS -->
+	<clients>
+		<client id="c1" vip="true" renovacio="true" faltes="0">
+			<nom>Armando Jaleo</nom>
+			<dni>11111111A</dni>
+			<adreca>Madrigal 8, 00001, Barcelona</adreca>
+			<usuari>ajaleo</usuari>
+			<password>ajaleo</password>
+		</client>
+		<client id="c2" vip="false" renovacio="true" faltes="0">
+			<nom>Lola Mento</nom>
+			<dni>22222222B</dni>
+			<adreca>Monumental 2, 00003, Barcelona</adreca>
+			<usuari>lmento</usuari>
+			<password>lmento</password>
+		</client>
+		<client id="c3" vip="false" renovacio="false" faltes="0">
+			<nom>Leandro Gao</nom>
+			<dni>33333333C</dni>
+			<adreca>Uruguay 12, 00001, Barcelona</adreca>
+			<usuari>lgao</usuari>
+			<password>lgao</password>
+		</client>
+		<client id="c4" vip="true" renovacio="true" faltes="0">
+			<nom>Esther Colero</nom>
+			<dni>44444444D</dni>
+			<adreca>Gran Via 222, 00007, Barcelona</adreca>
+			<usuari>ecolero</usuari>
+			<password>ecolero</password>
+		</client>
+		<client id="c5" vip="false" renovacio="true" faltes="0">
+			<nom>Dolores Tomacal</nom>
+			<dni>55555555E</dni>
+			<adreca>Sta Eulalia 1, 00031, San Benet del Bages</adreca>
+			<usuari>dtomacal</usuari>
+			<password>dtomacal</password>
+		</client>
+		<client id="c6" vip="false" renovacio="true" faltes="0">
+			<nom>Aitor Menta</nom>
+			<dni>66666666F</dni>
+			<adreca>Carretera de l'Esglesia 44, 10011, Llimiana</adreca>
+			<usuari>atormenta</usuari>
+			<password>atormenta</password>
+		</client>
+	</clients>
+</motorent>
