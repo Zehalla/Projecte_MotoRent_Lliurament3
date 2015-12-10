@@ -17,69 +17,43 @@ public class Moto {
     private String matricula;
     private String model;
     private String color;
-    private Reserva reservaMoto;
     private EstatMoto estatMoto;
 
-    public boolean checkEstat() {
-        return true;  //TODO this
-    }
-
-    void mostrarDadesMoto() {
-        Consola.escriu("-Moto:");
-        Consola.escriu("matricula: " + matricula);
-        Consola.escriu("model :" + model);
-        Consola.escriu("color :" + color);
-    }
-
-    public String getTipus() {
-        if(estatMoto instanceof EstatMotoDisponible){
-            return "Disponible";
-        }else if(estatMoto instanceof EstatMotoReservada){
-            return "Reservada";
-        }else if(estatMoto instanceof EstatMotoReparant){
-            return "Reparant";
-        }
-        return "Error tipus moto";
+    public Moto(){
     }
     
-    public void setTipus(String tipus) {
-        switch (tipus) {
-            case "Disponible":
-                estatMoto = new EstatMotoDisponible();
-                break;
-        //Si arribem aqui, error
-            case "Reservda":
-                estatMoto = new EstatMotoReservada();
-                break;
-            case "Reparant":
-                estatMoto = new EstatMotoReparant();
-                break;
-        }
-    }
-    public Moto(String idMoto, String matricula, String model, String color, Reserva reservaMoto, EstatMoto estatMoto){
+    public Moto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
         this.idMoto = idMoto;
         this.matricula = matricula;
         this.model = model;
         this.color = color;
-        this.reservaMoto = reservaMoto;
         this.estatMoto = estatMoto;
     }
+    
+    
+    public boolean checkEstat() {
+        return true;  //TODO this
+    }
+
+    public String getEstat(){
+        return this.estatMoto.getEstat();
+    }
+    
     
     public String getIdMoto(){
         return idMoto;
     }
     
-    
     public void setEstat(String estat){
         switch (estat) {
             case "reservada":
-                this.estatMoto = new EstatMotoReservada();
+                this.estatMoto = Estats.getEstatMotoReservada();
                 break;
             case "disponible":
-                this.estatMoto = new EstatMotoDisponible();
+                this.estatMoto = Estats.getEstatMotoDisponible();
                 break;
             default:
-                this.estatMoto = new EstatMotoReparant();
+                this.estatMoto = Estats.getEstatMotoReparant();
                 break;
         }
     }
@@ -91,7 +65,7 @@ public class Moto {
 	str += "Matrícula: " + matricula + "\n";
         str += "Model: " + model + "\n";
         str += "Color: " + color + "\n";
-        str += "Estat: " + estatMoto.getTipus() + "\n";
+        str += "Estat: " + estatMoto.getEstat() + "\n";
         return str;
     }
     

@@ -7,6 +7,7 @@ package Model;
 
 
 import Excepcions.LlistaBuidaException;
+import Model.Estats.EstatClient;
 import Model.Estats.Estats;
 import Vista.Consola;
 import java.util.ArrayList;
@@ -45,21 +46,23 @@ public class Client extends Usuari{
         this.listReserva = new ArrayList<>();
         this.estatClient = estatClient;
     }
-
-
    
     @Override
     public String getTipus() {
         return "Client";
     }
     
+    public String getEstat(){
+        return this.estatClient.getEstat();
+    }
+    
     public void setEstat(String tipus){
         if (tipus.equals("reserva")){
-            this.estatClient = new EstatClientAmbReserva();
+            this.estatClient = Estats.getEstatClientAmbReserva();
         }else if (tipus.equals("no reserva")){
-            this.estatClient = new EstatClientSenseReserva();
+            this.estatClient = Estats.getEstatClientSenseReserva();
         }else{
-            this.estatClient = new EstatClientDesactivat();
+            this.estatClient = Estats.getEstatClientDesactivat();
         }
     }
     
@@ -95,6 +98,7 @@ public class Client extends Usuari{
 
     public void afegirReserva(Reserva reserva){
         listReserva.add(reserva);
+        this.estatClient = Estats.getEstatClientAmbReserva();
     }    
     public boolean checkEstatDisponible() {
         return true;
@@ -132,7 +136,7 @@ public class Client extends Usuari{
 	str += "Es VIP: " + vip + "\n";
 	//str += "Renovació automàtica: " + renovacio + "\n";
 	str += "Nombre de faltes: " + faltes + "\n";
-        str += "Estat: "+estatClient.getTipus() +"\n";
+        str += "Estat: "+estatClient.getEstat() +"\n";
         return str;
     }
 }

@@ -10,8 +10,9 @@ package Model.Estats;
  * @author Adry
  */
 public abstract class EstatMoto {
-    protected String infoMoto;
+
+    public String getEstat(){
+        return null;
+    }
     
-    abstract void mostrarInfoMoto();
-    abstract boolean esDisponible();
 }
