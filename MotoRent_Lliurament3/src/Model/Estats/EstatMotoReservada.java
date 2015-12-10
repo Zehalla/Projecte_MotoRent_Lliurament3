@@ -5,33 +5,13 @@
  */
 package Model.Estats;
 
-import Vista.Consola;
-
 /**
  *
  * @author Adry
  */
 public class EstatMotoReservada extends EstatMoto{
-    private static EstatMotoReservada instance = null;
     
-    private EstatMotoReservada(){
-        this.infoMoto = "Reservada";
-    }
-
-    public static EstatMotoReservada getInstance(){
-        if (instance == null){
-            instance = new EstatMotoReservada();
-        }
-        return instance;        
-    }
-    
-    @Override
-    public void mostrarInfoMoto() {
-        Consola.escriu(infoMoto);
-    }
-
-    @Override
-    public boolean esDisponible() {
-        return false;
+    public String getEstat(){
+        return "Reservada";
     }
 }

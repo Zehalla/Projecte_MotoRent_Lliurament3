@@ -3,6 +3,7 @@ package Vista;
 import Controlador.MotoRent;
 import Parser.MotoRentDataManager;
 import Parser.MotoRentXMLParser;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 import org.xml.sax.helpers.DefaultHandler;
@@ -220,7 +221,7 @@ public class Consola extends DefaultHandler{
      * Mètode cridat quan un Client vol fer una reserva.
      */
     private void opcioFerReserva(){
-        escriu("Has fet una reserva!");
+        controlador.ferReserva();
     }
     
     /**

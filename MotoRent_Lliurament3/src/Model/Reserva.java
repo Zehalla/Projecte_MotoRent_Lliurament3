@@ -5,7 +5,6 @@
  */
 package Model;
 
-
 /**
  *
  * @author atorraag7.alumnes
@@ -18,12 +17,12 @@ public class Reserva {
     private float penalitzacio;
     private Data dataInicial;
     private Data dataFinal;
-    private Local localInicial;
-    private Local localFinal;
-    private Client clientReserva;
-    private Moto motoReserva;
+    private String localInicial;
+    private String localFinal;
+    private String clientReserva;
+    private String motoReserva;
     
-    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, Local localInicial, Local localFinal, Client clientReserva,Moto motoReserva){
+    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, String localInicial, String localFinal, String clientReserva, String motoReserva){
         this.id = id;
         this.preu = preu;
         this.penalitzacioTemps = penalitzacioTemps;
@@ -36,12 +35,12 @@ public class Reserva {
         this.clientReserva = clientReserva;
         this.motoReserva = motoReserva;
     }
-    
-    public Client getClientReserva(){
+
+    public String getClientReserva(){
         return clientReserva;
     }
         
-    public Moto getMotoReserva(){
+    public String getMotoReserva(){
         return motoReserva;
     }
     

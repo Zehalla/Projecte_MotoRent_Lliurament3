@@ -10,16 +10,14 @@ package Model;
  * @author atorraag7.alumnes
  */
 public class Gerent extends Usuari{
-    private final Local localAGestionar;
     private final String idEmpresa;
 
-    public Gerent(String nom, String cognom1, String cognom2, String userName, String password, Local localAGestionar, String idEmpresa){
+    public Gerent(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;
         this.cognom1 = cognom1;
         this.cognom2 = cognom2;
         this.userName = userName;
         this.password = password;
-        this.localAGestionar = localAGestionar;
         this.idEmpresa = idEmpresa;
     }
     
