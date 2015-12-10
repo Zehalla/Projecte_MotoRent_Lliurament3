@@ -20,6 +20,12 @@ public class Local {
     private ArrayList<Moto> llistaMotos;
     private final String idGestor;
     
+    public Local(){
+        this.idLocal = null;
+        this.capacitat = 0;
+        this.idGestor = null;
+    }
+    
     public Local(String idLocal, int capacitat, Direccio direccioLocal, ArrayList<Moto> llistaMotos, ArrayList<Reserva> llistaReserves, String idGestor){
         this.idLocal = idLocal;
         this.capacitat = capacitat;
@@ -35,64 +41,58 @@ public class Local {
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
             Moto m = (Moto) itr.next(); 
-            //check = m.checkEstat() TODO mirar el estat de la moto per comptar-la
-            if(check){
+            if(m.getEstat().equals("Disponible")){
                 NMotosDisp ++;
             }
         }
         return NMotosDisp;
     }
 
-    public void mostrarDadesLocal() {
-        direccioLocal.mostrarDades();
-        Consola.escriu("Capacitat local: " + capacitat);
+    public String mostrarDadesLocal() {
+        return "\n"+direccioLocal.toString() +"\nCapacitat local: " + capacitat;
     }
 
-    public void mostrarMotos() {
-        String tipus;
+    public String mostrarMotosDisponibles() {
+        String tipus, str = "";
         int i = 0;
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
             Moto m = (Moto) itr.next();
-            tipus = m.getTipus();
+            tipus = m.getEstat();
             if("Disponible".equals(tipus)){
-                Consola.escriu(i+": ");
-                m.mostrarDadesMoto();
+                str += i+": ";
+                str += m.toString();
             }
-        }
-        
+        }return str;
     }
-
-    //NOTA: pot retornar null si el index passat no es correcte. s'ha de assegurar.
-    //En fer Reserva ja esta assegurat.
-    public Moto getMoto(int index) {
-        int i = 0;
-        boolean trobat = false;
-        String tipus;
-        Moto motoReserva = null;
+    
+    public String mostrarMotos(){
+        String str = "";
         Iterator itr = llistaMotos.iterator();
-        while(itr.hasNext() && !trobat){
+        while(itr.hasNext()){
             Moto m = (Moto) itr.next();
-            tipus = m.getTipus();
-            if("Disponible".equals(tipus)){
-                i++;
-            }
-            if(i == index){
-                trobat = true;
-                motoReserva = m;
-            }
+            str += m.toString();
         }
-        return motoReserva;
+        return str;
+    }
+ 
+
+    public Moto getMoto(int index){
+       return llistaMotos.get(index);
     }
 
-    public void eliminarMoto(int index){
+    public boolean eliminarMoto(Moto moto){
+        return llistaMotos.remove(moto);
+    }
+    
+    public void eliminarMoto2(int index){
         int i = 0;
         String tipus;
         
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
             Moto m = (Moto) itr.next();
-            tipus = m.getTipus();
+            tipus = m.getEstat();
             if("Disponible".equals(tipus)){
                 i++;
             }
@@ -108,6 +108,10 @@ public class Local {
         }else{
             //throw new LlistaPlenaException();
         }
+    }
+    
+    public String getIdLocal(){
+        return idLocal;
     }
     
     public int getCapacitat() {
