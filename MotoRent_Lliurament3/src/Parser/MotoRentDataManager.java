@@ -70,11 +70,13 @@ public class MotoRentDataManager {
 	public void crearMoto(String id, String matricula, String marca, String model, String color, String estat) {
             EstatMoto estatMoto;
             if (estat.equals("disponible")){
-                estatMoto = new EstatMotoDisponible();
+                estatMoto = Estats.getEstatMotoDisponible();
+            }else if (estat.equals("avariada")){
+                estatMoto = Estats.getEstatMotoReparant();
             }else{
-                estatMoto = new EstatMotoReparant();
+                estatMoto = Estats.getEstatMotoReservada();
             }
-            controlador.guardarMoto(id, matricula, model, color, null, estatMoto);
+            controlador.guardarMoto(id, matricula, model, color, estatMoto);
 	
 
 		
@@ -117,7 +119,7 @@ public class MotoRentDataManager {
 	 * @param password password del gestor
 	 */
 	public void crearGestor(String id, String[] nom, String usuari, String password) {
-            controlador.guardarGerent(nom[0], nom[1], "", usuari, password, null, id);
+            controlador.guardarGerent(nom[0], nom[1], "", usuari, password, id);
 	}
 
 	/**
@@ -135,9 +137,8 @@ public class MotoRentDataManager {
 	 */
 
 	public void crearClient(String id, String[] nom, String dni, String[] adreca, String usuari, String password, String vip, String renovacio, String faltes) {
-            ArrayList<Reserva> listReserva = null;
-            EstatClient estatClient = new EstatClientSenseReserva();
-            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), crearDireccio(adreca), new Data(), listReserva, estatClient);
+
+            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), crearDireccio(adreca), new Data(), new ArrayList<>(), Estats.getEstatClientSenseReserva());
 	}
         
         
