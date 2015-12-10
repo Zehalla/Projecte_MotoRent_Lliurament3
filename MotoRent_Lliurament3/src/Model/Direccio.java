@@ -45,13 +45,6 @@ public class Direccio {
         this.poblacio = Consola.llegeixString();    
     }
     
-    public void mostrarDades(){
-        Consola.escriu("-Direccio:");
-        Consola.escriu("Carrer: "+carrer);
-        Consola.escriu("codiPostal: " + codiPostal);
-        Consola.escriu("numero: " + numero);
-        Consola.escriu("poblacio: " + poblacio);
-    }
     @Override
     public String toString(){
         String str = null;
