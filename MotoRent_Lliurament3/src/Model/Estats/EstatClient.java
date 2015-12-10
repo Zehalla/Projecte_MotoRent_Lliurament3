@@ -9,8 +9,10 @@ package Model.Estats;
  *
  * @author Adry
  */
-public abstract class EstatClient{
-    protected String tipus;
+public abstract class EstatClient {
+ 
+    public String getEstat(){
+        return null;
+    }
     
-    public abstract String getTipus();
 }
