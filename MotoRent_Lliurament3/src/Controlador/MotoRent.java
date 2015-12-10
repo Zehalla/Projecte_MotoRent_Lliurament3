@@ -145,6 +145,16 @@ public class MotoRent {
             }
         }
     }
+    
+    public void mostrarTotesLesMotos(){
+        int i, j;
+        for (i = 0; i < llistaLocal.size(); i++){
+            //Consola.escriu(llistaLocal.get(i).toString());
+            for (j = 0; j < llistaLocal.get(i).getNMotos(); j++){
+                Consola.escriu(llistaLocal.get(i).getMoto(j).toString());
+            }
+        }
+    }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
     -----------------------------------------------------------------*/
