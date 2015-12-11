@@ -116,12 +116,11 @@ public class MotoRent {
     }
     
     public void mostrarDades(){
-        int i = 0;
+        int i;
         Consola.escriu("\n\nUSUARIS\n\n");
         for (i=0;i<llistaUsuaris.size();i++){
             Consola.escriu(llistaUsuaris.get(i).toString());
         }
-        i=0;
         Consola.escriu("\n\nLOCALS\n\n");
         for (i=0;i<llistaLocal.size();i++){
             Consola.escriu(llistaLocal.get(i).toString());
@@ -404,6 +403,32 @@ public class MotoRent {
             String[] aux = diaComplet.split("/");
             String[] aux2 = horaCompleta.split(":");
             return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
+    }
+
+    public void gestionarLocal() {
+        Local localAGestionar;
+        localAGestionar= cercarLocal(usuariLogat.getIdEmpresa());
+        localAGestionar.gestionarLocal(this);
+    }
+
+    private Local cercarLocal(String idEmpresa) {
+        int i;
+        Local li;
+        for (i = 0; i < llistaLocal.size(); i++){
+            li = llistaLocal.get(i);
+            if (idEmpresa.equals(li.getIdGestor())){
+                return li;
+            }
+        }
+        return null;
+    }
+
+    public void importarMotos(ArrayList<Moto> llistaMotos, int nM) {
+        Consola.escriu("El metode tocaria fer cosa, lamentablement encara no ho fa. Plis report!\n");
+    }
+
+    public void exportarMotos(ArrayList<Moto> llistaMotos, int nM) {
+        Consola.escriu("El metode tocaria fer cosa, lamentablement encara no ho fa. Plis report!\n");
     }
     
 }
