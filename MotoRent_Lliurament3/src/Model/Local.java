@@ -5,7 +5,6 @@
  */
 package Model;
 
-import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -37,11 +36,10 @@ public class Local {
     
     public int getNMotosDisp(){
         int NMotosDisp = 0;
-        boolean check = true;
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
             Moto m = (Moto) itr.next(); 
-            if(m.getEstat().equals("Disponible")){
+            if(m.getEstat().equalsIgnoreCase("Disponible")){
                 NMotosDisp ++;
             }
         }
@@ -59,9 +57,11 @@ public class Local {
         while(itr.hasNext()){
             Moto m = (Moto) itr.next();
             tipus = m.getEstat();
-            if("Disponible".equals(tipus)){
+            if("Disponible".equalsIgnoreCase(tipus)){
                 str += i+": ";
                 str += m.toString();
+                i ++;
+            } else {
             }
         }return str;
     }
@@ -93,7 +93,7 @@ public class Local {
         while(itr.hasNext()){
             Moto m = (Moto) itr.next();
             tipus = m.getEstat();
-            if("Disponible".equals(tipus)){
+            if("Disponible".equalsIgnoreCase(tipus)){
                 i++;
             }
             if(index == i){

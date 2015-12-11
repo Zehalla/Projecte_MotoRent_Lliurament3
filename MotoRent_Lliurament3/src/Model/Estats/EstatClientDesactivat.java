@@ -6,12 +6,20 @@
 package Model.Estats;
 
 /**
- *
+ *S'ha implementat el patró Singleton per a cada un dels estats.
  * @author Adry
  */
 public class EstatClientDesactivat extends EstatClient{
+    private static EstatClientDesactivat instance = null;
     
-    public String getEstat(){
-        return "Desactivat";
+    private EstatClientDesactivat(){
+        
+    }
+
+    static EstatClientDesactivat getInstance() {
+        if (instance == null){
+            instance = new EstatClientDesactivat();
+        }
+        return instance;
     }
 }
