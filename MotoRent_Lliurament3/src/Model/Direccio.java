@@ -47,7 +47,7 @@ public class Direccio {
     
     @Override
     public String toString(){
-        String str = null;
+        String str;
         str = "Carrer: "+carrer+"\n";
         str += "Número: "+numero+"\n";
         str += "Codi Postal: "+codiPostal+"\n";

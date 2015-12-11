@@ -7,8 +7,7 @@ package Model;
 
 
 import Excepcions.LlistaBuidaException;
-import Model.Estats.EstatClient;
-import Model.Estats.Estats;
+import Model.Estats.*;
 import Vista.Consola;
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class Client extends Usuari{
     private int faltes;
     private Direccio direccio;
     private Data dataRegistre = new Data();
-    private ArrayList<Reserva> listReserva;
+    private ArrayList<Reserva> listReserva = new ArrayList<>();
     private EstatClient estatClient;
 
     
@@ -31,7 +30,7 @@ public class Client extends Usuari{
         
     }
     
-    public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, ArrayList<Reserva> listReserva, EstatClient estatClient){
+    public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
         this.idClient = idClient;
         this.nom = nom;
         this.cognom1 = cognom1;
@@ -43,7 +42,6 @@ public class Client extends Usuari{
         this.faltes = faltes;
         this.direccio = direccio;
         this.dataRegistre = dataRegistre;
-        this.listReserva = new ArrayList<>();
         this.estatClient = estatClient;
     }
    
@@ -53,16 +51,27 @@ public class Client extends Usuari{
     }
     
     public String getEstat(){
-        return this.estatClient.getEstat();
+        if(this.estatClient instanceof EstatClientAmbReserva){
+            return "Amb Reserva";
+        }else if(this.estatClient instanceof EstatClientDesactivat){
+            return "Desactivat";
+        }else{
+            return "Sense Reserva";   
+        }
     }
     
-    public void setEstat(String tipus){
-        if (tipus.equals("reserva")){
-            this.estatClient = Estats.getEstatClientAmbReserva();
-        }else if (tipus.equals("no reserva")){
-            this.estatClient = Estats.getEstatClientSenseReserva();
-        }else{
-            this.estatClient = Estats.getEstatClientDesactivat();
+    public void setEstat(String estat){
+        estat = estat.toUpperCase();
+        switch (estat) {
+            case "RESERVA":
+                this.estatClient = Estats.getEstatClientAmbReserva();
+                break;
+            case "NO RESERVA":
+                this.estatClient = Estats.getEstatClientSenseReserva();
+                break;
+            default:
+                this.estatClient = Estats.getEstatClientDesactivat();
+                break;
         }
     }
     
@@ -107,7 +116,7 @@ public class Client extends Usuari{
     public String mostrarReservesClient() throws LlistaBuidaException{
         int i;
         String str = "";
-        if (listReserva.size() != 0){
+        if (!listReserva.isEmpty()){
             for (i = 0; i < listReserva.size(); i++){
                 str += listReserva.get(i).toString();
             }
@@ -136,7 +145,7 @@ public class Client extends Usuari{
 	str += "Es VIP: " + vip + "\n";
 	//str += "Renovació automàtica: " + renovacio + "\n";
 	str += "Nombre de faltes: " + faltes + "\n";
-        str += "Estat: "+estatClient.getEstat() +"\n";
+        str += "Estat: "+ getEstat() +"\n";
         return str;
     }
 }
