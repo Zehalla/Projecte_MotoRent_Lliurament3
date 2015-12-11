@@ -6,7 +6,6 @@
 package Model;
 
 import Model.Estats.*;
-import Vista.Consola;
 
 /**
  *
@@ -29,14 +28,15 @@ public class Moto {
         this.color = color;
         this.estatMoto = estatMoto;
     }
-    
-    
-    public boolean checkEstat() {
-        return true;  //TODO this
-    }
 
     public String getEstat(){
-        return this.estatMoto.getEstat();
+        if(this.estatMoto instanceof EstatMotoDisponible){
+            return "Disponible";
+        }else if(this.estatMoto instanceof EstatMotoReparant){
+            return "Reparant";
+        }else{
+            return "Reservada";   
+        }
     }
     
     
@@ -45,11 +45,12 @@ public class Moto {
     }
     
     public void setEstat(String estat){
+        estat = estat.toUpperCase();
         switch (estat) {
-            case "reservada":
+            case "RESERVADA":
                 this.estatMoto = Estats.getEstatMotoReservada();
                 break;
-            case "disponible":
+            case "DISPONIBLE":
                 this.estatMoto = Estats.getEstatMotoDisponible();
                 break;
             default:
@@ -58,6 +59,7 @@ public class Moto {
         }
     }
     
+    @Override
     public String toString(){
         String str;
         str = "\nmoto amb ID: " + idMoto + "\n";
@@ -65,7 +67,7 @@ public class Moto {
 	str += "Matrícula: " + matricula + "\n";
         str += "Model: " + model + "\n";
         str += "Color: " + color + "\n";
-        str += "Estat: " + estatMoto.getEstat() + "\n";
+        str += "Estat: " + getEstat() + "\n";
         return str;
     }
     

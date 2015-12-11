@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  *
@@ -24,11 +23,13 @@ public class MotoRent {
     private final ArrayList<Usuari> llistaUsuaris;
     private final ArrayList<Reserva> llistaReserves;
     private Usuari usuariLogat;
+    private int lastIDreserva;
 
     /**
      * Constructor de MotoRent que inicialitza les dues llistes.
      */
     public MotoRent() {
+        this.lastIDreserva = 2;
         this.llistaLocal = new ArrayList<>();
         this.llistaUsuaris = new ArrayList<>();
         this.llistaReserves = new ArrayList<>();
@@ -37,7 +38,7 @@ public class MotoRent {
     ---------------METODES QUE GUARDEN DADES--------------------------
     -----------------------------------------------------------------*/
     public void guardarLocal(String idLocal, int capacitat, Direccio direccioLocal, String idGestor){
-        llistaLocal.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<Moto>(), null, idGestor));
+        llistaLocal.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), null, idGestor));
     }
     
     public void guardarMoto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
@@ -48,8 +49,8 @@ public class MotoRent {
         llistaReserves.add(new Reserva(id, Integer.parseInt(cost), false, false, Integer.parseInt(falta), dataInicial, dataFinal, local_inici, local_fi, idClient, idMoto));
     }
     
-    public void guardarClient(String id, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, ArrayList<Reserva> listReserva, EstatClient estatClient){
-        llistaUsuaris.add(new Client(id, nom, cognom1, cognom2, DNI, userName, password, vip, faltes, direccio, dataRegistre, listReserva, estatClient));
+    public void guardarClient(String id, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
+        llistaUsuaris.add(new Client(id, nom, cognom1, cognom2, DNI, userName, password, vip, faltes, direccio, dataRegistre, estatClient));
     }
     
     public void guardarGerent(String nom, String cognom1, String cognom2, String userName, String password,  String idEmpresa){
@@ -241,11 +242,9 @@ public class MotoRent {
     }
    
    public void ferReserva(){
-        int num = 0;
         boolean correcte  = false;
         int idLocalInici = 0;
         int idLocalFinal = 0;
-        int capacitat;
         String opcio;
         String dataIniciS = null, horaIniciS = null;
         String dataFinalS = null, horaFinalS = null;
@@ -255,7 +254,7 @@ public class MotoRent {
         Date dataInicial = null;
         Date dataFinal = null;
         Reserva r;
-        ArrayList<Local> auxiliar = new ArrayList<>();
+        ArrayList<Local> auxiliar;
         
         if (comprovacionsInicials()){
             
@@ -337,30 +336,31 @@ public class MotoRent {
             while (!correcte) {
                 Consola.escriu("Vols confirmar la reserva amb aquestes dates?(Y/N) ");
                 opcio = Consola.llegeixString();
-                if (opcio.equals("N")) {
-                    return;
-                } else if (opcio.equals("Y")) {
-                    correcte = true;
-                } else {
-                    Consola.escriu("Escriu la resposta un altre cop.");
+                switch (opcio) {
+                    case "N":
+                        return;
+                    case "Y":
+                        correcte = true;
+                        break;
+                    default:
+                        Consola.escriu("Escriu la resposta un altre cop.");
+                        break;
                 }
             }
 
             //------------------CREACIO DE RESERVA------------------
-            moto.setEstat("Reservada");
+            moto.setEstat("reservada");
             localInici.eliminarMoto(moto);
             localInici.afegirMoto(moto);
-            Random rand = new Random();
-            num = rand.nextInt(10000);
             Client clientReserva = (Client) usuariLogat;
-            r = new Reserva(Integer.toString(num), 0, false, false, 0, dInicial, dFinal, localInici.getIdLocal(), localFinal.getIdLocal(), clientReserva.getIdClient(), moto.getIdMoto());
-
+            lastIDreserva ++;
+            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici.getIdLocal(), localFinal.getIdLocal(), clientReserva.getIdClient(), moto.getIdMoto());
+            
             llistaReserves.add(r);
             clientReserva.afegirReserva(r);
 
-            Consola.escriu("Reserva creada. El codi de la reserva es: " + num+"\n");
+            Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
         }else{
-            return;
         }
     }
    
