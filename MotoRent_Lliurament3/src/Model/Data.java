@@ -22,13 +22,13 @@ public class Data{
     
     // Constructor que inicialitza un Objecte Data al dia actual.
     public Data(){
-        GregorianCalendar dia = new GregorianCalendar();
-        this.any = Integer.toString(dia.get(Calendar.YEAR));
-        this.mes = Integer.toString(dia.get(Calendar.MONTH));
-        this.dia = Integer.toString(dia.get(Calendar.DAY_OF_MONTH));
-        this.hora = Integer.toString(dia.get(Calendar.HOUR_OF_DAY));
-        this.minut = Integer.toString(dia.get(Calendar.MINUTE));
-        this.segon = Integer.toString(dia.get(Calendar.SECOND));
+        GregorianCalendar day = new GregorianCalendar();
+        this.any = Integer.toString(day.get(Calendar.YEAR));
+        this.mes = Integer.toString(day.get(Calendar.MONTH));
+        this.dia = Integer.toString(day.get(Calendar.DAY_OF_MONTH));
+        this.hora = Integer.toString(day.get(Calendar.HOUR_OF_DAY));
+        this.minut = Integer.toString(day.get(Calendar.MINUTE));
+        this.segon = Integer.toString(day.get(Calendar.SECOND));
         
     }
    
@@ -113,10 +113,6 @@ public class Data{
 
     public String getSegon() {
         return segon;
-    }
-
-    public SimpleDateFormat getDf() {
-        return df;
     }
     
 }

@@ -10,9 +10,4 @@ package Model.Estats;
  * @author Adry
  */
 public abstract class EstatClient {
- 
-    public String getEstat(){
-        return null;
-    }
-    
 }

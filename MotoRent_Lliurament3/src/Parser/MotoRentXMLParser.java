@@ -1,7 +1,6 @@
 package Parser;
 
 import java.io.File;
-import java.lang.String;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -26,6 +25,7 @@ public class MotoRentXMLParser {
 
 	/**
 	 * Constructor
+         * @param dataManager
 	 */
 	public MotoRentXMLParser(MotoRentDataManager dataManager) {
 		this.dataManager = dataManager;
