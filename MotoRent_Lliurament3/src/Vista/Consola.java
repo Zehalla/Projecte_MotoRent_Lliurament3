@@ -2,8 +2,6 @@ package Vista;
 
 import Controlador.MotoRent;
 import Parser.MotoRentDataManager;
-import Parser.MotoRentXMLParser;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 import org.xml.sax.helpers.DefaultHandler;
