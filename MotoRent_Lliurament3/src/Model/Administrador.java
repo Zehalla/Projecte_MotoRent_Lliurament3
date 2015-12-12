@@ -10,7 +10,7 @@ package Model;
  * @author atorraag7.alumnes
  */
 public class Administrador extends Usuari{
-    private String idEmpresa;
+    private final String idEmpresa;
 
     public Administrador(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;

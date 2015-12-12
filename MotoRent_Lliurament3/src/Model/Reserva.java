@@ -62,15 +62,15 @@ public class Reserva {
     
     @Override
     public String toString(){
-        String str = null;
+        String str;
         str = "\nReserva amb ID: " + id + "\n";
         str += "--------------------------------------\n";
-	str += "Client: " + clientReserva.toString() + "\n";
-	str += "Moto: " + motoReserva.toString() + "\n";
+	str += "Client: " + clientReserva + "\n";
+	str += "Moto: " + motoReserva + "\n";
         str += "Cost: " + preu + "€\n";
-        str += "Local d'inici: " + localInicial.toString() + "\n";
+        str += "Local d'inici: " + localInicial + "\n";
 	str += "Data d'inici: " + dataInicial.toString() + "\n";
-	str += "Local de finalització: " + localFinal.toString() + "\n";
+	str += "Local de finalització: " + localFinal + "\n";
 	str += "Data de finalització: " + dataFinal.toString() + "\n";
         return str;
     }

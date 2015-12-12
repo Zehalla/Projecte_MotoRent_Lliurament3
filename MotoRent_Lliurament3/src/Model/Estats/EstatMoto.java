@@ -9,10 +9,5 @@ package Model.Estats;
  *
  * @author Adry
  */
-public abstract class EstatMoto {
-
-    public String getEstat(){
-        return null;
-    }
-    
+public abstract class EstatMoto { 
 }
