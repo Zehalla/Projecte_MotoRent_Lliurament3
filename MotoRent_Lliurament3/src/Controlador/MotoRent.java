@@ -116,12 +116,11 @@ public class MotoRent {
     }
     
     public void mostrarDades(){
-        int i = 0;
+        int i;
         Consola.escriu("\n\nUSUARIS\n\n");
         for (i=0;i<llistaUsuaris.size();i++){
             Consola.escriu(llistaUsuaris.get(i).toString());
         }
-        i=0;
         Consola.escriu("\n\nLOCALS\n\n");
         for (i=0;i<llistaLocal.size();i++){
             Consola.escriu(llistaLocal.get(i).toString());
@@ -345,7 +344,7 @@ public class MotoRent {
             Client clientReserva = (Client) usuariLogat;
             lastIDreserva ++;
             r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici.getIdLocal(), localFinal.getIdLocal(), clientReserva.getIdClient(), moto.getIdMoto());
-            
+            r.calcularPreu();
             llistaReserves.add(r);
             clientReserva.afegirReserva(r);
 
