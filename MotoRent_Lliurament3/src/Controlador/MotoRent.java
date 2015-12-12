@@ -155,6 +155,20 @@ public class MotoRent {
             }
         }
     }
+    
+    public void generarInformeMensual(String mes){
+        int i;
+        for (i = 0; i < llistaUsuaris.size(); i++){
+            if (llistaUsuaris.get(i).getTipus().equals("Client")){
+                Client clientActual = (Client) llistaUsuaris.get(i);
+                Consola.escriu("\nClient:\n");
+                if (!clientActual.generarInformeClient(mes).equals("")){
+                    Consola.escriu(clientActual.generarInformeClient(mes));
+                }
+            }
+        }
+        
+    }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
     -----------------------------------------------------------------*/
