@@ -3,13 +3,7 @@ package Parser;
 import Controlador.MotoRent;
 import Model.Data;
 import Model.Direccio;
-import Model.Estats.EstatClient;
-import Model.Estats.EstatClientSenseReserva;
 import Model.Estats.*;
-import Model.Reserva;
-import Vista.Consola;
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Data manager per MotoRent
@@ -69,12 +63,16 @@ public class MotoRentDataManager {
 
 	public void crearMoto(String id, String matricula, String marca, String model, String color, String estat) {
             EstatMoto estatMoto;
-            if (estat.equals("disponible")){
-                estatMoto = Estats.getEstatMotoDisponible();
-            }else if (estat.equals("avariada")){
-                estatMoto = Estats.getEstatMotoReparant();
-            }else{
-                estatMoto = Estats.getEstatMotoReservada();
+            switch (estat) {
+                case "disponible":
+                    estatMoto = Estats.getEstatMotoDisponible();
+                    break;
+                case "avariada":
+                    estatMoto = Estats.getEstatMotoReparant();
+                    break;
+                default:
+                    estatMoto = Estats.getEstatMotoReservada();
+                    break;
             }
             controlador.guardarMoto(id, matricula, model, color, estatMoto);
 	
@@ -88,10 +86,14 @@ public class MotoRentDataManager {
 	 * @param id id del trajecte. El podeu utilitzar o no
 	 * @param client identificador del client. El podeu utilitzar o no
 	 * @param moto identificador de la moto. El podeu utilitzar o no
+         * @param cost
+         * @param falta
 	 * @param local_inici identificador del local d'inici
 	 * @param hora_inici hora d'inici de trajecte
+         * @param fecha_inici
 	 * @param local_fi identificador del local final de trajecte
 	 * @param hora_fi hora de finalització de trajecte
+         * @param fecha_fi
 	 */
 	
 	public void crearReserva(String id,String client,String moto, String cost, String falta, String local_inici,String hora_inici,String fecha_inici, String local_fi,String hora_fi,String fecha_fi) {
@@ -138,7 +140,7 @@ public class MotoRentDataManager {
 
 	public void crearClient(String id, String[] nom, String dni, String[] adreca, String usuari, String password, String vip, String renovacio, String faltes) {
 
-            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), crearDireccio(adreca), new Data(), new ArrayList<>(), Estats.getEstatClientSenseReserva());
+            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), crearDireccio(adreca), new Data(), Estats.getEstatClientSenseReserva());
 	}
         
         

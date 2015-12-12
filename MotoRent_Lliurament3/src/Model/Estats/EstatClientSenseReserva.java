@@ -6,12 +6,20 @@
 package Model.Estats;
 
 /**
- *
+ *S'ha implementat el patró Singleton per a cada un dels estats.
  * @author Adry
  */
 public class EstatClientSenseReserva extends EstatClient{
+    private static EstatClientSenseReserva instance = null;
     
-    public String getEstat(){
-        return "Sense Reserva";
+    private EstatClientSenseReserva(){
+        
+    }
+
+    static EstatClientSenseReserva getInstance() {
+        if (instance == null){
+            instance = new EstatClientSenseReserva();
+        }
+        return instance;
     }
 }
