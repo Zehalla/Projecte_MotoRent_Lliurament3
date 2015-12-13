@@ -12,27 +12,27 @@ package Model.Estats;
 public class Estats {
 
     public static EstatClientAmbReserva getEstatClientAmbReserva() {
-        return new EstatClientAmbReserva();
+        return EstatClientAmbReserva.getInstance();
     }
 
     public static EstatClientDesactivat getEstatClientDesactivat() {
-        return new EstatClientDesactivat();
+        return EstatClientDesactivat.getInstance();
     }
 
     public static EstatClientSenseReserva getEstatClientSenseReserva() {
-        return new EstatClientSenseReserva();
+        return EstatClientSenseReserva.getInstance();
     }
 
     public static EstatMotoDisponible getEstatMotoDisponible() {
-        return new EstatMotoDisponible();
+        return EstatMotoDisponible.getInstance();
     }
 
     public static EstatMotoReparant getEstatMotoReparant() {
-        return new EstatMotoReparant();
+        return EstatMotoReparant.getInstance();
     }
 
     public static EstatMotoReservada getEstatMotoReservada() {
-        return new EstatMotoReservada();
+        return EstatMotoReservada.getInstance();
     }
 
     

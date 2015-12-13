@@ -6,12 +6,20 @@
 package Model.Estats;
 
 /**
- *
+ *S'ha implementat el patró Singleton per a cada un dels estats.
  * @author Adry
  */
 public class EstatMotoReservada extends EstatMoto{
+    private static EstatMotoReservada instance = null;
     
-    public String getEstat(){
-        return "Reservada";
+    private EstatMotoReservada(){
+
+    }
+
+    static EstatMotoReservada getInstance(){
+        if (instance == null){
+            instance = new EstatMotoReservada();
+        }
+        return instance;        
     }
 }

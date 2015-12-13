@@ -22,13 +22,13 @@ public class Data{
     
     // Constructor que inicialitza un Objecte Data al dia actual.
     public Data(){
-        GregorianCalendar dia = new GregorianCalendar();
-        this.any = Integer.toString(dia.get(Calendar.YEAR));
-        this.mes = Integer.toString(dia.get(Calendar.MONTH));
-        this.dia = Integer.toString(dia.get(Calendar.DAY_OF_MONTH));
-        this.hora = Integer.toString(dia.get(Calendar.HOUR_OF_DAY));
-        this.minut = Integer.toString(dia.get(Calendar.MINUTE));
-        this.segon = Integer.toString(dia.get(Calendar.SECOND));
+        GregorianCalendar day = new GregorianCalendar();
+        this.any = Integer.toString(day.get(Calendar.YEAR));
+        this.mes = Integer.toString(day.get(Calendar.MONTH));
+        this.dia = Integer.toString(day.get(Calendar.DAY_OF_MONTH));
+        this.hora = Integer.toString(day.get(Calendar.HOUR_OF_DAY));
+        this.minut = Integer.toString(day.get(Calendar.MINUTE));
+        this.segon = Integer.toString(day.get(Calendar.SECOND));
         
     }
    
@@ -41,7 +41,7 @@ public class Data{
         this.segon = segon;
     } 
     
-    public Data dateToData(Date dt){
+    private Data dateToData(Date dt){
         String format = df.format(dt);
         String[] sliced = format.split("-");
         Data data = new Data();
@@ -115,8 +115,12 @@ public class Data{
         return segon;
     }
 
-    public SimpleDateFormat getDf() {
-        return df;
-    }
-    
+    int calcularDiferencia(Data dat) {    
+        int dif;
+        dif = (Integer.parseInt(this.any)-Integer.parseInt(dat.getAny()))*12;
+        dif = (dif + Integer.parseInt(this.mes) - Integer.parseInt(dat.getMes()))*30;
+        dif = (dif + Integer.parseInt(this.dia) - Integer.parseInt(dat.getDia()))*24;
+        dif = (dif + Integer.parseInt(this.hora) - Integer.parseInt(dat.getHora()));
+        return dif;
+    }   
 }
