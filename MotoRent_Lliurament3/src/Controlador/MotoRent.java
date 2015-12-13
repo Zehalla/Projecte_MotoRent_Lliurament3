@@ -145,6 +145,30 @@ public class MotoRent {
             }
         }
     }
+    
+    public void mostrarTotesLesMotos(){
+        int i, j;
+        for (i = 0; i < llistaLocal.size(); i++){
+            //Consola.escriu(llistaLocal.get(i).toString());
+            for (j = 0; j < llistaLocal.get(i).getNMotos(); j++){
+                Consola.escriu(llistaLocal.get(i).getMoto(j).toString());
+            }
+        }
+    }
+    
+    public void generarInformeMensual(String mes){
+        int i;
+        for (i = 0; i < llistaUsuaris.size(); i++){
+            if (llistaUsuaris.get(i).getTipus().equals("Client")){
+                Client clientActual = (Client) llistaUsuaris.get(i);
+                Consola.escriu("\nClient:\n");
+                if (!clientActual.generarInformeClient(mes).equals("")){
+                    Consola.escriu(clientActual.generarInformeClient(mes));
+                }
+            }
+        }
+        
+    }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
     -----------------------------------------------------------------*/
@@ -344,7 +368,7 @@ public class MotoRent {
             Client clientReserva = (Client) usuariLogat;
             lastIDreserva ++;
             r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici.getIdLocal(), localFinal.getIdLocal(), clientReserva.getIdClient(), moto.getIdMoto());
-            
+            r.calcularPreu();
             llistaReserves.add(r);
             clientReserva.afegirReserva(r);
 
