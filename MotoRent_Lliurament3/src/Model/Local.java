@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Controlador.MotoRent;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +20,10 @@ public class Local {
     private Direccio direccioLocal;
     private ArrayList<Moto> llistaMotos;
     private final String idGestor;
+
+    public String getIdGestor() {
+        return idGestor;
+    }
     
     public Local(){
         this.idLocal = null;
@@ -37,11 +42,10 @@ public class Local {
     
     public int getNMotosDisp(){
         int NMotosDisp = 0;
-        boolean check = true;
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
             Moto m = (Moto) itr.next(); 
-            if(m.getEstat().equals("Disponible")){
+            if(m.getEstat().equalsIgnoreCase("Disponible")){
                 NMotosDisp ++;
             }
         }
@@ -54,14 +58,13 @@ public class Local {
 
     public String mostrarMotosDisponibles() {
         String tipus, str = "";
-        int i = 0;
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
             Moto m = (Moto) itr.next();
             tipus = m.getEstat();
-            if("Disponible".equals(tipus)){
-                str += i+": ";
+            if("Disponible".equalsIgnoreCase(tipus)){
                 str += m.toString();
+            } else {
             }
         }return str;
     }
@@ -93,7 +96,7 @@ public class Local {
         while(itr.hasNext()){
             Moto m = (Moto) itr.next();
             tipus = m.getEstat();
-            if("Disponible".equals(tipus)){
+            if("Disponible".equalsIgnoreCase(tipus)){
                 i++;
             }
             if(index == i){
@@ -152,4 +155,59 @@ public class Local {
     public int getNMotos(){
         return llistaMotos.size();
     }  
+
+    public void gestionarLocal(MotoRent controlador) {
+        double ocupacio;
+        int nMotos, nM;
+        boolean confirmacio;
+        
+        nMotos = llistaMotos.size();
+        
+        Consola.escriu(toString());
+        Consola.escriu(mostrarMotos());
+        
+        ocupacio = nMotos*100./capacitat;
+        if ((nMotos >= 5) && (ocupacio < 75)){
+            Consola.escriu("El local te ");
+            Consola.escriu(nMotos);
+            Consola.escriu(" motos i es troba al ");
+            Consola.escriu((int)ocupacio);
+            Consola.escriu("% d'ocupacio.\n");
+        }else if(nMotos < 5){
+            Consola.escriu("El local te menys de 5 motos. Has de importar motos.\n");
+            nM = 5 - nMotos;
+            controlador.importarMotos(this.llistaMotos, nM);
+        }else if(ocupacio >= 75){
+            Consola.escriu("El local te massa motos. Hauries d'exportar-ne algunes.\n");
+            Consola.escriu("Vols exportar ara les motos?\n");
+            confirmacio = confirmarImportacio();
+            if (confirmacio){
+                nM = (int) Math.round(nMotos - capacitat*0.25);
+                if (5 < nMotos - nM){
+                    nM --;
+                }
+                if (nM > 0){
+                    Consola.escriu("Es procedira a l'exportacio.\n");
+                    controlador.exportarMotos(this.llistaMotos, nM);
+                }else{
+                    Consola.escriu("Ups, si exportam motos el local es quedaria amb menys de 5 motos.\n");
+                }
+            }
+            
+        }
+    }
+    private boolean confirmarImportacio(){
+        String control;
+        do {
+            control = Consola.llegeixString();
+            if (control.equals("") || control.equalsIgnoreCase("Y") || control.equalsIgnoreCase("YES") || control.equalsIgnoreCase("S") || control.equalsIgnoreCase("SI")) {
+                return true;
+            } else if (control.equalsIgnoreCase("NO") || control.equalsIgnoreCase("N") || control.equalsIgnoreCase("NOP") || control.equalsIgnoreCase("NOPE")) {
+                return false;
+            }else{
+                Consola.escriu("Introdueixi 'No' per cancelar, premi Intro per confirmar.\n" );
+            }
+        } while (!control.equals("") && !control.equalsIgnoreCase("NO"));
+        return false;
+    }
 }
