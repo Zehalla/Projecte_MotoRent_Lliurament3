@@ -5,6 +5,8 @@
  */
 package Model;
 
+import Vista.Consola;
+
 /**
  *
  * @author atorraag7.alumnes
@@ -35,6 +37,14 @@ public class Reserva {
         this.clientReserva = clientReserva;
         this.motoReserva = motoReserva;
     }
+    
+    public String getMesReserva(){
+        return dataInicial.getMes();
+    }
+    
+    public float getPreu(){
+        return preu;
+    }
 
     public String getClientReserva(){
         return clientReserva;
@@ -44,18 +54,40 @@ public class Reserva {
         return motoReserva;
     }
     
+    public String getLocalInicial(){
+        return localInicial;
+    }
+    
+    public String getLocalFinal(){
+        return localFinal;
+    }
+    
     @Override
     public String toString(){
-        String str = null;
+        String str;
         str = "\nReserva amb ID: " + id + "\n";
         str += "--------------------------------------\n";
-	str += "Client: " + clientReserva.toString() + "\n";
-	str += "Moto: " + motoReserva.toString() + "\n";
+	str += "Client: " + clientReserva + "\n";
+	str += "Moto: " + motoReserva + "\n";
         str += "Cost: " + preu + "€\n";
-        str += "Local d'inici: " + localInicial.toString() + "\n";
+        str += "Local d'inici: " + localInicial + "\n";
 	str += "Data d'inici: " + dataInicial.toString() + "\n";
-	str += "Local de finalització: " + localFinal.toString() + "\n";
+	str += "Local de finalització: " + localFinal + "\n";
 	str += "Data de finalització: " + dataFinal.toString() + "\n";
         return str;
+    }
+
+    public void calcularPreu() {
+        int hores;
+        hores = this.dataFinal.calcularDiferencia(dataInicial);
+        this.preu = (hores/24)*15 + hores%24;
+        Consola.escriu("La reserva te un preu de: ");
+        Consola.escriu(this.preu);
+        Consola.escriu("€.\n");
+        Consola.escriu("Duracio de la reserva: ");
+        Consola.escriu(hores/24);
+        Consola.escriu(" dia/es i ");
+        Consola.escriu(hores%24);
+        Consola.escriu(" hora/es.\n");
     }
 }

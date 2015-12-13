@@ -21,7 +21,6 @@ public class Gerent extends Usuari{
         this.idEmpresa = idEmpresa;
     }
     
-    
     @Override
     public String getTipus() {
         return "Gerent";
@@ -32,6 +31,7 @@ public class Gerent extends Usuari{
 }
     
     
+    @Override
     public String toString(){
         String str;
         str = "\nGestor ID: " + idEmpresa + "\n";

@@ -2,8 +2,6 @@ package Vista;
 
 import Controlador.MotoRent;
 import Parser.MotoRentDataManager;
-import Parser.MotoRentXMLParser;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 import org.xml.sax.helpers.DefaultHandler;
@@ -22,6 +20,7 @@ public class Consola extends DefaultHandler{
     private final String[] menuUsuari = {"Menú de l'Usuari:", "1.- Registrar-se.", "2.- Log-in.", "3.- Sortir"};
     private final String[] menuClient = {"Menú del Client:", "1.- Fer reserva d'una moto.", "2.- Modificar reserva.", "3.- Modificar dades personals", "4.- Donar-se de baixa.", "5.- Log-out."};
     private final String[] menuGerent = {"Menú del Gerent:", "1.- Gestionar Local", "2.- Comprovar reserva", "3.- Actualitzar estat moto", "4.- Log-out"};
+    private final String[] menuAdministrador = {"Menú de l'Administrador:", "1.- Generar Informe Mensual", "2.- Log-out."};
     private static final Scanner scanner = new Scanner(System.in);
     private final MotoRent controlador;
     private final MotoRentDataManager dataManager;
@@ -41,6 +40,7 @@ public class Consola extends DefaultHandler{
         controlador.comprovarReservesClients();
         controlador.comprovarEstatsMotos();
         controlador.mostrarDades();
+        controlador.mostrarTotesLesMotos();
     }
     
     /**
@@ -187,6 +187,7 @@ public class Consola extends DefaultHandler{
         escriu("T'has logat com a Gerent");
         do {
             escriu(mostrarMenu(menuGerent));
+            escriu("Tria una opció: ");
             opcio = llegeixInt();
             switch (opcio) {
                 case 1:
@@ -259,7 +260,7 @@ public class Consola extends DefaultHandler{
      * Mètode cridat quan un Gerent vol gestionar un Local.
      */
     private void opcioGestionarLocal(){
-        escriu("Has gestionat el local");
+        controlador.gestionarLocal();
     }
     
     /**
@@ -281,6 +282,27 @@ public class Consola extends DefaultHandler{
     //==============================================================
         
    
+    private void opcioLoginAdministrador() {
+        int opcio;
+        escriu("T'has logat com a Administrador\n");
+        do {
+            escriu(mostrarMenu(menuAdministrador));
+            escriu("Tria una opció: ");
+            opcio = llegeixInt();
+            switch (opcio) {
+                case 1:
+                    opcioInformeMensual();
+                    break;
+            }
+        } while (opcio != 2);
+    } 
+
+    private void opcioInformeMensual() {
+        escriu("De quin mes vols generar un informe? (1,...,12) ");
+        controlador.generarInformeMensual(llegeixString());
+    }
+    
+    
     //==============================================================
     //=======METODES DE SORTIDA ====================================
     //==============================================================
@@ -362,11 +384,6 @@ public class Consola extends DefaultHandler{
     //==============================================================
     //==============================================================
     //==============================================================
-
-    private void opcioLoginAdministrador() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-     
 }
 
 
