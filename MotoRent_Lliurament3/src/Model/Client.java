@@ -103,7 +103,7 @@ public class Client extends Usuari{
         this.vip = false;
         this.faltes = 0;
         this.estatClient = Estats.getEstatClientSenseReserva();
-        this.dataRegistre.dateToData(Consola.llegeixDataSistema());
+        this.dataRegistre = new Data();
         
         Consola.escriu("Introdueixi la constrasenya: ");
         this.password = Consola.llegeixString();

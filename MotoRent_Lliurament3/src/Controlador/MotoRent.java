@@ -368,7 +368,7 @@ public class MotoRent {
             Client clientReserva = (Client) usuariLogat;
             lastIDreserva ++;
             r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici.getIdLocal(), localFinal.getIdLocal(), clientReserva.getIdClient(), moto.getIdMoto());
-            
+            r.calcularPreu();
             llistaReserves.add(r);
             clientReserva.afegirReserva(r);
 
