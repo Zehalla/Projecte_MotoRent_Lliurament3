@@ -5,11 +5,14 @@
  */
 package Model;
 
+import Vista.Consola;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -41,7 +44,7 @@ public class Data{
         this.segon = segon;
     } 
     
-    public Data dateToData(Date dt){
+    private Data dateToData(Date dt){
         String format = df.format(dt);
         String[] sliced = format.split("-");
         Data data = new Data();
@@ -114,5 +117,13 @@ public class Data{
     public String getSegon() {
         return segon;
     }
-    
+
+    int calcularDiferencia(Data dat) {    
+        int dif;
+        dif = (Integer.parseInt(this.any)-Integer.parseInt(dat.getAny()))*12;
+        dif = (dif + Integer.parseInt(this.mes) - Integer.parseInt(dat.getMes()))*30;
+        dif = (dif + Integer.parseInt(this.dia) - Integer.parseInt(dat.getDia()))*24;
+        dif = (dif + Integer.parseInt(this.hora) - Integer.parseInt(dat.getHora()));
+        return dif;
+    }   
 }
