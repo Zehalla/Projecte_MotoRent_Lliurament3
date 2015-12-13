@@ -186,6 +186,7 @@ public class Consola extends DefaultHandler{
         escriu("T'has logat com a Gerent");
         do {
             escriu(mostrarMenu(menuGerent));
+            escriu("Tria una opció: ");
             opcio = llegeixInt();
             switch (opcio) {
                 case 1:
@@ -258,7 +259,7 @@ public class Consola extends DefaultHandler{
      * Mètode cridat quan un Gerent vol gestionar un Local.
      */
     private void opcioGestionarLocal(){
-        escriu("Has gestionat el local");
+        controlador.gestionarLocal();
     }
     
     /**

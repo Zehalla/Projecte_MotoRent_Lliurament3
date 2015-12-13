@@ -5,6 +5,8 @@
  */
 package Model;
 
+import Vista.Consola;
+
 /**
  *
  * @author atorraag7.alumnes
@@ -56,4 +58,9 @@ public abstract class Usuari {
     public boolean checkPassword(String newPassword) {
         return newPassword.equals(this.password);
     }
+
+    public String getIdEmpresa(){
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
 }
