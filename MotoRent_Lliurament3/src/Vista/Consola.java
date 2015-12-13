@@ -39,6 +39,7 @@ public class Consola extends DefaultHandler{
         controlador.comprovarReservesClients();
         controlador.comprovarEstatsMotos();
         controlador.mostrarDades();
+        controlador.mostrarTotesLesMotos();
     }
     
     /**
