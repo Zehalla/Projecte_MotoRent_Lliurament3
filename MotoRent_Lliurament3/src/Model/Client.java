@@ -45,6 +45,25 @@ public class Client extends Usuari{
         this.estatClient = estatClient;
     }
    
+    public String generarInformeClient(String mes){
+        int i, numReserves = 0;
+        String str = this.toString();
+        float cost = 0;
+        for (i = 0; i < listReserva.size(); i++){
+            if (listReserva.get(i).getMesReserva().equals(mes)){
+                numReserves++;
+                str += listReserva.get(i).toString();
+                //str += "Local Inicial de reserva:\n";
+                //str += listReserva.get(i).getLocalInicial();
+                // Falta imprimir per pantalla el local inicial, el final i si la moto està en bones o males condicions.
+                cost += listReserva.get(i).getPreu();
+            }
+        }
+        str += "\nEl número de reserves és de "+numReserves+"\n";
+        str += "El total a facturar és de "+cost+ "€.\n";
+        return str;
+    }
+    
     @Override
     public String getTipus() {
         return "Client";

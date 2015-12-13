@@ -35,6 +35,14 @@ public class Reserva {
         this.clientReserva = clientReserva;
         this.motoReserva = motoReserva;
     }
+    
+    public String getMesReserva(){
+        return dataInicial.getMes();
+    }
+    
+    public float getPreu(){
+        return preu;
+    }
 
     public String getClientReserva(){
         return clientReserva;
@@ -42,6 +50,14 @@ public class Reserva {
         
     public String getMotoReserva(){
         return motoReserva;
+    }
+    
+    public String getLocalInicial(){
+        return localInicial;
+    }
+    
+    public String getLocalFinal(){
+        return localFinal;
     }
     
     @Override
