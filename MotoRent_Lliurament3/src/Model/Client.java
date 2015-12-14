@@ -64,6 +64,15 @@ public class Client extends Usuari{
         return str;
     }
     
+    
+    public String getId(){
+        return idClient;
+    }
+    
+    public void afegirFalta(){
+        this.faltes += 1;
+    }
+    
     @Override
     public String getTipus() {
         return "Client";
@@ -91,6 +100,26 @@ public class Client extends Usuari{
             default:
                 this.estatClient = Estats.getEstatClientDesactivat();
                 break;
+        }
+    }
+    
+    public void obtenirDataInicialReserva(int mes){
+        int mesReservaActual, i, numReserves = 0;
+        float total = 0;
+        for (i = 0; i < listReserva.size(); i++){
+            mesReservaActual = Integer.parseInt(listReserva.get(i).getMesReserva());
+            if (mes == mesReservaActual){
+                numReserves++;
+                listReserva.get(i).generarInformeReserva();
+                total += listReserva.get(i).getPreu() + listReserva.get(i).getPenalitzacio();
+            } 
+            
+        }
+        if (numReserves != 0){
+            Consola.escriu("\nEl numero de reserves és de: "+numReserves+"\n");
+            Consola.escriu("El total a facturar és de: "+total+"\n");
+        }else{
+            Consola.escriu("\nAquest client no ha realitzat reserves en el mes seleccionat.\n");
         }
     }
     
@@ -147,6 +176,10 @@ public class Client extends Usuari{
     
     public String getIdClient(){
         return idClient;
+    }
+    
+    public int getFaltes(){
+        return faltes;
     }
     
     @Override

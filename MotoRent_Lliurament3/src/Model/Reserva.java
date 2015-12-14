@@ -19,12 +19,12 @@ public class Reserva {
     private float penalitzacio;
     private Data dataInicial;
     private Data dataFinal;
-    private String localInicial;
-    private String localFinal;
-    private String clientReserva;
-    private String motoReserva;
+    private Local localInicial;
+    private Local localFinal;
+    private Client clientReserva;
+    private Moto motoReserva;
     
-    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, String localInicial, String localFinal, String clientReserva, String motoReserva){
+    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, Local localInicial, Local localFinal, Client clientReserva, Moto motoReserva){
         this.id = id;
         this.preu = preu;
         this.penalitzacioTemps = penalitzacioTemps;
@@ -45,21 +45,30 @@ public class Reserva {
     public float getPreu(){
         return preu;
     }
+    
+    public float getPenalitzacio(){
+        return penalitzacio;
+    }
 
-    public String getClientReserva(){
+    public Client getClientReserva(){
         return clientReserva;
     }
         
-    public String getMotoReserva(){
+    public Moto getMotoReserva(){
         return motoReserva;
     }
     
-    public String getLocalInicial(){
+    public Local getLocalInicial(){
         return localInicial;
     }
     
-    public String getLocalFinal(){
+    public Local getLocalFinal(){
         return localFinal;
+    }
+    
+    public void generarInformeReserva(){
+        
+        Consola.escriu(this.toString());
     }
     
     @Override
@@ -67,12 +76,22 @@ public class Reserva {
         String str;
         str = "\nReserva amb ID: " + id + "\n";
         str += "--------------------------------------\n";
-	str += "Client: " + clientReserva + "\n";
-	str += "Moto: " + motoReserva + "\n";
+	str += "Client: " + clientReserva.getId() + "\n";
+	str += "Moto: " + motoReserva.getIdMoto() + "\n";
         str += "Cost: " + preu + "€\n";
-        str += "Local d'inici: " + localInicial + "\n";
+        if (penalitzacioMoto){
+            str += "La moto té algun desperfecte.\n";
+        }else{
+            str += "La moto s'ha retornat amb bon estat.\n";
+        }
+        if (penalitzacioTemps){
+            str += "La moto no s'ha retornat a temps.\n";
+        }else{
+            str += "La moto s'ha retornat a temps.\n";
+        }
+        str += "Local d'inici: " + localInicial.toString() + "\n";
 	str += "Data d'inici: " + dataInicial.toString() + "\n";
-	str += "Local de finalització: " + localFinal + "\n";
+	str += "Local de finalització: " + localFinal.toString() + "\n";
 	str += "Data de finalització: " + dataFinal.toString() + "\n";
         return str;
     }

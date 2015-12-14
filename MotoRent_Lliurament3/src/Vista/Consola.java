@@ -37,10 +37,7 @@ public class Consola extends DefaultHandler{
         controlador = new MotoRent();
         dataManager = new MotoRentDataManager(controlador);
         dataManager.obtenirDades("data/MotoRent.xml");
-        controlador.comprovarReservesClients();
-        controlador.comprovarEstatsMotos();
-        controlador.mostrarDades();
-        controlador.mostrarTotesLesMotos();
+        controlador.comprovacionsPrevies();
     }
     
     /**
@@ -260,7 +257,7 @@ public class Consola extends DefaultHandler{
      * Mètode cridat quan un Gerent vol gestionar un Local.
      */
     private void opcioGestionarLocal(){
-        controlador.gestionarLocal();
+        escriu("Has gestionat el local");
     }
     
     /**

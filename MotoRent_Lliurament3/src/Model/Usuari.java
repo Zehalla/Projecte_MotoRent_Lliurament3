@@ -41,6 +41,12 @@ public abstract class Usuari {
         return this.password;
     }
 
+    public abstract String getId();
+    
+    public void setLocalAGestionar(Local local){
+        
+    }
+    
     /**
      * Métode que retorna true si newUserName es igual a userName.
      * @param newUserName
@@ -59,8 +65,6 @@ public abstract class Usuari {
         return newPassword.equals(this.password);
     }
 
-    public String getIdEmpresa(){
-        throw new UnsupportedOperationException("Not supported.");
-    }
+
 
 }
