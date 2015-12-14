@@ -12,7 +12,7 @@
 				<moto id="m1" matricula="1111AAA" marca="BMW" model="F 800 GT" color="rosa" estat="disponible"></moto>
 			</motos>
        </local>
-       
+
        <local id="l2" capacitat="8">
                 <gestorID>g2</gestorID>
 		<adreca>Gran Via 585, 08007, Barcelona</adreca>
@@ -27,7 +27,7 @@
 				<moto id="m9" matricula="4576DER" marca="Peugeot" model="Django Heritage 50" color="rosa" estat="avariada"></moto>
 			</motos>
        </local>
-       
+
        <local id="l3" capacitat="8">
                 <gestorID>g3</gestorID>
            	<adreca>Diagonal 900, 08037, Barcelona</adreca>
@@ -38,7 +38,7 @@
 				<moto id="m13" matricula="6548EDE" marca="Piaggio" model="Liberty 50" color="lila" estat="disponible"></moto>
 			</motos>
        </local>
-       
+
        <local id="l4" capacitat="6">
                 <gestorID>g4</gestorID>
 		<adreca>Hospital 1, 08001, Barcelona</adreca>
@@ -51,7 +51,7 @@
 			</motos>
        </local>
    </locals>
-    
+
    	<!-- RESERVES -->
  	<reserves>
 		<reserva id="r1" client="c1" moto="m7" cost="10" falta="3">
@@ -62,12 +62,12 @@
 			<inici hora="01:20:01" local="l3" data="05/12/2015"></inici>
 			<fi hora="02:03:54" local="l4" data="05/12/2015"></fi>
 		</reserva>
-                <reserva id="r2" client="c3" moto="m16" cost="1" falta="0">
+                <reserva id="r3" client="c3" moto="m16" cost="1" falta="0">
 			<inici hora="09:20:06" local="l1" data="07/12/2015"></inici>
 			<fi hora="10:15:34" local="l4" data="07/12/2015"></fi>
 		</reserva>
 	</reserves>
-	
+
 	<!-- ADMINISTRADORS -->
 	<admins>
 		<admin id="a1">
@@ -76,7 +76,7 @@
 			<password>pierre</password>
 		</admin>
 	</admins>
-	
+
 	<!-- GESTORS -->
 	<gestors>
 		<gestor id="g1">
@@ -100,7 +100,7 @@
 			<password>epato</password>
 		</gestor>
 	</gestors>
-	
+
 	<!-- CLIENTS -->
 	<clients>
 		<client id="c1" vip="true" renovacio="true" faltes="0">

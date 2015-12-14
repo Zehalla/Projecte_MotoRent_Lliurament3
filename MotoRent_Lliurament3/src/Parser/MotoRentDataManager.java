@@ -139,7 +139,6 @@ public class MotoRentDataManager {
 	 */
 
 	public void crearClient(String id, String[] nom, String dni, String[] adreca, String usuari, String password, String vip, String renovacio, String faltes) {
-
             controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), crearDireccio(adreca), new Data(), Estats.getEstatClientSenseReserva());
 	}
         
