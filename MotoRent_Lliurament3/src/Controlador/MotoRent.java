@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -29,7 +30,7 @@ public class MotoRent {
      * Constructor de MotoRent que inicialitza les dues llistes.
      */
     public MotoRent() {
-        this.lastIDreserva = 2;
+        this.lastIDreserva = 3;
         this.llistaLocal = new ArrayList<>();
         this.llistaUsuaris = new ArrayList<>();
         this.llistaReserves = new ArrayList<>();
@@ -38,7 +39,8 @@ public class MotoRent {
     ---------------METODES QUE GUARDEN DADES--------------------------
     -----------------------------------------------------------------*/
     public void guardarLocal(String idLocal, int capacitat, Direccio direccioLocal, String idGestor){
-        llistaLocal.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), null, idGestor));
+        Gerent gestor = (Gerent) buscarUsuari(idGestor);
+        llistaLocal.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), null, gestor));
     }
     
     public void guardarMoto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
@@ -46,7 +48,17 @@ public class MotoRent {
     }
     
     public void guardarReserva(String id, String idClient, String idMoto, String cost, String falta, String local_inici, String local_fi, Data dataInicial, Data dataFinal){
-        llistaReserves.add(new Reserva(id, Integer.parseInt(cost), false, false, Integer.parseInt(falta), dataInicial, dataFinal, local_inici, local_fi, idClient, idMoto));
+        Client client = (Client) buscarUsuari(idClient);
+        if (Integer.parseInt(falta) == 0){ // si no hi ha faltes, afegim normalment.
+            llistaReserves.add(new Reserva(id, Integer.parseInt(cost), false, false, 0, dataInicial, dataFinal, buscarLocal(local_inici), buscarLocal(local_fi), client, buscarMoto(idMoto)));
+        }else{ //en cas q hi hagi faltes, afegim un cost addicional a la reserva q anirà de 0 a 20.
+            Random ran = new Random(); 
+            int i;
+            llistaReserves.add(new Reserva(id, Integer.parseInt(cost), true, true, ran.nextInt(20), dataInicial, dataFinal, buscarLocal(local_inici), buscarLocal(local_fi), client, buscarMoto(idMoto)));
+            for (i = 0; i < Integer.parseInt(falta); i++){
+                client.afegirFalta();
+            }
+        }
     }
     
     public void guardarClient(String id, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
@@ -61,15 +73,23 @@ public class MotoRent {
         llistaUsuaris.add(new Administrador(nom, cognom1, cognom2, userName, password, idEmpresa));
     }
     
-    public void comprovarReservesClients(){
+    
+    public void comprovacionsPrevies(){
+        comprovarReservesClients();
+        comprovarEstatsMotos();
+        comprovarEstatsClients();
+        comprovarLocalsAGestionar();
+        mostrarDades();
+        mostrarTotesLesMotos();
+    }
+    
+    private void comprovarReservesClients(){
         int i;
-        String idActual; 
         Client clientActual;
         Reserva reservaActual;
         for (i=0;i<llistaReserves.size();i++){
             reservaActual = llistaReserves.get(i);
-            idActual = reservaActual.getClientReserva();
-            clientActual = buscarClient(idActual);
+            clientActual = reservaActual.getClientReserva();
             if (clientActual != null){
                 clientActual.afegirReserva(reservaActual);
                 clientActual.setEstat("reserva");
@@ -77,17 +97,34 @@ public class MotoRent {
         }
     }
     
-    public void comprovarEstatsMotos(){
+    private void comprovarEstatsMotos(){
         int i;
-        String idMotoActual;
         Moto motoActual;
         for (i = 0; i < llistaReserves.size(); i++){
-            idMotoActual = llistaReserves.get(i).getMotoReserva();
-            motoActual = buscarMoto(idMotoActual);
+            motoActual = llistaReserves.get(i).getMotoReserva();
             motoActual.setEstat("reservada");
         }
     }
     
+    private void comprovarEstatsClients(){
+        int i;
+        Client clientActual;
+        for (i = 0; i < llistaUsuaris.size(); i++){
+            if (llistaUsuaris.get(i).getTipus().equals("Client")){
+                clientActual = (Client) llistaUsuaris.get(i);
+                if (clientActual.getFaltes() >= 3){
+                    clientActual.setEstat("Desactivat");
+                }
+            }
+        }
+    }
+    
+    private void comprovarLocalsAGestionar(){
+        int i;
+        for (i = 0; i < llistaLocal.size(); i++){
+            buscarUsuari(llistaLocal.get(i).getGestor().getId()).setLocalAGestionar(llistaLocal.get(i));
+        }
+    }
     
     private Moto buscarMoto(String idMoto){
         int i, j;
@@ -101,21 +138,27 @@ public class MotoRent {
         return null;
     }
     
-    private Client buscarClient(String idClient){
+    private Usuari buscarUsuari(String idUsuari){
         int i;
-        Client clientActual;
         for (i = 0; i<llistaUsuaris.size();i++){
-            if (llistaUsuaris.get(i).getTipus().equals("Client")){
-                clientActual = (Client) llistaUsuaris.get(i);
-                if (clientActual.getIdClient().equals(idClient)){
-                    return clientActual;
-                }
+            if (llistaUsuaris.get(i).getId().equals(idUsuari)){
+                return llistaUsuaris.get(i);
             }
         }
         return null;
     }
     
-    public void mostrarDades(){
+    private Local buscarLocal(String idLocal){
+        int i;
+        for (i = 0; i < llistaLocal.size(); i++){
+            if (llistaLocal.get(i).getIdLocal().equals(idLocal)){
+                return llistaLocal.get(i);
+            }
+        }
+        return null;
+    }
+  
+    private void mostrarDades(){
         int i;
         Consola.escriu("\n\nUSUARIS\n\n");
         for (i=0;i<llistaUsuaris.size();i++){
@@ -147,27 +190,37 @@ public class MotoRent {
     }
     
     public void mostrarTotesLesMotos(){
-        int i, j;
+        int i;
+        Consola.escriu("\nLLISTAT DE TOTES LES MOTOS:\n");
         for (i = 0; i < llistaLocal.size(); i++){
-            //Consola.escriu(llistaLocal.get(i).toString());
-            for (j = 0; j < llistaLocal.get(i).getNMotos(); j++){
-                Consola.escriu(llistaLocal.get(i).getMoto(j).toString());
-            }
+            llistaLocal.get(i).obtenirMotosLocal();
         }
     }
     
     public void generarInformeMensual(String mes){
+        boolean error;
         int i;
-        for (i = 0; i < llistaUsuaris.size(); i++){
-            if (llistaUsuaris.get(i).getTipus().equals("Client")){
-                Client clientActual = (Client) llistaUsuaris.get(i);
-                Consola.escriu("\nClient:\n");
-                if (!clientActual.generarInformeClient(mes).equals("")){
-                    Consola.escriu(clientActual.generarInformeClient(mes));
+        error = comprovarDataCorrecte(mes);
+        if (!error){
+            for (i = 0; i < llistaUsuaris.size(); i++) {
+                if (llistaUsuaris.get(i).getTipus().equals("Client")) {
+                    Client clientActual = (Client) llistaUsuaris.get(i);
+                    Consola.escriu(clientActual.toString());
+                    clientActual.obtenirDataInicialReserva(Integer.parseInt(mes));
                 }
             }
+        }else{
+            Consola.escriu("\nHi ha hagut un error al realitzar l'informe del mes seleccionat.\n");
         }
         
+    }
+    
+    private boolean comprovarDataCorrecte(String mes) {
+        if (Consola.llegeixDataSistema().getMonth() >= Integer.parseInt(mes)){
+            return true;
+        }else{
+            return false;
+        }
     }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
@@ -367,7 +420,7 @@ public class MotoRent {
             localInici.afegirMoto(moto);
             Client clientReserva = (Client) usuariLogat;
             lastIDreserva ++;
-            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici.getIdLocal(), localFinal.getIdLocal(), clientReserva.getIdClient(), moto.getIdMoto());
+            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici, localFinal, clientReserva, moto);
             r.calcularPreu();
             llistaReserves.add(r);
             clientReserva.afegirReserva(r);
@@ -429,30 +482,11 @@ public class MotoRent {
             return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
     }
 
-    public void gestionarLocal() {
-        Local localAGestionar;
-        localAGestionar= cercarLocal(usuariLogat.getIdEmpresa());
-        localAGestionar.gestionarLocal(this);
-    }
-
-    private Local cercarLocal(String idEmpresa) {
-        int i;
-        Local li;
-        for (i = 0; i < llistaLocal.size(); i++){
-            li = llistaLocal.get(i);
-            if (idEmpresa.equals(li.getIdGestor())){
-                return li;
-            }
-        }
-        return null;
-    }
-
-    public void importarMotos(ArrayList<Moto> llistaMotos, int nM) {
-        Consola.escriu("El metode tocaria fer cosa, lamentablement encara no ho fa. Plis report!\n");
-    }
-
-    public void exportarMotos(ArrayList<Moto> llistaMotos, int nM) {
-        Consola.escriu("El metode tocaria fer cosa, lamentablement encara no ho fa. Plis report!\n");
-    }
     
 }
+    
+    //--------------------------------------------------------------------
+    //-----------------FI FER RESERVA-------------------------------------
+    //--------------------------------------------------------------------
+
+
