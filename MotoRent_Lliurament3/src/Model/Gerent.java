@@ -11,6 +11,7 @@ package Model;
  */
 public class Gerent extends Usuari{
     private final String idEmpresa;
+    private Local localAGestionar;
 
     public Gerent(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;
@@ -19,6 +20,7 @@ public class Gerent extends Usuari{
         this.userName = userName;
         this.password = password;
         this.idEmpresa = idEmpresa;
+        this.localAGestionar = null;
     }
     
     @Override
@@ -26,10 +28,17 @@ public class Gerent extends Usuari{
         return "Gerent";
     }
     
-    public String getIdEmpresa(){
+    @Override
+    public String getId(){
         return idEmpresa;
-}
+    }
     
+    @Override
+    public void setLocalAGestionar(Local local){
+        this.localAGestionar = local;
+    }
+    
+
     
     @Override
     public String toString(){
@@ -40,6 +49,7 @@ public class Gerent extends Usuari{
         str += "Cognom: "+cognom1+"\n";
 	str += "Usuari: " + userName + "\n";
 	str += "Password: " + password + "\n";
+        str += "Local a gestionar: \n"+ localAGestionar.toString() +"\n";
         return str;
     }
 }
