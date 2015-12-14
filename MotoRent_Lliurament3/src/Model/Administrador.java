@@ -27,9 +27,14 @@ public class Administrador extends Usuari{
     }
     
     @Override
+    public String getId(){
+        return idEmpresa;
+    }
+    
+    @Override
       public String toString(){
         String str;
-        str = "\nAdministrador ID: " + idEmpresa + "\n";
+        str = "\nAdministrador ID: " + this.getId() + "\n";
 	str += "-----------------\n";
 	str +="Nom: " + nom + "\n";
         str += "Cognom: "+cognom1+"\n";
