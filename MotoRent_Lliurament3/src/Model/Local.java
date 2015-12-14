@@ -19,24 +19,24 @@ public class Local {
     private final int capacitat;
     private Direccio direccioLocal;
     private ArrayList<Moto> llistaMotos;
-    private final String idGestor;
+    private Gerent gestor;
 
-    public String getIdGestor() {
-        return idGestor;
+    public Gerent getGestor() {
+        return gestor;
     }
     
     public Local(){
         this.idLocal = null;
         this.capacitat = 0;
-        this.idGestor = null;
+        this.gestor = null;
     }
     
-    public Local(String idLocal, int capacitat, Direccio direccioLocal, ArrayList<Moto> llistaMotos, ArrayList<Reserva> llistaReserves, String idGestor){
+    public Local(String idLocal, int capacitat, Direccio direccioLocal, ArrayList<Moto> llistaMotos, ArrayList<Reserva> llistaReserves, Gerent gestor){
         this.idLocal = idLocal;
         this.capacitat = capacitat;
         this.direccioLocal = direccioLocal;
         this.llistaMotos = llistaMotos;
-        this.idGestor = idGestor;
+        this.gestor = gestor;
     }
     
     
@@ -78,10 +78,17 @@ public class Local {
         }
         return str;
     }
+    
+    public Moto getMoto(int i){
+        return llistaMotos.get(i);
+    }
  
 
-    public Moto getMoto(int index){
-       return llistaMotos.get(index);
+    public void obtenirMotosLocal(){
+        int i;
+        for (i = 0; i < llistaMotos.size(); i++){
+            Consola.escriu(llistaMotos.get(i).toString());
+        }
     }
 
     public boolean eliminarMoto(Moto moto){
@@ -144,10 +151,10 @@ public class Local {
     @Override
     public String toString(){
         String str;
-        str = "\nlocal amb ID: " + idLocal + "\n";
+        str = "\nLocal amb ID: " + idLocal + "\n";
 	str += "--------------------------------------------------\n";
 	str += "Capacitat: " + capacitat + "\n";
-	str += "Gestor ID: " + idGestor + "\n";
+	str += "Gestor ID: " + gestor.getId() + "\n";
 	str += direccioLocal.toString() + "\n";
         return str;
     }
@@ -155,7 +162,7 @@ public class Local {
     public int getNMotos(){
         return llistaMotos.size();
     }  
-
+/*
     public void gestionarLocal(MotoRent controlador) {
         double ocupacio;
         int nMotos, nM;
@@ -209,5 +216,5 @@ public class Local {
             }
         } while (!control.equals("") && !control.equalsIgnoreCase("NO"));
         return false;
-    }
+    }*/
 }
