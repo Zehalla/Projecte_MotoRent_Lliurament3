@@ -65,6 +65,10 @@ public abstract class Usuari {
         return newPassword.equals(this.password);
     }
 
+    public String getEstat() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 
 }

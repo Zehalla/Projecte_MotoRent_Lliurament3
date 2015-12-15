@@ -120,6 +120,9 @@ public class Consola extends DefaultHandler{
                     opcioLoginClient();
                     tornarMenuAnterior = true;
                     break;
+                case "Desactivat":
+                    tornarMenuAnterior = true;
+                    break;
                 case "Gerent":
                     opcioLoginGerent();
                     tornarMenuAnterior = true;

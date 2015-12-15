@@ -65,6 +65,7 @@ public class Client extends Usuari{
     }
     
     
+    @Override
     public String getId(){
         return idClient;
     }
@@ -78,6 +79,7 @@ public class Client extends Usuari{
         return "Client";
     }
     
+    @Override
     public String getEstat(){
         if(this.estatClient instanceof EstatClientAmbReserva){
             return "Amb Reserva";
