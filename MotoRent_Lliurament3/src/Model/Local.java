@@ -31,7 +31,7 @@ public class Local {
         this.gestor = null;
     }
     
-    public Local(String idLocal, int capacitat, Direccio direccioLocal, ArrayList<Moto> llistaMotos, ArrayList<Reserva> llistaReserves, Gerent gestor){
+    public Local(String idLocal, int capacitat, Direccio direccioLocal, ArrayList<Moto> llistaMotos, Gerent gestor){
         this.idLocal = idLocal;
         this.capacitat = capacitat;
         this.direccioLocal = direccioLocal;
@@ -94,7 +94,7 @@ public class Local {
     public boolean eliminarMoto(Moto moto){
         return llistaMotos.remove(moto);
     }
-    
+    // preguntar quin metode es millor usar, el q proporciona Java (eliminat per objecte) o el dissenyat (eliminat per index)
     public void eliminarMoto2(int index){
         int i = 0;
         String tipus;
