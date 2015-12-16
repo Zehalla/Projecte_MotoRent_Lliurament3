@@ -38,6 +38,10 @@ public class Reserva {
         this.motoReserva = motoReserva;
     }
     
+    public String getId(){
+        return id;
+    }
+    
     public String getMesReserva(){
         return dataInicial.getMes();
     }
@@ -108,5 +112,53 @@ public class Reserva {
         Consola.escriu(" dia/es i ");
         Consola.escriu(hores%24);
         Consola.escriu(" hora/es.\n");
+    }
+    
+    public void cobrarReserva() {
+        float diferencia;
+        clientReserva.setEstat("NO RESERVA");
+        Data dataEntrega = new Data(); 
+        diferencia = dataEntrega.calcularDiferencia(dataFinal);
+        
+        if(diferencia > 0.0f){
+            penalitzacio = diferencia*2;
+            penalitzacioTemps = true;
+            preu += penalitzacio;   
+        }
+        
+        gestionarAveria();
+    }
+    
+    private void gestionarAveria() {
+        String opcio;
+        boolean error = true;
+        float reparacio;
+        boolean desactivar;
+        
+        while(error){
+            Consola.escriu("Mostra la moto cap averia? (Y/N)");
+            opcio = Consola.llegeixString();
+            
+            if(opcio.equals("N")){
+                error = false;
+                motoReserva.setEstat("Disponible");
+            }else if(opcio.equals("Y")){
+                error = false;
+                motoReserva.setEstat("Reparant");
+                
+                Consola.escriu("Introdueix el preu de la reparacio: ");
+                reparacio = Float.parseFloat(Consola.llegeixString()); //Si no funciona partir en dos declaraciones
+                
+                preu += reparacio;
+                penalitzacioMoto = true;
+                
+                clientReserva.afegirFalta();
+            }  
+        }
+    }
+
+    public boolean isActiva() {
+        Data dataActual = new Data();
+        return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
     }
 }

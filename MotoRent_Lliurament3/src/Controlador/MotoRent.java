@@ -482,7 +482,61 @@ public class MotoRent {
             return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
     }
 
+    public void tornarMoto(){
+        boolean error = true;
+        boolean trobat = false;
+        String reservaID;
+        
+        while(error){
+            Consola.escriu("Introdueix la ID de la reserva: ");
+            reservaID = Consola.llegeixString();
+            
+            Iterator itr = llistaReserves.iterator();
+            while(itr.hasNext() && !trobat){
+                Reserva r = (Reserva) itr.next();
+                
+                trobat = r.getId().equals(reservaID);  
+                if(trobat){
+                    r.cobrarReserva();
+                    error = false;
+                }
+            }
+            if(!trobat){
+                Consola.escriu("No s'ha trobat la reserva. Comprovi que la ID sigui correcte.");
+            }
+        }
+    }
     
+    public void lliurarMotoAClient(){
+        String idReserva;
+        boolean trobat = false;
+        Reserva rTrobada = null;
+        boolean correcte = false;
+        
+        while(!correcte){
+            Consola.escriu("Introdueix l'identificador de la reserva: ");
+            idReserva = Consola.llegeixString();
+        
+        
+            Iterator itr = llistaReserves.iterator();
+            while(itr.hasNext() && !trobat){
+                Reserva r = (Reserva) itr.next();
+                if(r.isActiva()){
+                    trobat = r.getId().equals(idReserva);
+                    if(trobat){
+                    rTrobada = r;
+                    }
+                }
+            }
+            if(trobat){
+                rTrobada.getLocalInicial().eliminarMoto(rTrobada.getMotoReserva());
+                Consola.escriu("La reserva es correcte.");
+                correcte = true;
+            }else{
+                Consola.escriu("No s'ha trobat la reserva demanada.");
+            }
+        }
+    }
 }
     
     //--------------------------------------------------------------------

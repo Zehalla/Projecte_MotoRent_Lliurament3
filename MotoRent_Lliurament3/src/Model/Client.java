@@ -71,6 +71,13 @@ public class Client extends Usuari{
     
     public void afegirFalta(){
         this.faltes += 1;
+        if(faltes <= 3){
+            this.setEstat("Desactivat");
+            Consola.escriu("El client s'ha desactivat perque te 3 faltes o mes.");
+        }
+
+
+                    
     }
     
     @Override
