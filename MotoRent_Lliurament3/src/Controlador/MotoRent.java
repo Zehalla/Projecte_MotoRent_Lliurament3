@@ -483,25 +483,26 @@ public class MotoRent {
     }
 
     public void tornarMoto(){
-        boolean error = true;
+        boolean correcte = false;
         boolean trobat = false;
         String reservaID;
+        Reserva r = null;
         
-        while(error){
+        while(!correcte){
             Consola.escriu("Introdueix la ID de la reserva: ");
             reservaID = Consola.llegeixString();
             
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
-                Reserva r = (Reserva) itr.next();
-                
-                trobat = r.getId().equals(reservaID);  
-                if(trobat){
-                    r.cobrarReserva();
-                    error = false;
+                r = (Reserva) itr.next();
+                if(r.isActiva()){
+                    trobat = r.getId().equals(reservaID);  
                 }
             }
-            if(!trobat){
+            if(trobat){
+                r.cobrarReserva();
+                correcte = true;
+            }else{
                 Consola.escriu("No s'ha trobat la reserva. Comprovi que la ID sigui correcte.");
             }
         }
@@ -510,7 +511,7 @@ public class MotoRent {
     public void lliurarMotoAClient(){
         String idReserva;
         boolean trobat = false;
-        Reserva rTrobada = null;
+        Reserva r = null;
         boolean correcte = false;
         
         while(!correcte){
@@ -520,16 +521,13 @@ public class MotoRent {
         
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
-                Reserva r = (Reserva) itr.next();
+                r = (Reserva) itr.next();
                 if(r.isActiva()){
-                    trobat = r.getId().equals(idReserva);
-                    if(trobat){
-                    rTrobada = r;
-                    }
+                    trobat = r.getId().equals(idReserva);  
                 }
             }
             if(trobat){
-                rTrobada.getLocalInicial().eliminarMoto(rTrobada.getMotoReserva());
+                r.getLocalInicial().eliminarMoto(r.getMotoReserva());
                 Consola.escriu("La reserva es correcte.");
                 correcte = true;
             }else{
