@@ -5,6 +5,8 @@
  */
 package Model;
 
+import Vista.Consola;
+
 /**
  *
  * @author atorraag7.alumnes
@@ -51,5 +53,21 @@ public class Gerent extends Usuari{
 	str += "Password: " + password + "\n";
         str += "Local a gestionar: \n"+ localAGestionar.toString() +"\n";
         return str;
+    }
+    
+    @Override
+    public String gestionarLocal(){
+            String accio;
+            Consola.escriu(localAGestionar.toString());
+            accio = localAGestionar.gestionarLocal();
+            return accio;
+    }
+    @Override
+    public int demanarNombreMotosAImportar(){
+        return localAGestionar.demanarNombreMotosAImportar();
+    }
+    @Override
+    public int demanarNombreMotosAExportar(){
+        return localAGestionar.demanarNombreMotosAExportar();
     }
 }

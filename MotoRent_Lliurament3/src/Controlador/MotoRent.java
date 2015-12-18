@@ -482,6 +482,32 @@ public class MotoRent {
             return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
     }
 
+    public void gestionarLocal() {
+        String accio;
+        int nombreMotos;
+        accio = usuariLogat.gestionarLocal();
+        switch(accio){
+            case("Importar"):
+                nombreMotos = usuariLogat.demanarNombreMotosAImportar();
+                importarMotos(nombreMotos);
+                break;
+            case("Exportar"):
+                nombreMotos = usuariLogat.demanarNombreMotosAExportar();
+                if(nombreMotos >0){
+                    exportarMotos(nombreMotos);
+                }
+                break;
+        }
+    }
+
+    private void importarMotos(int motosAImportar) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void exportarMotos(int motosAExportar) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }
     

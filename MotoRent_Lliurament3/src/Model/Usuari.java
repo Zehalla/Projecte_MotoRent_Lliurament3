@@ -65,6 +65,18 @@ public abstract class Usuari {
         return newPassword.equals(this.password);
     }
 
+    public String gestionarLocal() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int demanarNombreMotosAImportar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int demanarNombreMotosAExportar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 
 }
