@@ -12,6 +12,7 @@ import Vista.Consola;
  * @author atorraag7.alumnes
  */
 public abstract class Usuari {
+    protected String id;
     protected String DNI;
     protected String userName;
     protected String password;

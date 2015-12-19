@@ -251,17 +251,15 @@ public class MotoRent {
         if (trobat){
             tipus = usuariLogat.getTipus();
             if (tipus.equalsIgnoreCase("CLIENT")){
-                if(!"Desactivat".equalsIgnoreCase(usuariLogat.getEstat())){
-                    return tipus;
+                if("Desactivat".equalsIgnoreCase(usuariLogat.getEstat())){
+                    Consola.escriu("Voste es troba desactivat per haver comes 3 faltes en menys d'un any.\n");
+                    tipus = "Desactivat";
                 }
-                Consola.escriu("Voste es troba desactivat per haver comes 3 faltes en menys d'un any.\n");
-                return "Desactivat";
             }
-            return tipus;
         }else{
             Consola.escriu("El nom d'usuari o la contrasenya son incorrectes\n");
-            return tipus;
         }
+        return tipus;
     }
     
     /**
