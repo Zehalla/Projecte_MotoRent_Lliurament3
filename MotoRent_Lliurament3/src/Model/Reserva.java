@@ -38,9 +38,7 @@ public class Reserva {
         this.motoReserva = motoReserva;
     }
     
-    public String getMesReserva(){
-        return dataInicial.getMes();
-    }
+
     
     public float getPreu(){
         return preu;
@@ -66,8 +64,12 @@ public class Reserva {
         return localFinal;
     }
     
-    public void generarInformeReserva(){
+    public int obtenirDataIniciReserva(){
+        return Integer.parseInt(this.dataInicial.getMes());
         
+    }
+    
+    public void generarInformeReserva(){
         Consola.escriu(this.toString());
     }
     

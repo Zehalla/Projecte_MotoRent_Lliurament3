@@ -45,24 +45,6 @@ public class Client extends Usuari{
         this.estatClient = estatClient;
     }
    
-    public String generarInformeClient(String mes){
-        int i, numReserves = 0;
-        String str = this.toString();
-        float cost = 0;
-        for (i = 0; i < listReserva.size(); i++){
-            if (listReserva.get(i).getMesReserva().equals(mes)){
-                numReserves++;
-                str += listReserva.get(i).toString();
-                //str += "Local Inicial de reserva:\n";
-                //str += listReserva.get(i).getLocalInicial();
-                // Falta imprimir per pantalla el local inicial, el final i si la moto està en bones o males condicions.
-                cost += listReserva.get(i).getPreu();
-            }
-        }
-        str += "\nEl número de reserves és de "+numReserves+"\n";
-        str += "El total a facturar és de "+cost+ "€.\n";
-        return str;
-    }
     
     
     public String getId(){
@@ -103,17 +85,16 @@ public class Client extends Usuari{
         }
     }
     
-    public void obtenirDataInicialReserva(int mes){
-        int mesReservaActual, i, numReserves = 0;
+    public void obtenirReservesClient(int mes){
+        int i, numReserves = 0, mesReservaActual;
         float total = 0;
         for (i = 0; i < listReserva.size(); i++){
-            mesReservaActual = Integer.parseInt(listReserva.get(i).getMesReserva());
+            mesReservaActual = listReserva.get(i).obtenirDataIniciReserva();
             if (mes == mesReservaActual){
                 numReserves++;
                 listReserva.get(i).generarInformeReserva();
                 total += listReserva.get(i).getPreu() + listReserva.get(i).getPenalitzacio();
-            } 
-            
+        } 
         }
         if (numReserves != 0){
             Consola.escriu("\nEl numero de reserves és de: "+numReserves+"\n");
@@ -195,7 +176,6 @@ public class Client extends Usuari{
 	str += direccio.toString() + "\n";
 	str += "Password: " + password + "\n";
 	str += "Es VIP: " + vip + "\n";
-	//str += "Renovació automàtica: " + renovacio + "\n";
 	str += "Nombre de faltes: " + faltes + "\n";
         str += "Estat: "+ getEstat() +"\n";
         return str;
