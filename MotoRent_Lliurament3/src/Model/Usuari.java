@@ -5,8 +5,6 @@
  */
 package Model;
 
-import Vista.Consola;
-
 /**
  *
  * @author atorraag7.alumnes
@@ -74,6 +72,22 @@ public abstract class Usuari {
     }
 
     public int demanarNombreMotosAExportar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void importarMoto(Moto motoImportar) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Moto getMotoDisponible() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void exportarMoto(Moto motoExportar) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getNMotosDisp() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

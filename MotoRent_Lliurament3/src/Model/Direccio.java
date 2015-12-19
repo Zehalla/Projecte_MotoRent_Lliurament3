@@ -51,7 +51,7 @@ public class Direccio {
         str = "Carrer: "+carrer+"\n";
         str += "Número: "+numero+"\n";
         str += "Codi Postal: "+codiPostal+"\n";
-        str += "Població: "+poblacio;
+        str += "Població: "+poblacio+"\n";
         return str;
     }
 }
