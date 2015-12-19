@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,6 +10,7 @@ package Model;
  * @author atorraag7.alumnes
  */
 public abstract class Usuari {
+    protected String id;
     protected String DNI;
     protected String userName;
     protected String password;
@@ -91,6 +92,9 @@ public abstract class Usuari {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public String getEstat() {
+        return null;
+    }
 
 
 }

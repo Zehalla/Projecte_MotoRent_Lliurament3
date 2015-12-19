@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -40,7 +40,7 @@ public class MotoRent {
     -----------------------------------------------------------------*/
     public void guardarLocal(String idLocal, int capacitat, Direccio direccioLocal, String idGestor){
         Gerent gestor = (Gerent) buscarUsuari(idGestor);
-        llistaLocals.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), null, gestor));
+        llistaLocals.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), gestor));
     }
     
     public void guardarMoto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
@@ -79,8 +79,8 @@ public class MotoRent {
         comprovarEstatsMotos();
         comprovarEstatsClients();
         comprovarLocalsAGestionar();
-        mostrarDades();
-        mostrarTotesLesMotos();
+        mostrarDades(); //Metodes per a testeig.
+        mostrarTotesLesMotos(); //Metodes per a testeig.
     }
     
     private void comprovarReservesClients(){
@@ -206,7 +206,7 @@ public class MotoRent {
                 if (llistaUsuaris.get(i).getTipus().equals("Client")) {
                     Client clientActual = (Client) llistaUsuaris.get(i);
                     Consola.escriu(clientActual.toString());
-                    clientActual.obtenirDataInicialReserva(Integer.parseInt(mes));
+                    clientActual.obtenirReservesClient(Integer.parseInt(mes));
                 }
             }
         }else{
@@ -216,11 +216,7 @@ public class MotoRent {
     }
     
     private boolean comprovarDataCorrecte(String mes) {
-        if (Consola.llegeixDataSistema().getMonth() >= Integer.parseInt(mes)){
-            return true;
-        }else{
-            return false;
-        }
+        return Integer.parseInt(new Data().getMes()) >= Integer.parseInt(mes);
     }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
@@ -239,6 +235,7 @@ public class MotoRent {
         int i = 0;
         
         tipus = "NoTrobat";
+        
         Consola.escriu("Introdueixi el seu nom d'usuari: ");
         myUserName = Consola.llegeixString();
         Consola.escriu("Introdueixi la seva contrasenya: ");
@@ -254,11 +251,16 @@ public class MotoRent {
         }
         if (trobat){
             tipus = usuariLogat.getTipus();
-            return tipus;
+            if (tipus.equalsIgnoreCase("CLIENT")){
+                if("Desactivat".equalsIgnoreCase(usuariLogat.getEstat())){
+                    Consola.escriu("Voste es troba desactivat per haver comes 3 faltes en menys d'un any.\n");
+                    tipus = "Desactivat";
+                }
+            }
         }else{
             Consola.escriu("El nom d'usuari o la contrasenya son incorrectes\n");
-            return tipus;
         }
+        return tipus;
     }
     
     /**
@@ -426,7 +428,6 @@ public class MotoRent {
             clientReserva.afegirReserva(r);
 
             Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
-        }else{
         }
     }
    
