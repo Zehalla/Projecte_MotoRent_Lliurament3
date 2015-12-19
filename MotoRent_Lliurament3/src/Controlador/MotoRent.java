@@ -206,7 +206,7 @@ public class MotoRent {
                 if (llistaUsuaris.get(i).getTipus().equals("Client")) {
                     Client clientActual = (Client) llistaUsuaris.get(i);
                     Consola.escriu(clientActual.toString());
-                    clientActual.obtenirDataInicialReserva(Integer.parseInt(mes));
+                    clientActual.obtenirReservesClient(Integer.parseInt(mes));
                 }
             }
         }else{
