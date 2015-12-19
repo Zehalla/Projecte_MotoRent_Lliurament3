@@ -5,6 +5,8 @@
  */
 package Model;
 
+import Vista.Consola;
+
 /**
  *
  * @author atorraag7.alumnes
@@ -50,5 +52,43 @@ public class Gerent extends Usuari{
 	str += "Password: " + password + "\n";
         str += "Local a gestionar: \n"+ localAGestionar.toString() +"\n";
         return str;
+    }
+    
+    @Override
+    public String gestionarLocal(){
+            String accio;
+            Consola.escriu(localAGestionar.toString());
+            accio = localAGestionar.gestionarLocal();
+            return accio;
+    }
+    @Override
+    public int demanarNombreMotosAImportar(){
+        return localAGestionar.demanarNombreMotosAImportar();
+    }
+    @Override
+    public int demanarNombreMotosAExportar(){
+        return localAGestionar.demanarNombreMotosAExportar();
+    }
+    
+    @Override
+    public Moto getMotoDisponible(){
+        return localAGestionar.getMotoDisponible();
+    }
+    
+    @Override
+    public void importarMoto(Moto moto){
+        localAGestionar.infoMotoImportada(moto);
+        localAGestionar.afegirMoto(moto);
+    }
+    
+    @Override
+    public void exportarMoto(Moto moto){
+        localAGestionar.infoMotoExportada(moto);
+        localAGestionar.eliminarMoto(moto);
+    }
+    
+    @Override
+    public int getNMotosDisp(){
+        return localAGestionar.getNMotosDisp();
     }
 }

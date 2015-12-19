@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -481,6 +481,122 @@ public class MotoRent {
             String[] aux = diaComplet.split("/");
             String[] aux2 = horaCompleta.split(":");
             return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
+    }
+
+    public void gestionarLocal() {
+        String accio;
+        int nombreMotos;
+        accio = usuariLogat.gestionarLocal();
+        switch(accio){
+            case("Importar"):
+                nombreMotos = usuariLogat.demanarNombreMotosAImportar();
+                importarMotos(nombreMotos);
+                break;
+            case("Exportar"):
+                nombreMotos = usuariLogat.demanarNombreMotosAExportar();
+                if(nombreMotos >0){
+                    exportarMotos(nombreMotos);
+                }
+                break;
+        }
+    }
+
+    private void importarMotos(int motosAImportar) {
+        Local localPerImportar;
+        Moto motoImportar;
+        int i, nombreMotos;
+        boolean control = true;
+        i = 0;
+        localPerImportar = getLocalAmbMesMotosDisponibles();
+        if (localPerImportar != null){
+            localPerImportar.mostrarInfoImportacio(motosAImportar);
+            while (i < motosAImportar && control){
+                nombreMotos = localPerImportar.getNMotosDisp();
+                if (nombreMotos > 0){
+                    motoImportar = localPerImportar.getMotoDisponible();
+                    localPerImportar.eliminarMoto(motoImportar);
+                    usuariLogat.importarMoto(motoImportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAImportar){
+                Consola.escriu("Error. Nomes s'han pogut importar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAImportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La importacio s'ha completat amb exit.\n");
+            }
+        }else{
+            Consola.escriu("No hi ha locals per a importar motos.\n");
+        }
+        
+    }
+
+    private void exportarMotos(int motosAExportar) {
+        Local localPerExportar;
+        Moto motoExportar;
+        int i, nombreMotos;
+        boolean control = true;
+        i = 0;
+        localPerExportar = getLocalAmbMesCapacitatDisponible();
+        if (localPerExportar != null){
+            localPerExportar.mostrarInfoExportacio(motosAExportar);
+            while (i < motosAExportar && control){
+                nombreMotos = usuariLogat.getNMotosDisp();
+                if (nombreMotos > 0){
+                    motoExportar = usuariLogat.getMotoDisponible();
+                    usuariLogat.exportarMoto(motoExportar);
+                    localPerExportar.afegirMoto(motoExportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAExportar){
+                Consola.escriu("Error. Nomes s'han pogut exportar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAExportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La exportacio s'ha completat amb exit.\n");
+            }
+        }else{
+            Consola.escriu("No hi ha locals per exportar.\n");
+        }
+    }
+
+    private Local getLocalAmbMesMotosDisponibles() {
+        int nombreMotosDisponibles, comparador;
+        Local localPerImportar = null;
+        comparador = 0;
+        for(Local loci : llistaLocals){
+            nombreMotosDisponibles = loci.getNMotosDisp();
+            nombreMotosDisponibles = loci.calcMotosImportables(nombreMotosDisponibles);
+            if (nombreMotosDisponibles > comparador){
+                comparador = nombreMotosDisponibles;
+                localPerImportar = loci;
+            }
+        }
+        return localPerImportar;
+    }
+
+    private Local getLocalAmbMesCapacitatDisponible() {
+        int capacitatDisponible, comparador;
+        Local localPerExportar = null;
+        comparador = 0;
+        for(Local loci: llistaLocals){
+            capacitatDisponible = loci.getCapacitatDisponible();
+            if (capacitatDisponible > comparador){
+                comparador = capacitatDisponible;
+                localPerExportar = loci;
+            }
+        }
+        return localPerExportar;
     }
 
     
