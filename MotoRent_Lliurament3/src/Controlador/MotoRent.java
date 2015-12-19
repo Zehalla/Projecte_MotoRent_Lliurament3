@@ -235,6 +235,7 @@ public class MotoRent {
         int i = 0;
         
         tipus = "NoTrobat";
+        
         Consola.escriu("Introdueixi el seu nom d'usuari: ");
         myUserName = Consola.llegeixString();
         Consola.escriu("Introdueixi la seva contrasenya: ");

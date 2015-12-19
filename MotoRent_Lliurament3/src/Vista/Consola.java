@@ -51,7 +51,7 @@ public class Consola extends DefaultHandler{
     }
     
     
-    public String mostrarMenu(String[] menu){
+    private String mostrarMenu(String[] menu){
         int i;
         String str = "\n";
         for (i = 0; i<menu.length; i++){
