@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -68,7 +68,7 @@ public class Reserva {
         return Integer.parseInt(this.dataInicial.getMes());
         
     }
-    
+
     public void generarInformeReserva(){
         Consola.escriu(this.toString());
     }
@@ -102,6 +102,9 @@ public class Reserva {
         int hores;
         hores = this.dataFinal.calcularDiferencia(dataInicial);
         this.preu = (hores/24)*15 + hores%24;
+        if (this.clientReserva.getVip()){
+           this.preu = (float) (this.preu*0.9);
+        }
         Consola.escriu("La reserva te un preu de: ");
         Consola.escriu(this.preu);
         Consola.escriu("€.\n");

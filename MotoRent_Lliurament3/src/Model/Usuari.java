@@ -12,6 +12,7 @@ import Vista.Consola;
  * @author atorraag7.alumnes
  */
 public abstract class Usuari {
+    protected String id;
     protected String DNI;
     protected String userName;
     protected String password;
@@ -63,6 +64,10 @@ public abstract class Usuari {
      */
     public boolean checkPassword(String newPassword) {
         return newPassword.equals(this.password);
+    }
+
+    public String getEstat() {
+        return null;
     }
 
 

@@ -10,7 +10,6 @@ package Model;
  * @author atorraag7.alumnes
  */
 public class Gerent extends Usuari{
-    private final String idEmpresa;
     private Local localAGestionar;
 
     public Gerent(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
@@ -19,7 +18,7 @@ public class Gerent extends Usuari{
         this.cognom2 = cognom2;
         this.userName = userName;
         this.password = password;
-        this.idEmpresa = idEmpresa;
+        this.id = idEmpresa;
         this.localAGestionar = null;
     }
     
@@ -30,7 +29,7 @@ public class Gerent extends Usuari{
     
     @Override
     public String getId(){
-        return idEmpresa;
+        return id;
     }
     
     @Override
@@ -43,7 +42,7 @@ public class Gerent extends Usuari{
     @Override
     public String toString(){
         String str;
-        str = "\nGestor ID: " + idEmpresa + "\n";
+        str = "\nGestor ID: " + this.id + "\n";
 	str += "-----------------\n";
 	str +="Nom: " + nom + "\n";
         str += "Cognom: "+cognom1+"\n";

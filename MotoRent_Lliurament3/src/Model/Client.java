@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * @author atorraag7.alumnes
  */
 public class Client extends Usuari{
-    private String idClient;
     private boolean vip;
     private final float descompteVip = 0.10f;
     private int faltes;
@@ -31,7 +30,7 @@ public class Client extends Usuari{
     }
     
     public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
-        this.idClient = idClient;
+        this.id = idClient;
         this.nom = nom;
         this.cognom1 = cognom1;
         this.cognom2 = cognom2;
@@ -44,15 +43,10 @@ public class Client extends Usuari{
         this.dataRegistre = dataRegistre;
         this.estatClient = estatClient;
     }
-   
     
-    
+    @Override
     public String getId(){
-        return idClient;
-    }
-    
-    public void afegirFalta(){
-        this.faltes += 1;
+        return id;
     }
     
     @Override
@@ -60,6 +54,15 @@ public class Client extends Usuari{
         return "Client";
     }
     
+    public boolean getVip(){
+        return this.vip;
+    }
+    
+    public void afegirFalta(){
+        this.faltes += 1;
+    }
+    
+    @Override
     public String getEstat(){
         if(this.estatClient instanceof EstatClientAmbReserva){
             return "Amb Reserva";
@@ -154,11 +157,7 @@ public class Client extends Usuari{
         }
         return str;
     }
-    
-    public String getIdClient(){
-        return idClient;
-    }
-    
+
     public int getFaltes(){
         return faltes;
     }
@@ -166,7 +165,7 @@ public class Client extends Usuari{
     @Override
     public String toString(){
         String str;
-        str = "\nClient ID: " + idClient + "\n";
+        str = "\nClient ID: " + this.id + "\n";
 	str += "-----------------\n";
 	str += "Nom: " + nom + "\n";
         str += "Cognom: "+cognom1+ "\n";

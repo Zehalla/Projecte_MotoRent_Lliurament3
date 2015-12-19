@@ -10,7 +10,6 @@ package Model;
  * @author atorraag7.alumnes
  */
 public class Administrador extends Usuari{
-    private final String idEmpresa;
 
     public Administrador(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;
@@ -18,7 +17,7 @@ public class Administrador extends Usuari{
         this.cognom2 = cognom2;
         this.userName = userName;
         this.password = password;
-        this.idEmpresa = idEmpresa;
+        this.id = idEmpresa;
     }
     
     @Override
@@ -28,7 +27,7 @@ public class Administrador extends Usuari{
     
     @Override
     public String getId(){
-        return idEmpresa;
+        return id;
     }
     
     @Override
