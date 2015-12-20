@@ -57,11 +57,14 @@ public class Local {
 
     public String mostrarMotosDisponibles() {
         String tipus, str = "";
+        int i = 0;
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
+            i++;
             Moto m = (Moto) itr.next();
             tipus = m.getEstat();
             if("Disponible".equalsIgnoreCase(tipus)){
+                str += Integer.toString(i) + ": ";
                 str += m.toString();
             } else {
             }
