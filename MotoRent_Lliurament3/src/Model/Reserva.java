@@ -102,16 +102,11 @@ public class Reserva {
 
     public void calcularPreu() {
         int hores;
-        hores = this.dataFinal.calcularDiferencia(dataInicial);
+        hores = dataFinal.calcularDiferencia(dataInicial);
         this.preu = (hores/24)*15 + hores%24;
-        Consola.escriu("La reserva te un preu de: ");
-        Consola.escriu(this.preu);
-        Consola.escriu("€.\n");
-        Consola.escriu("Duracio de la reserva: ");
-        Consola.escriu(hores/24);
-        Consola.escriu(" dia/es i ");
-        Consola.escriu(hores%24);
-        Consola.escriu(" hora/es.\n");
+        if (clientReserva.isVip()){
+           this.preu = (float) (this.preu*0.9);
+        }
     }
     
     public void cobrarReserva() {

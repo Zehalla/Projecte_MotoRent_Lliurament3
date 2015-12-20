@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Vista.Consola;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +41,16 @@ public class Data{
         this.minut = minut;
         this.segon = segon;
     } 
+    
+    public Data(String dataS){
+        String[] sliced = dataS.split("/");
+        this.any = sliced[3];
+        this.mes = sliced[2];
+        this.dia = sliced[1];
+        this.hora = sliced[0];
+    } 
+    
+    
     
     private Data dateToData(Date dt){
         String format = df.format(dt);

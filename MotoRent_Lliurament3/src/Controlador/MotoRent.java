@@ -317,117 +317,113 @@ public class MotoRent {
         Local localInici;
         Local localFinal;
         Moto moto = null;
-        Date dataInicial = null;
-        Date dataFinal = null;
+        Data dataInicial = null;
+        Data dataFinal = null;
         Reserva r;
         ArrayList<Local> auxiliar;
         
-        if (comprovacionsInicials()){
-            
-                //------------------LOCAL DE INICI------------------
-            auxiliar = crearLlistaAuxiliarLocalsInicials();
-            
-            imprimirLlista(auxiliar);
-            
-            while (!correcte){
-                Consola.escriu("\nSelecciona el local de sortida: ");
-                idLocalInici = Consola.llegeixInt();
-                if (idLocalInici > 0 && idLocalInici <= auxiliar.size()) {
-                    correcte = true;
-                } else {
-                    Consola.escriu("Escriu el valor un altre cop.\n");
-                }
-            }
-            localInici = auxiliar.get(idLocalInici - 1);
-            //------------------MOTO------------------
-            Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
-            Consola.escriu(localInici.mostrarMotosDisponibles());
-            correcte = false;
-            while (!correcte) {
-                Consola.escriu("\nSelecciona una moto (id): ");
-                moto = buscarMoto(Consola.llegeixString());
-                if (moto != null) {
-                    correcte = true;
-                } else {
-                    Consola.escriu("Escriu el valor un altre cop.\n");
-                }
-            }
-            //------------------LOCAL DE DESTI------------------
-            auxiliar = crearLlistaAuxiliarLocalsFinals();
-            
-            imprimirLlista(auxiliar);
-            
-            correcte = false;
-            while (!correcte) {
-                Consola.escriu("\nSelecciona el local de desti: ");
-                idLocalFinal = Consola.llegeixInt();
-                if (idLocalFinal > 0 && idLocalFinal <= auxiliar.size()) {
-                    correcte = true;
-                } else {
-                    Consola.escriu("Escriu el valor un altre cop.");
-                }
-            }
-            localFinal = auxiliar.get(idLocalFinal - 1);
-            //------------------DATES------------------
-            correcte = false;
-            while (!correcte) {
-                Consola.escriu("Selecciona la data de sortida (dd/mm/aaaa): ");
-                dataIniciS = Consola.llegeixString();
-                Consola.escriu("Selecciona la hora de sortida (hh:mm:ss): ");
-                horaIniciS = Consola.llegeixString();
-
-                Consola.escriu("Selecciona la data de desti (dd/mm/aaaa): ");
-                dataFinalS = Consola.llegeixString();
-                Consola.escriu("Selecciona la hora d'arrivada (hh:mm:ss): ");
-                horaFinalS = Consola.llegeixString();
-                try {
-                    dataInicial = crearData(dataIniciS, horaIniciS).dataToDate();
-                    dataFinal = crearData(dataFinalS, horaFinalS).dataToDate();
-                } catch (ParseException ex) {
-                    Consola.escriu("El format de les dades no és el correcte.");
-                }
-
-                if (dataInicial.after(dataFinal)) {
-                    Consola.escriu("Les dades introduides no son correctes: la data final es inferior o igual a la data inicial.\n");
-                } else {
-                    correcte = true;
-                }
-            }
-
-            Data dInicial = crearData(dataIniciS, horaIniciS);
-            Data dFinal = crearData(dataFinalS, horaFinalS);
-
-            //------------------CONFIRMACIO------------------
-            correcte = false;
-            while (!correcte) {
-                Consola.escriu("Vols confirmar la reserva amb aquestes dates?(Y/N) ");
-                opcio = Consola.llegeixString();
-                switch (opcio) {
-                    case "N":
-                        return;
-                    case "Y":
-                        correcte = true;
-                        break;
-                    default:
-                        Consola.escriu("Escriu la resposta un altre cop.");
-                        break;
-                }
-            }
-
-            //------------------CREACIO DE RESERVA------------------
-            moto.setEstat("reservada");
-            localInici.eliminarMoto(moto);
-            localInici.afegirMoto(moto);
-            Client clientReserva = (Client) usuariLogat;
-            lastIDreserva ++;
-            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dInicial, dFinal, localInici, localFinal, clientReserva, moto);
-            r.calcularPreu();
-            llistaReserves.add(r);
-            clientReserva.afegirReserva(r);
-
-            Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
-        }else{
+        if (!comprovacionsInicials()){
+            return;
         }
+        //------------------LOCAL DE INICI------------------
+        auxiliar = crearLlistaAuxiliarLocalsInicials();
+           
+        imprimirLlistaLocals(auxiliar);
+            
+        while (!correcte){
+            Consola.escriu("\nSelecciona el local de sortida: ");
+            idLocalInici = Consola.llegeixInt();
+            if (idLocalInici > 0 && idLocalInici <= auxiliar.size()) {
+                correcte = true;
+            } else {
+                Consola.escriu("Escriu el valor un altre cop.\n");
+            }
+        }
+        localInici = auxiliar.get(idLocalInici - 1);
+        //------------------MOTO------------------
+        Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
+        Consola.escriu(localInici.mostrarMotosDisponibles());
+        int num = localInici.getNMotosDisp();
+        int idMoto = 0;
+        correcte = false;
+        while (!correcte) {
+            Consola.escriu("\nSelecciona una moto: ");
+            idMoto = Consola.llegeixInt();
+            if (idMoto > 0 && idMoto <= num) {
+                correcte = true;
+            } else {
+                Consola.escriu("Escriu el valor un altre cop.\n");
+            }
+        }
+        moto = localInici.getMoto(idMoto-1);
+        //------------------LOCAL DE DESTI------------------
+        auxiliar = crearLlistaAuxiliarLocalsFinals();
+         
+        imprimirLlistaLocals(auxiliar);
+            
+        correcte = false;
+        while (!correcte) {
+            Consola.escriu("\nSelecciona el local de desti: ");
+            idLocalFinal = Consola.llegeixInt();
+            if (idLocalFinal > 0 && idLocalFinal <= auxiliar.size()) {
+                correcte = true;
+            } else {
+                Consola.escriu("Escriu el valor un altre cop.");
+            }
+        }
+        localFinal = auxiliar.get(idLocalFinal - 1);
+        //------------------DATES------------------
+        correcte = false;
+        while (!correcte) {
+            Consola.escriu("Selecciona la data de sortida (hh/dd/mm/aaaa): ");
+            dataIniciS = Consola.llegeixString();
+
+            Consola.escriu("Selecciona la data de desti (hh/dd/mm/aaaa): ");
+            dataFinalS = Consola.llegeixString();
+            
+            dataInicial = new Data(dataIniciS);
+            dataFinal = new Data(dataFinalS);
+
+            
+            if (dataInicial.compara(dataFinal) > 1) {
+                Consola.escriu("Les dades introduides no son correctes: la data final es inferior o igual a la data inicial.\n");
+            } else {
+                correcte = true;
+            }
+        }
+
+        //------------------CONFIRMACIO------------------
+        correcte = false;
+        while (!correcte) {
+            Consola.escriu("Vols confirmar la reserva amb aquestes dates?(Y/N): ");
+            opcio = Consola.llegeixString();
+            switch (opcio) {
+                case "N":
+                    return;
+                case "Y":
+                    correcte = true;
+                    break;
+                default:
+                    Consola.escriu("Escriu la resposta un altre cop.");
+                    break;
+            }
+        }
+
+        //------------------CREACIO DE RESERVA------------------
+        moto.setEstat("reservada");
+        localInici.afegirMoto(moto);
+        Client clientReserva = (Client) usuariLogat;
+        lastIDreserva ++;
+        r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicial, dataFinal, localInici, localFinal, clientReserva, moto);
+        r.calcularPreu();
+        Consola.escriu("La reserva te un preu de: ");
+        Consola.escriu(r.getPreu());
+        Consola.escriu("€.\n");
+        llistaReserves.add(r);
+        clientReserva.afegirReserva(r);
+
+        Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
+        
     }
    
     private boolean comprovacionsInicials(){
@@ -446,12 +442,13 @@ public class MotoRent {
     private ArrayList crearLlistaAuxiliarLocalsInicials(){
         Iterator itr = llistaLocal.iterator();
         ArrayList <Local> auxiliar = new ArrayList<>();
-            while (itr.hasNext()) {
-                Local l = (Local) itr.next();
-                if (l.getNMotosDisp() > 0) {
-                    auxiliar.add(l);
-                }
+        
+        while (itr.hasNext()) {
+            Local l = (Local) itr.next();
+            if (l.getNMotosDisp() > 0) {
+                auxiliar.add(l);
             }
+        }
         return auxiliar;
     }
     
@@ -467,20 +464,14 @@ public class MotoRent {
         return auxiliar;
     }
     
-    private void imprimirLlista(ArrayList<Local> llista){
-        int k;
+    private void imprimirLlistaLocals(ArrayList<Local> llista){
         Consola.escriu("\nLlistat de Locals Disponibles: \n");
-        for (k = 0; k < llista.size(); k++) {
+        for (int k = 0; k < llista.size(); k++) {
             Consola.escriu("\nLocal n" + (k + 1) + ": ");
             Consola.escriu(llista.get(k).mostrarDadesLocal() + "\n");
         }
     }
     
-    private Data crearData(String diaComplet, String horaCompleta){
-            String[] aux = diaComplet.split("/");
-            String[] aux2 = horaCompleta.split(":");
-            return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
-    }
 
     public void tornarMoto(){
         boolean correcte = false;
