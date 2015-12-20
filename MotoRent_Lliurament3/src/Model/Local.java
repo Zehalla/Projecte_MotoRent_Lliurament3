@@ -5,7 +5,6 @@
  */
 package Model;
 
-import Controlador.MotoRent;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;

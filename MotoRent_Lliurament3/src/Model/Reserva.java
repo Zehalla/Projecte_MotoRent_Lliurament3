@@ -1,4 +1,4 @@
-﻿/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -40,10 +40,6 @@ public class Reserva {
     
     public String getId(){
         return id;
-    }
-    
-    public String getMesReserva(){
-        return dataInicial.getMes();
     }
     
     public float getPreu(){
@@ -119,6 +115,7 @@ public class Reserva {
         Consola.escriu(" dia/es i ");
         Consola.escriu(hores%24);
         Consola.escriu(" hora/es.\n");
+    }
     
     public void cobrarReserva() {
         float diferencia;
@@ -139,7 +136,6 @@ public class Reserva {
         String opcio;
         boolean error = true;
         float reparacio;
-        boolean desactivar;
         
         while(error){
             Consola.escriu("Mostra la moto cap averia? (Y/N)");
