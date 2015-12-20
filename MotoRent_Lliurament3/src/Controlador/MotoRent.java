@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -20,7 +20,7 @@ import java.util.Random;
  * @author atorraag7.alumnes dkjfla
  */
 public class MotoRent {
-    private final ArrayList<Local> llistaLocal;
+    private final ArrayList<Local> llistaLocals;
     private final ArrayList<Usuari> llistaUsuaris;
     private final ArrayList<Reserva> llistaReserves;
     private Usuari usuariLogat;
@@ -31,7 +31,7 @@ public class MotoRent {
      */
     public MotoRent() {
         this.lastIDreserva = 3;
-        this.llistaLocal = new ArrayList<>();
+        this.llistaLocals = new ArrayList<>();
         this.llistaUsuaris = new ArrayList<>();
         this.llistaReserves = new ArrayList<>();
     }
@@ -40,11 +40,11 @@ public class MotoRent {
     -----------------------------------------------------------------*/
     public void guardarLocal(String idLocal, int capacitat, Direccio direccioLocal, String idGestor){
         Gerent gestor = (Gerent) buscarUsuari(idGestor);
-        llistaLocal.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), null, gestor));
+        llistaLocals.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), gestor));
     }
     
     public void guardarMoto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
-        llistaLocal.get(llistaLocal.size()-1).afegirMoto(new Moto(idMoto, matricula, model, color, estatMoto));
+        llistaLocals.get(llistaLocals.size()-1).afegirMoto(new Moto(idMoto, matricula, model, color, estatMoto));
     }
     
     public void guardarReserva(String id, String idClient, String idMoto, String cost, String falta, String local_inici, String local_fi, Data dataInicial, Data dataFinal){
@@ -79,8 +79,8 @@ public class MotoRent {
         comprovarEstatsMotos();
         comprovarEstatsClients();
         comprovarLocalsAGestionar();
-        mostrarDades();
-        mostrarTotesLesMotos();
+        mostrarDades(); //Metodes per a testeig.
+        mostrarTotesLesMotos(); //Metodes per a testeig.
     }
     
     private void comprovarReservesClients(){
@@ -121,17 +121,17 @@ public class MotoRent {
     
     private void comprovarLocalsAGestionar(){
         int i;
-        for (i = 0; i < llistaLocal.size(); i++){
-            buscarUsuari(llistaLocal.get(i).getGestor().getId()).setLocalAGestionar(llistaLocal.get(i));
+        for (i = 0; i < llistaLocals.size(); i++){
+            buscarUsuari(llistaLocals.get(i).getGestor().getId()).setLocalAGestionar(llistaLocals.get(i));
         }
     }
     
     private Moto buscarMoto(String idMoto){
         int i, j;
-        for (i = 0; i < llistaLocal.size(); i++){
-            for (j = 0; j < llistaLocal.get(i).getNumeroMotosActual(); j++){
-                if (llistaLocal.get(i).getMoto(j).getIdMoto().equals(idMoto)){
-                    return llistaLocal.get(i).getMoto(j);
+        for (i = 0; i < llistaLocals.size(); i++){
+            for (j = 0; j < llistaLocals.get(i).getNumeroMotosActual(); j++){
+                if (llistaLocals.get(i).getMoto(j).getIdMoto().equals(idMoto)){
+                    return llistaLocals.get(i).getMoto(j);
                 }
             }
         }
@@ -150,9 +150,9 @@ public class MotoRent {
     
     private Local buscarLocal(String idLocal){
         int i;
-        for (i = 0; i < llistaLocal.size(); i++){
-            if (llistaLocal.get(i).getIdLocal().equals(idLocal)){
-                return llistaLocal.get(i);
+        for (i = 0; i < llistaLocals.size(); i++){
+            if (llistaLocals.get(i).getIdLocal().equals(idLocal)){
+                return llistaLocals.get(i);
             }
         }
         return null;
@@ -165,10 +165,10 @@ public class MotoRent {
             Consola.escriu(llistaUsuaris.get(i).toString());
         }
         Consola.escriu("\n\nLOCALS\n\n");
-        for (i=0;i<llistaLocal.size();i++){
-            Consola.escriu(llistaLocal.get(i).toString());
+        for (i=0;i<llistaLocals.size();i++){
+            Consola.escriu(llistaLocals.get(i).toString());
             Consola.escriu("\n\nMOTOS DEL LOCAL\n\n");
-            Consola.escriu(llistaLocal.get(i).mostrarMotos());
+            Consola.escriu(llistaLocals.get(i).mostrarMotos());
         }
         Consola.escriu("\n\nRESERVES\n\n");
         for (i=0;i<llistaReserves.size();i++){
@@ -192,8 +192,8 @@ public class MotoRent {
     public void mostrarTotesLesMotos(){
         int i;
         Consola.escriu("\nLLISTAT DE TOTES LES MOTOS:\n");
-        for (i = 0; i < llistaLocal.size(); i++){
-            llistaLocal.get(i).obtenirMotosLocal();
+        for (i = 0; i < llistaLocals.size(); i++){
+            llistaLocals.get(i).obtenirMotosLocal();
         }
     }
     
@@ -206,7 +206,7 @@ public class MotoRent {
                 if (llistaUsuaris.get(i).getTipus().equals("Client")) {
                     Client clientActual = (Client) llistaUsuaris.get(i);
                     Consola.escriu(clientActual.toString());
-                    clientActual.obtenirDataInicialReserva(Integer.parseInt(mes));
+                    clientActual.obtenirReservesClient(Integer.parseInt(mes));
                 }
             }
         }else{
@@ -216,11 +216,7 @@ public class MotoRent {
     }
     
     private boolean comprovarDataCorrecte(String mes) {
-        if (Consola.llegeixDataSistema().getMonth() >= Integer.parseInt(mes)){
-            return true;
-        }else{
-            return false;
-        }
+        return Integer.parseInt(new Data().getMes()) >= Integer.parseInt(mes);
     }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
@@ -239,6 +235,7 @@ public class MotoRent {
         int i = 0;
         
         tipus = "NoTrobat";
+        
         Consola.escriu("Introdueixi el seu nom d'usuari: ");
         myUserName = Consola.llegeixString();
         Consola.escriu("Introdueixi la seva contrasenya: ");
@@ -254,11 +251,16 @@ public class MotoRent {
         }
         if (trobat){
             tipus = usuariLogat.getTipus();
-            return tipus;
+            if (tipus.equalsIgnoreCase("CLIENT")){
+                if("Desactivat".equalsIgnoreCase(usuariLogat.getEstat())){
+                    Consola.escriu("Voste es troba desactivat per haver comes 3 faltes en menys d'un any.\n");
+                    tipus = "Desactivat";
+                }
+            }
         }else{
             Consola.escriu("El nom d'usuari o la contrasenya son incorrectes\n");
-            return tipus;
         }
+        return tipus;
     }
     
     /**
@@ -440,7 +442,7 @@ public class MotoRent {
     }
     
     private ArrayList crearLlistaAuxiliarLocalsInicials(){
-        Iterator itr = llistaLocal.iterator();
+        Iterator itr = llistaLocals.iterator();
         ArrayList <Local> auxiliar = new ArrayList<>();
         
         while (itr.hasNext()) {
@@ -453,7 +455,7 @@ public class MotoRent {
     }
     
     private ArrayList crearLlistaAuxiliarLocalsFinals(){
-        Iterator itr2 = llistaLocal.iterator();
+        Iterator itr2 = llistaLocals.iterator();
         ArrayList<Local> auxiliar = new ArrayList <>();
         while (itr2.hasNext()) {
             Local l = (Local) itr2.next();
@@ -498,6 +500,123 @@ public class MotoRent {
             }
         }
     }
+
+    public void gestionarLocal() {
+        String accio;
+        int nombreMotos;
+        accio = usuariLogat.gestionarLocal();
+        switch(accio){
+            case("Importar"):
+                nombreMotos = usuariLogat.demanarNombreMotosAImportar();
+                importarMotos(nombreMotos);
+                break;
+            case("Exportar"):
+                nombreMotos = usuariLogat.demanarNombreMotosAExportar();
+                if(nombreMotos >0){
+                    exportarMotos(nombreMotos);
+                }
+                break;
+        }
+    }
+
+    private void importarMotos(int motosAImportar) {
+        Local localPerImportar;
+        Moto motoImportar;
+        int i, nombreMotos;
+        boolean control = true;
+        i = 0;
+        localPerImportar = getLocalAmbMesMotosDisponibles();
+        if (localPerImportar != null){
+            localPerImportar.mostrarInfoImportacio(motosAImportar);
+            while (i < motosAImportar && control){
+                nombreMotos = localPerImportar.getNMotosDisp();
+                if (nombreMotos > 0){
+                    motoImportar = localPerImportar.getMotoDisponible();
+                    localPerImportar.eliminarMoto(motoImportar);
+                    usuariLogat.importarMoto(motoImportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAImportar){
+                Consola.escriu("Error. Nomes s'han pogut importar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAImportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La importacio s'ha completat amb exit.\n");
+            }
+        }else{
+            Consola.escriu("No hi ha locals per a importar motos.\n");
+        }
+        
+    }
+
+    private void exportarMotos(int motosAExportar) {
+        Local localPerExportar;
+        Moto motoExportar;
+        int i, nombreMotos;
+        boolean control = true;
+        i = 0;
+        localPerExportar = getLocalAmbMesCapacitatDisponible();
+        if (localPerExportar != null){
+            localPerExportar.mostrarInfoExportacio(motosAExportar);
+            while (i < motosAExportar && control){
+                nombreMotos = usuariLogat.getNMotosDisp();
+                if (nombreMotos > 0){
+                    motoExportar = usuariLogat.getMotoDisponible();
+                    usuariLogat.exportarMoto(motoExportar);
+                    localPerExportar.afegirMoto(motoExportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAExportar){
+                Consola.escriu("Error. Nomes s'han pogut exportar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAExportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La exportacio s'ha completat amb exit.\n");
+            }
+        }else{
+            Consola.escriu("No hi ha locals per exportar.\n");
+        }
+    }
+
+    private Local getLocalAmbMesMotosDisponibles() {
+        int nombreMotosDisponibles, comparador;
+        Local localPerImportar = null;
+        comparador = 0;
+        for(Local loci : llistaLocals){
+            nombreMotosDisponibles = loci.getNMotosDisp();
+            nombreMotosDisponibles = loci.calcMotosImportables(nombreMotosDisponibles);
+            if (nombreMotosDisponibles > comparador){
+                comparador = nombreMotosDisponibles;
+                localPerImportar = loci;
+            }
+        }
+        return localPerImportar;
+    }
+
+    private Local getLocalAmbMesCapacitatDisponible() {
+        int capacitatDisponible, comparador;
+        Local localPerExportar = null;
+        comparador = 0;
+        for(Local loci: llistaLocals){
+            capacitatDisponible = loci.getCapacitatDisponible();
+            if (capacitatDisponible > comparador){
+                comparador = capacitatDisponible;
+                localPerExportar = loci;
+            }
+        }
+        return localPerExportar;
+    }
+
     
     public void lliurarMotoAClient(){
         String idReserva;

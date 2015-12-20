@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * @author atorraag7.alumnes
  */
 public class Client extends Usuari{
-    private String idClient;
     private boolean vip;
     private final float descompteVip = 0.10f;
     private int faltes;
@@ -31,7 +30,7 @@ public class Client extends Usuari{
     }
     
     public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
-        this.idClient = idClient;
+        this.id = idClient;
         this.nom = nom;
         this.cognom1 = cognom1;
         this.cognom2 = cognom2;
@@ -44,29 +43,19 @@ public class Client extends Usuari{
         this.dataRegistre = dataRegistre;
         this.estatClient = estatClient;
     }
-   
-    public String generarInformeClient(String mes){
-        int i, numReserves = 0;
-        String str = this.toString();
-        float cost = 0;
-        for (i = 0; i < listReserva.size(); i++){
-            if (listReserva.get(i).getMesReserva().equals(mes)){
-                numReserves++;
-                str += listReserva.get(i).toString();
-                //str += "Local Inicial de reserva:\n";
-                //str += listReserva.get(i).getLocalInicial();
-                // Falta imprimir per pantalla el local inicial, el final i si la moto està en bones o males condicions.
-                cost += listReserva.get(i).getPreu();
-            }
-        }
-        str += "\nEl número de reserves és de "+numReserves+"\n";
-        str += "El total a facturar és de "+cost+ "€.\n";
-        return str;
+    
+    @Override
+    public String getId(){
+        return id;
     }
     
+    @Override
+    public String getTipus() {
+        return "Client";
+    }
     
-    public String getId(){
-        return idClient;
+    public boolean getVip(){
+        return this.vip;
     }
     
     public void afegirFalta(){
@@ -81,10 +70,6 @@ public class Client extends Usuari{
     }
     
     @Override
-    public String getTipus() {
-        return "Client";
-    }
-    
     public String getEstat(){
         if(this.estatClient instanceof EstatClientAmbReserva){
             return "Amb Reserva";
@@ -110,17 +95,16 @@ public class Client extends Usuari{
         }
     }
     
-    public void obtenirDataInicialReserva(int mes){
-        int mesReservaActual, i, numReserves = 0;
+    public void obtenirReservesClient(int mes){
+        int i, numReserves = 0, mesReservaActual;
         float total = 0;
         for (i = 0; i < listReserva.size(); i++){
-            mesReservaActual = Integer.parseInt(listReserva.get(i).getMesReserva());
+            mesReservaActual = listReserva.get(i).obtenirDataIniciReserva();
             if (mes == mesReservaActual){
                 numReserves++;
                 listReserva.get(i).generarInformeReserva();
                 total += listReserva.get(i).getPreu() + listReserva.get(i).getPenalitzacio();
-            } 
-            
+        } 
         }
         if (numReserves != 0){
             Consola.escriu("\nEl numero de reserves és de: "+numReserves+"\n");
@@ -180,11 +164,7 @@ public class Client extends Usuari{
         }
         return str;
     }
-    
-    public String getIdClient(){
-        return idClient;
-    }
-    
+
     public int getFaltes(){
         return faltes;
     }
@@ -192,7 +172,7 @@ public class Client extends Usuari{
     @Override
     public String toString(){
         String str;
-        str = "\nClient ID: " + idClient + "\n";
+        str = "\nClient ID: " + this.id + "\n";
 	str += "-----------------\n";
 	str += "Nom: " + nom + "\n";
         str += "Cognom: "+cognom1+ "\n";
@@ -202,7 +182,6 @@ public class Client extends Usuari{
 	str += direccio.toString() + "\n";
 	str += "Password: " + password + "\n";
 	str += "Es VIP: " + vip + "\n";
-	//str += "Renovació automàtica: " + renovacio + "\n";
 	str += "Nombre de faltes: " + faltes + "\n";
         str += "Estat: "+ getEstat() +"\n";
         return str;

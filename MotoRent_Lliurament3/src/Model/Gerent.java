@@ -5,12 +5,13 @@
  */
 package Model;
 
+import Vista.Consola;
+
 /**
  *
  * @author atorraag7.alumnes
  */
 public class Gerent extends Usuari{
-    private final String idEmpresa;
     private Local localAGestionar;
 
     public Gerent(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
@@ -19,7 +20,7 @@ public class Gerent extends Usuari{
         this.cognom2 = cognom2;
         this.userName = userName;
         this.password = password;
-        this.idEmpresa = idEmpresa;
+        this.id = idEmpresa;
         this.localAGestionar = null;
     }
     
@@ -30,7 +31,7 @@ public class Gerent extends Usuari{
     
     @Override
     public String getId(){
-        return idEmpresa;
+        return id;
     }
     
     @Override
@@ -43,7 +44,7 @@ public class Gerent extends Usuari{
     @Override
     public String toString(){
         String str;
-        str = "\nGestor ID: " + idEmpresa + "\n";
+        str = "\nGestor ID: " + this.id + "\n";
 	str += "-----------------\n";
 	str +="Nom: " + nom + "\n";
         str += "Cognom: "+cognom1+"\n";
@@ -51,5 +52,43 @@ public class Gerent extends Usuari{
 	str += "Password: " + password + "\n";
         str += "Local a gestionar: \n"+ localAGestionar.toString() +"\n";
         return str;
+    }
+    
+    @Override
+    public String gestionarLocal(){
+            String accio;
+            Consola.escriu(localAGestionar.toString());
+            accio = localAGestionar.gestionarLocal();
+            return accio;
+    }
+    @Override
+    public int demanarNombreMotosAImportar(){
+        return localAGestionar.demanarNombreMotosAImportar();
+    }
+    @Override
+    public int demanarNombreMotosAExportar(){
+        return localAGestionar.demanarNombreMotosAExportar();
+    }
+    
+    @Override
+    public Moto getMotoDisponible(){
+        return localAGestionar.getMotoDisponible();
+    }
+    
+    @Override
+    public void importarMoto(Moto moto){
+        localAGestionar.infoMotoImportada(moto);
+        localAGestionar.afegirMoto(moto);
+    }
+    
+    @Override
+    public void exportarMoto(Moto moto){
+        localAGestionar.infoMotoExportada(moto);
+        localAGestionar.eliminarMoto(moto);
+    }
+    
+    @Override
+    public int getNMotosDisp(){
+        return localAGestionar.getNMotosDisp();
     }
 }
