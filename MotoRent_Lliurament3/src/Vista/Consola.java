@@ -37,10 +37,7 @@ public class Consola extends DefaultHandler{
         controlador = new MotoRent();
         dataManager = new MotoRentDataManager(controlador);
         dataManager.obtenirDades("data/MotoRent.xml");
-        controlador.comprovarReservesClients();
-        controlador.comprovarEstatsMotos();
-        controlador.mostrarDades();
-        controlador.mostrarTotesLesMotos();
+        controlador.comprovacionsPrevies();
     }
     
     /**
@@ -54,7 +51,7 @@ public class Consola extends DefaultHandler{
     }
     
     
-    public String mostrarMenu(String[] menu){
+    private String mostrarMenu(String[] menu){
         int i;
         String str = "\n";
         for (i = 0; i<menu.length; i++){
@@ -121,6 +118,9 @@ public class Consola extends DefaultHandler{
             switch(usuari){
                 case "Client":
                     opcioLoginClient();
+                    tornarMenuAnterior = true;
+                    break;
+                case "Desactivat":
                     tornarMenuAnterior = true;
                     break;
                 case "Gerent":

@@ -19,12 +19,12 @@ public class Reserva {
     private float penalitzacio;
     private Data dataInicial;
     private Data dataFinal;
-    private String localInicial;
-    private String localFinal;
-    private String clientReserva;
-    private String motoReserva;
+    private Local localInicial;
+    private Local localFinal;
+    private Client clientReserva;
+    private Moto motoReserva;
     
-    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, String localInicial, String localFinal, String clientReserva, String motoReserva){
+    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, Local localInicial, Local localFinal, Client clientReserva, Moto motoReserva){
         this.id = id;
         this.preu = preu;
         this.penalitzacioTemps = penalitzacioTemps;
@@ -38,28 +38,41 @@ public class Reserva {
         this.motoReserva = motoReserva;
     }
     
-    public String getMesReserva(){
-        return dataInicial.getMes();
+    public String getId(){
+        return id;
     }
     
     public float getPreu(){
         return preu;
     }
+    
+    public float getPenalitzacio(){
+        return penalitzacio;
+    }
 
-    public String getClientReserva(){
+    public Client getClientReserva(){
         return clientReserva;
     }
         
-    public String getMotoReserva(){
+    public Moto getMotoReserva(){
         return motoReserva;
     }
     
-    public String getLocalInicial(){
+    public Local getLocalInicial(){
         return localInicial;
     }
     
-    public String getLocalFinal(){
+    public Local getLocalFinal(){
         return localFinal;
+    }
+    
+    public int obtenirDataIniciReserva(){
+        return Integer.parseInt(this.dataInicial.getMes());
+        
+    }
+
+    public void generarInformeReserva(){
+        Consola.escriu(this.toString());
     }
     
     @Override
@@ -67,20 +80,33 @@ public class Reserva {
         String str;
         str = "\nReserva amb ID: " + id + "\n";
         str += "--------------------------------------\n";
-	str += "Client: " + clientReserva + "\n";
-	str += "Moto: " + motoReserva + "\n";
+	str += "Client: " + clientReserva.getId() + "\n";
+	str += "Moto: " + motoReserva.getIdMoto() + "\n";
         str += "Cost: " + preu + "€\n";
-        str += "Local d'inici: " + localInicial + "\n";
+        if (penalitzacioMoto){
+            str += "La moto té algun desperfecte.\n";
+        }else{
+            str += "La moto s'ha retornat amb bon estat.\n";
+        }
+        if (penalitzacioTemps){
+            str += "La moto no s'ha retornat a temps.\n";
+        }else{
+            str += "La moto s'ha retornat a temps.\n";
+        }
+        str += "Local d'inici: " + localInicial.toString() + "\n";
 	str += "Data d'inici: " + dataInicial.toString() + "\n";
-	str += "Local de finalització: " + localFinal + "\n";
+	str += "Local de finalització: " + localFinal.toString() + "\n";
 	str += "Data de finalització: " + dataFinal.toString() + "\n";
         return str;
     }
 
     public void calcularPreu() {
         int hores;
-        hores = this.dataFinal.calcularDiferencia(dataInicial);
+        hores = dataFinal.calcularDiferencia(dataInicial);
         this.preu = (hores/24)*15 + hores%24;
+        if (this.clientReserva.getVip()){
+           this.preu = (float) (this.preu*0.9);
+        }
         Consola.escriu("La reserva te un preu de: ");
         Consola.escriu(this.preu);
         Consola.escriu("€.\n");
@@ -89,5 +115,52 @@ public class Reserva {
         Consola.escriu(" dia/es i ");
         Consola.escriu(hores%24);
         Consola.escriu(" hora/es.\n");
+    }
+    
+    public void cobrarReserva() {
+        float diferencia;
+        clientReserva.setEstat("NO RESERVA");
+        Data dataEntrega = new Data(); 
+        diferencia = dataEntrega.calcularDiferencia(dataFinal);
+        
+        if(diferencia > 0.0f){
+            penalitzacio = diferencia*2;
+            penalitzacioTemps = true;
+            preu += penalitzacio;   
+        }
+        
+        gestionarAveria();
+    }
+    
+    private void gestionarAveria() {
+        String opcio;
+        boolean error = true;
+        float reparacio;
+        
+        while(error){
+            Consola.escriu("Mostra la moto cap averia? (Y/N)");
+            opcio = Consola.llegeixString();
+            
+            if(opcio.equals("N")){
+                error = false;
+                motoReserva.setEstat("Disponible");
+            }else if(opcio.equals("Y")){
+                error = false;
+                motoReserva.setEstat("Reparant");
+                
+                Consola.escriu("Introdueix el preu de la reparacio: ");
+                reparacio = Float.parseFloat(Consola.llegeixString()); //Si no funciona partir en dos declaraciones
+                
+                preu += reparacio;
+                penalitzacioMoto = true;
+                
+                clientReserva.afegirFalta();
+            }  
+        }
+    }
+
+    public boolean isActiva() {
+        Data dataActual = new Data();
+        return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
     }
 }
