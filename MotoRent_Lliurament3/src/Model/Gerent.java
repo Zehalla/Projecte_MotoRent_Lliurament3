@@ -69,11 +69,6 @@ public class Gerent extends Usuari{
     public int demanarNombreMotosAExportar(){
         return localAGestionar.demanarNombreMotosAExportar();
     }
-    
-    @Override
-    public Moto getMotoDisponible(){
-        return localAGestionar.getMotoDisponible();
-    }
         
     @Override
     public int getNMotosDisp(){
