@@ -277,4 +277,20 @@ public class Local {
     void infoMotoExportada(Moto moto) {
         Consola.escriu("Exportant "+ moto.toString() + "\n");
     }
+
+    void exportarMoto(Local localPerExportar) {
+        Moto motoExportar;
+        motoExportar = getMotoDisponible();
+        infoMotoExportada(motoExportar);
+        eliminarMoto(motoExportar);
+        localPerExportar.afegirMoto(motoExportar);
+    }
+
+    void importarMoto(Local localPerImportar) {
+        Moto motoImportar;
+        motoImportar = localPerImportar.getMotoDisponible();
+        localPerImportar.eliminarMoto(motoImportar);
+        infoMotoImportada(motoImportar);
+        afegirMoto(motoImportar);
+    }
 }
