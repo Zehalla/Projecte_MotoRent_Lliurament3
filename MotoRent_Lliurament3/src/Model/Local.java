@@ -5,7 +5,6 @@
  */
 package Model;
 
-import Controlador.MotoRent;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,9 +16,10 @@ import java.util.Iterator;
 public class Local {
     private final String idLocal;
     private final int capacitat;
+    private int ocupacio;
     private Direccio direccioLocal;
     private ArrayList<Moto> llistaMotos;
-    private Gerent gestor;
+    private final Gerent gestor;
 
     public Gerent getGestor() {
         return gestor;
@@ -42,9 +42,7 @@ public class Local {
     
     public int getNMotosDisp(){
         int NMotosDisp = 0;
-        Iterator itr = llistaMotos.iterator();
-        while(itr.hasNext()){
-            Moto m = (Moto) itr.next(); 
+        for (Moto m : llistaMotos) { 
             if(m.getEstat().equalsIgnoreCase("Disponible")){
                 NMotosDisp ++;
             }
@@ -58,11 +56,14 @@ public class Local {
 
     public String mostrarMotosDisponibles() {
         String tipus, str = "";
+        int i = 0;
         Iterator itr = llistaMotos.iterator();
         while(itr.hasNext()){
+            i++;
             Moto m = (Moto) itr.next();
             tipus = m.getEstat();
             if("Disponible".equalsIgnoreCase(tipus)){
+                str += Integer.toString(i) + ": ";
                 str += m.toString();
             } else {
             }
@@ -140,10 +141,6 @@ public class Local {
         this.direccioLocal = direccioLocal;
     }
 
-    public ArrayList<Moto> getLlistaMotos() {
-        return llistaMotos;
-    }
-
     public void setLlistaMotos(ArrayList<Moto> llistaMotos) {
         this.llistaMotos = llistaMotos;
     }
@@ -151,9 +148,11 @@ public class Local {
     @Override
     public String toString(){
         String str;
+        ocupacio = llistaMotos.size();
         str = "\nLocal amb ID: " + idLocal + "\n";
 	str += "--------------------------------------------------\n";
 	str += "Capacitat: " + capacitat + "\n";
+        str += "Ocupacio: " + ocupacio +"\n";
 	str += "Gestor ID: " + gestor.getId() + "\n";
 	str += direccioLocal.toString() + "\n";
         return str;
@@ -162,59 +161,130 @@ public class Local {
     public int getNMotos(){
         return llistaMotos.size();
     }  
-/*
-    public void gestionarLocal(MotoRent controlador) {
-        double ocupacio;
-        int nMotos, nM;
-        boolean confirmacio;
-        
-        nMotos = llistaMotos.size();
-        
-        Consola.escriu(toString());
-        Consola.escriu(mostrarMotos());
-        
-        ocupacio = nMotos*100./capacitat;
-        if ((nMotos >= 5) && (ocupacio < 75)){
-            Consola.escriu("El local te ");
-            Consola.escriu(nMotos);
-            Consola.escriu(" motos i es troba al ");
-            Consola.escriu((int)ocupacio);
-            Consola.escriu("% d'ocupacio.\n");
-        }else if(nMotos < 5){
-            Consola.escriu("El local te menys de 5 motos. Has de importar motos.\n");
-            nM = 5 - nMotos;
-            controlador.importarMotos(this.llistaMotos, nM);
-        }else if(ocupacio >= 75){
-            Consola.escriu("El local te massa motos. Hauries d'exportar-ne algunes.\n");
-            Consola.escriu("Vols exportar ara les motos?\n");
-            confirmacio = confirmarImportacio();
-            if (confirmacio){
-                nM = (int) Math.round(nMotos - capacitat*0.25);
-                if (5 < nMotos - nM){
-                    nM --;
-                }
-                if (nM > 0){
-                    Consola.escriu("Es procedira a l'exportacio.\n");
-                    controlador.exportarMotos(this.llistaMotos, nM);
-                }else{
-                    Consola.escriu("Ups, si exportam motos el local es quedaria amb menys de 5 motos.\n");
-                }
-            }
-            
+    
+    String gestionarLocal() {
+        String accio = "Cap";
+        int ocupacioPercent;
+        ocupacio = llistaMotos.size();
+        ocupacioPercent = (int)(100.*ocupacio/capacitat);
+        if(ocupacioPercent >= 75 && ocupacio > 5){
+            Consola.escriu("El local te massa motos.\n");
+            accio = "Exportar";
         }
+        else if(ocupacio < 5){
+            Consola.escriu("El local no te prou motos.\n");
+            accio = "Importar";
+        }else if (ocupacio >= 5){
+            Consola.escriu("El local te un nombre correcte de motos.\n");
+        }
+        return accio;
     }
-    private boolean confirmarImportacio(){
-        String control;
-        do {
-            control = Consola.llegeixString();
-            if (control.equals("") || control.equalsIgnoreCase("Y") || control.equalsIgnoreCase("YES") || control.equalsIgnoreCase("S") || control.equalsIgnoreCase("SI")) {
-                return true;
-            } else if (control.equalsIgnoreCase("NO") || control.equalsIgnoreCase("N") || control.equalsIgnoreCase("NOP") || control.equalsIgnoreCase("NOPE")) {
-                return false;
-            }else{
-                Consola.escriu("Introdueixi 'No' per cancelar, premi Intro per confirmar.\n" );
+
+    int demanarNombreMotosAImportar() {
+        int motosAImportar, minim;
+        ocupacio = llistaMotos.size();
+        minim = 5 - ocupacio;
+        Consola.escriu("Quantes motos voleu importar? (Minim: ");
+        Consola.escriu(minim);
+        Consola.escriu(")\n");
+        motosAImportar = Consola.llegeixInt();
+        while (motosAImportar < minim || ocupacio + motosAImportar > capacitat){
+            if (minim > motosAImportar){
+                Consola.escriu("Heu de seleccionar un valor major a ");
+                Consola.escriu(minim);
+                Consola.escriu("\n");
+            }else if(ocupacio + motosAImportar > capacitat){
+                Consola.escriu("El local no te prou capacitat per importar tantes motos.\n");
+                Consola.escriu("Com a molt podeu importar ");
+                Consola.escriu(capacitat - ocupacio);
+                Consola.escriu(" motos.\n");
             }
-        } while (!control.equals("") && !control.equalsIgnoreCase("NO"));
-        return false;
-    }*/
+            motosAImportar = Consola.llegeixInt();
+        }
+        return motosAImportar;
+    }
+
+    int demanarNombreMotosAExportar() {
+        boolean error = true;
+        String tmp;
+        int motosAExportar = 0;
+        Consola.escriu("Voleu exportar l'excedent de motos: (Si/No)\n");
+        while (error){
+            tmp = Consola.llegeixString();
+            if(tmp.equalsIgnoreCase("SI")){
+                ocupacio = llistaMotos.size();
+                error = false;
+                motosAExportar = (int) (ocupacio - capacitat*0.25);
+                while(ocupacio - motosAExportar < 5){
+                    motosAExportar -= 1;
+                }
+            }else if(tmp.equalsIgnoreCase("NO")){
+                error = false;
+            }else{
+                Consola.escriu("Escrigui si o no.\n");
+            }
+        }
+        return motosAExportar;
+    }
+
+    public void mostrarInfoImportacio(int motosAImportar) {
+        Consola.escriu("S'importaran ");
+        Consola.escriu(motosAImportar);
+        Consola.escriu(" motos del local:\n");
+        Consola.escriu(direccioLocal.toString());
+    }
+
+    public Moto getMotoDisponible() {
+        String disponible;
+        for (Moto mi: llistaMotos){
+            disponible = mi.getEstat();
+            if (disponible.equalsIgnoreCase("DISPONIBLE")){
+                return mi;
+            }
+        }
+        return null;
+    }
+
+    public void mostrarInfoExportacio(int motosAExportar) {
+        Consola.escriu("S'exportaran ");
+        Consola.escriu(motosAExportar);
+        Consola.escriu(" motos del local:\n");
+        Consola.escriu(direccioLocal.toString());
+    }
+
+    public int calcMotosImportables(int nombreMotosDisponibles) {
+        int nombreMotosImportables, nombreMotosNoImportables;
+        ocupacio = llistaMotos.size();
+        nombreMotosNoImportables = ocupacio - nombreMotosDisponibles;
+        if (nombreMotosNoImportables < 5){
+            nombreMotosNoImportables = 5;
+        }
+        nombreMotosImportables = ocupacio - nombreMotosNoImportables;
+        return nombreMotosImportables;
+    }
+
+    public int getCapacitatDisponible() {
+        int capacitatDisponible = 0;
+        ocupacio = llistaMotos.size();
+        if (100.*ocupacio/capacitat < 75){
+            capacitatDisponible = capacitat - ocupacio;
+        }
+        return capacitatDisponible;
+    }
+
+    void exportarMoto(Local localPerExportar) {
+        Moto motoExportar;
+        motoExportar = getMotoDisponible();
+        Consola.escriu("Exportant "+ motoExportar.toString() + "\n");
+        eliminarMoto(motoExportar);
+        localPerExportar.afegirMoto(motoExportar);
+    }
+
+    void importarMoto(Local localPerImportar) {
+        Moto motoImportar;
+        motoImportar = localPerImportar.getMotoDisponible();
+        localPerImportar.eliminarMoto(motoImportar);
+        Consola.escriu("Important "+ motoImportar.toString() + "\n");
+        afegirMoto(motoImportar);
+    }
 }

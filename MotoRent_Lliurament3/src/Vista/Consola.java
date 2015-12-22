@@ -260,7 +260,7 @@ public class Consola extends DefaultHandler{
      * Mètode cridat quan un Gerent vol gestionar un Local.
      */
     private void opcioGestionarLocal(){
-        escriu("Has gestionat el local");
+        controlador.gestionarLocal();
     }
     
     /**

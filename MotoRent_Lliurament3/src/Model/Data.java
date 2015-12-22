@@ -41,6 +41,16 @@ public class Data{
         this.segon = segon;
     } 
     
+    public Data(String dataS){
+        String[] sliced = dataS.split("/");
+        this.any = sliced[3];
+        this.mes = sliced[2];
+        this.dia = sliced[1];
+        this.hora = sliced[0];
+    } 
+    
+    
+    
     private Data dateToData(Date dt){
         String format = df.format(dt);
         String[] sliced = format.split("-");
@@ -115,7 +125,34 @@ public class Data{
         return segon;
     }
 
-    int calcularDiferencia(Data dat) {    
+    public int compara(Data cmp) {
+
+        int anyComp = Integer.parseInt(cmp.getAny());
+        int mesComp = Integer.parseInt(cmp.getMes());
+        int diaComp = Integer.parseInt(cmp.getDia());
+        int horaComp = Integer.parseInt(cmp.getHora());
+
+        int anyInt = Integer.parseInt(any);
+        int mesInt = Integer.parseInt(mes);
+        int diaInt = Integer.parseInt(dia);
+        int horaInt = Integer.parseInt(hora);
+        
+        
+        int dataInt = horaInt + 100*(diaInt + 100*(mesInt   + 100*anyInt));  
+        int dataComp = horaComp + 100*(diaComp + 100*(mesComp   + 100*anyComp));
+        
+        if (dataInt > dataComp){ //La data que passem per parametre es mes petita, la nostra es mes gran
+            return 1;
+        }else if (dataInt < dataComp){ //La data que passem per parametre es mes gran, la nostra es mes petita
+            return -1;
+        }else if(dataInt == dataComp){ //iguals
+            return 0;
+        }else{
+            return -2; //Error inesperat
+        }
+    }
+        
+    public int calcularDiferencia(Data dat) {    
         int dif;
         dif = (Integer.parseInt(this.any)-Integer.parseInt(dat.getAny()))*12;
         dif = (dif + Integer.parseInt(this.mes) - Integer.parseInt(dat.getMes()))*30;

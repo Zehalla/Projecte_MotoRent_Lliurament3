@@ -1,4 +1,4 @@
-﻿/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -38,7 +38,9 @@ public class Reserva {
         this.motoReserva = motoReserva;
     }
     
-
+    public String getId(){
+        return id;
+    }
     
     public float getPreu(){
         return preu;
@@ -100,7 +102,7 @@ public class Reserva {
 
     public void calcularPreu() {
         int hores;
-        hores = this.dataFinal.calcularDiferencia(dataInicial);
+        hores = dataFinal.calcularDiferencia(dataInicial);
         this.preu = (hores/24)*15 + hores%24;
         if (this.clientReserva.getVip()){
            this.preu = (float) (this.preu*0.9);
@@ -113,5 +115,52 @@ public class Reserva {
         Consola.escriu(" dia/es i ");
         Consola.escriu(hores%24);
         Consola.escriu(" hora/es.\n");
+    }
+    
+    public void cobrarReserva() {
+        float diferencia;
+        clientReserva.setEstat("NO RESERVA");
+        Data dataEntrega = new Data(); 
+        diferencia = dataEntrega.calcularDiferencia(dataFinal);
+        
+        if(diferencia > 0.0f){
+            penalitzacio = diferencia*2;
+            penalitzacioTemps = true;
+            preu += penalitzacio;   
+        }
+        
+        gestionarAveria();
+    }
+    
+    private void gestionarAveria() {
+        String opcio;
+        boolean error = true;
+        float reparacio;
+        
+        while(error){
+            Consola.escriu("Mostra la moto cap averia? (Y/N)");
+            opcio = Consola.llegeixString();
+            
+            if(opcio.equals("N")){
+                error = false;
+                motoReserva.setEstat("Disponible");
+            }else if(opcio.equals("Y")){
+                error = false;
+                motoReserva.setEstat("Reparant");
+                
+                Consola.escriu("Introdueix el preu de la reparacio: ");
+                reparacio = Float.parseFloat(Consola.llegeixString()); //Si no funciona partir en dos declaraciones
+                
+                preu += reparacio;
+                penalitzacioMoto = true;
+                
+                clientReserva.afegirFalta();
+            }  
+        }
+    }
+
+    public boolean isActiva() {
+        Data dataActual = new Data();
+        return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
     }
 }

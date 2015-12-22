@@ -5,8 +5,6 @@
  */
 package Model;
 
-import Vista.Consola;
-
 /**
  *
  * @author atorraag7.alumnes
@@ -66,8 +64,32 @@ public abstract class Usuari {
         return newPassword.equals(this.password);
     }
 
+    public String gestionarLocal() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int demanarNombreMotosAImportar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int demanarNombreMotosAExportar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getNMotosDisp() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getEstat() {
         return null;
+    }
+
+    public void exportarMotos(int motosAExportar, Local localPerExportar) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void importarMotos(int motosAImportar, Local localPerImportar) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

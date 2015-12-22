@@ -5,6 +5,8 @@
  */
 package Model;
 
+import Vista.Consola;
+
 /**
  *
  * @author atorraag7.alumnes
@@ -50,5 +52,74 @@ public class Gerent extends Usuari{
 	str += "Password: " + password + "\n";
         str += "Local a gestionar: \n"+ localAGestionar.toString() +"\n";
         return str;
+    }
+    
+    @Override
+    public String gestionarLocal(){
+            String accio;
+            Consola.escriu(localAGestionar.toString());
+            accio = localAGestionar.gestionarLocal();
+            return accio;
+    }
+    @Override
+    public int demanarNombreMotosAImportar(){
+        return localAGestionar.demanarNombreMotosAImportar();
+    }
+    @Override
+    public int demanarNombreMotosAExportar(){
+        return localAGestionar.demanarNombreMotosAExportar();
+    }
+        
+    @Override
+    public int getNMotosDisp(){
+        return localAGestionar.getNMotosDisp();
+    }
+    
+    @Override
+    public void exportarMotos(int motosAExportar, Local localPerExportar){
+        boolean control = true;
+        int nombreMotos, i = 0;
+        while (i < motosAExportar && control){
+                nombreMotos = getNMotosDisp();
+                if (nombreMotos > 0){
+                    localAGestionar.exportarMoto(localPerExportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAExportar){
+                Consola.escriu("Error. Nomes s'han pogut exportar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAExportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La exportacio s'ha completat amb exit.\n");
+            }
+    }
+    
+    @Override
+    public void importarMotos(int motosAImportar, Local localPerImportar){
+        boolean control = true;
+        int nombreMotos, i = 0;
+        while (i < motosAImportar && control){
+                nombreMotos = localPerImportar.getNMotosDisp();
+                if (nombreMotos > 0){
+                    localAGestionar.importarMoto(localPerImportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAImportar){
+                Consola.escriu("Error. Nomes s'han pogut importar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAImportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La importacio s'ha completat amb exit.\n");
+            }
     }
 }

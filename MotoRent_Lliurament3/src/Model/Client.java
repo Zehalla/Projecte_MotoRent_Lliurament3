@@ -1,4 +1,4 @@
-﻿/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -60,6 +60,13 @@ public class Client extends Usuari{
     
     public void afegirFalta(){
         this.faltes += 1;
+        if(faltes <= 3){
+            this.setEstat("Desactivat");
+            Consola.escriu("El client s'ha desactivat perque te 3 faltes o mes.");
+        }
+
+
+                    
     }
     
     @Override
@@ -179,4 +186,48 @@ public class Client extends Usuari{
         str += "Estat: "+ getEstat() +"\n";
         return str;
     }
+
+    public boolean isVip() {
+        return vip;
+    }
+
+    public void setVip(boolean vip) {
+        this.vip = vip;
+    }
+
+    public Direccio getDireccio() {
+        return direccio;
+    }
+
+    public void setDireccio(Direccio direccio) {
+        this.direccio = direccio;
+    }
+
+    public Data getDataRegistre() {
+        return dataRegistre;
+    }
+
+    public void setDataRegistre(Data dataRegistre) {
+        this.dataRegistre = dataRegistre;
+    }
+
+    public ArrayList<Reserva> getListReserva() {
+        return listReserva;
+    }
+
+    public void setListReserva(ArrayList<Reserva> listReserva) {
+        this.listReserva = listReserva;
+    }
+
+    public EstatClient getEstatClient() {
+        return estatClient;
+    }
+
+    public void setEstatClient(EstatClient estatClient) {
+        this.estatClient = estatClient;
+    }
+    
+    
+    
+    
 }
