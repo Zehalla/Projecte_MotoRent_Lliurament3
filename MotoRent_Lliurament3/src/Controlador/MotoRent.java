@@ -519,33 +519,10 @@ public class MotoRent {
 
     private void importarMotos(int motosAImportar) {
         Local localPerImportar;
-        Moto motoImportar;
-        int i, nombreMotos;
-        boolean control = true;
-        i = 0;
         localPerImportar = getLocalAmbMesMotosDisponibles();
         if (localPerImportar != null){
             localPerImportar.mostrarInfoImportacio(motosAImportar);
-            while (i < motosAImportar && control){
-                nombreMotos = localPerImportar.getNMotosDisp();
-                if (nombreMotos > 0){
-                    motoImportar = localPerImportar.getMotoDisponible();
-                    localPerImportar.eliminarMoto(motoImportar);
-                    usuariLogat.importarMoto(motoImportar);
-                    i += 1;
-                }else{
-                    control = false;
-                }
-            }
-            if (i < motosAImportar){
-                Consola.escriu("Error. Nomes s'han pogut importar ");
-                Consola.escriu(i+1);
-                Consola.escriu(" de ");
-                Consola.escriu(motosAImportar);
-                Consola.escriu(" motos.\n");
-            }else{
-                Consola.escriu("La importacio s'ha completat amb exit.\n");
-            }
+            usuariLogat.importarMotos(motosAImportar,localPerImportar);
         }else{
             Consola.escriu("No hi ha locals per a importar motos.\n");
         }
@@ -554,33 +531,10 @@ public class MotoRent {
 
     private void exportarMotos(int motosAExportar) {
         Local localPerExportar;
-        Moto motoExportar;
-        int i, nombreMotos;
-        boolean control = true;
-        i = 0;
         localPerExportar = getLocalAmbMesCapacitatDisponible();
         if (localPerExportar != null){
             localPerExportar.mostrarInfoExportacio(motosAExportar);
-            while (i < motosAExportar && control){
-                nombreMotos = usuariLogat.getNMotosDisp();
-                if (nombreMotos > 0){
-                    motoExportar = usuariLogat.getMotoDisponible();
-                    usuariLogat.exportarMoto(motoExportar);
-                    localPerExportar.afegirMoto(motoExportar);
-                    i += 1;
-                }else{
-                    control = false;
-                }
-            }
-            if (i < motosAExportar){
-                Consola.escriu("Error. Nomes s'han pogut exportar ");
-                Consola.escriu(i+1);
-                Consola.escriu(" de ");
-                Consola.escriu(motosAExportar);
-                Consola.escriu(" motos.\n");
-            }else{
-                Consola.escriu("La exportacio s'ha completat amb exit.\n");
-            }
+            usuariLogat.exportarMotos(motosAExportar,localPerExportar);   
         }else{
             Consola.escriu("No hi ha locals per exportar.\n");
         }
