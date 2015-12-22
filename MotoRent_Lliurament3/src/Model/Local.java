@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Model.Estats.EstatMoto;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,14 +32,18 @@ public class Local {
         this.gestor = null;
     }
     
-    public Local(String idLocal, int capacitat, Direccio direccioLocal, ArrayList<Moto> llistaMotos, Gerent gestor){
+    public Local(String idLocal, int capacitat, String[] direccioLocal, ArrayList<Moto> llistaMotos, Gerent gestor){
         this.idLocal = idLocal;
         this.capacitat = capacitat;
-        this.direccioLocal = direccioLocal;
+        this.direccioLocal = crearDireccio(direccioLocal);
         this.llistaMotos = llistaMotos;
         this.gestor = gestor;
     }
     
+    
+    private Direccio crearDireccio(String[] adreca){
+            return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
+    }
     
     public int getNMotosDisp(){
         int NMotosDisp = 0;
@@ -83,6 +88,16 @@ public class Local {
     public Moto getMoto(int i){
         return llistaMotos.get(i);
     }
+    
+    public Moto getMoto(String id){
+        int i;
+        for (i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(id)){
+                return llistaMotos.get(i);
+            }
+        }
+        return null;
+    }
  
 
     public void obtenirMotosLocal(){
@@ -116,6 +131,14 @@ public class Local {
     public void afegirMoto(Moto moto){
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(moto);
+        }else{
+            //throw new LlistaPlenaException();
+        }
+    }
+    
+    public void afegirMoto(String id, String matricula, String model, String color, String estat){
+        if (llistaMotos.size() < capacitat){
+            llistaMotos.add(new Moto(id, matricula, model, color, estat));
         }else{
             //throw new LlistaPlenaException();
         }

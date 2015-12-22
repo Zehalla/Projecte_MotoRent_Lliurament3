@@ -1,8 +1,8 @@
 package Vista;
 
 import Controlador.MotoRent;
+import Model.Data;
 import Parser.MotoRentDataManager;
-import java.util.Date;
 import java.util.Scanner;
 import org.xml.sax.helpers.DefaultHandler;
 /**
@@ -377,8 +377,8 @@ public class Consola extends DefaultHandler{
      *
      * @return data actual
      */
-    public static Date llegeixDataSistema() {
-        return new Date();
+    public static Data llegeixDataSistema() {
+        return new Data();
     }
     
     //==============================================================
