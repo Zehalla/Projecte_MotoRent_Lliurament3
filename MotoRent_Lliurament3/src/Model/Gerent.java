@@ -69,26 +69,57 @@ public class Gerent extends Usuari{
     public int demanarNombreMotosAExportar(){
         return localAGestionar.demanarNombreMotosAExportar();
     }
-    
-    @Override
-    public Moto getMotoDisponible(){
-        return localAGestionar.getMotoDisponible();
-    }
-    
-    @Override
-    public void importarMoto(Moto moto){
-        localAGestionar.infoMotoImportada(moto);
-        localAGestionar.afegirMoto(moto);
-    }
-    
-    @Override
-    public void exportarMoto(Moto moto){
-        localAGestionar.infoMotoExportada(moto);
-        localAGestionar.eliminarMoto(moto);
-    }
-    
+        
     @Override
     public int getNMotosDisp(){
         return localAGestionar.getNMotosDisp();
+    }
+    
+    @Override
+    public void exportarMotos(int motosAExportar, Local localPerExportar){
+        boolean control = true;
+        int nombreMotos, i = 0;
+        while (i < motosAExportar && control){
+                nombreMotos = getNMotosDisp();
+                if (nombreMotos > 0){
+                    localAGestionar.exportarMoto(localPerExportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAExportar){
+                Consola.escriu("Error. Nomes s'han pogut exportar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAExportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La exportacio s'ha completat amb exit.\n");
+            }
+    }
+    
+    @Override
+    public void importarMotos(int motosAImportar, Local localPerImportar){
+        boolean control = true;
+        int nombreMotos, i = 0;
+        while (i < motosAImportar && control){
+                nombreMotos = localPerImportar.getNMotosDisp();
+                if (nombreMotos > 0){
+                    localAGestionar.importarMoto(localPerImportar);
+                    i += 1;
+                }else{
+                    control = false;
+                }
+            }
+            if (i < motosAImportar){
+                Consola.escriu("Error. Nomes s'han pogut importar ");
+                Consola.escriu(i+1);
+                Consola.escriu(" de ");
+                Consola.escriu(motosAImportar);
+                Consola.escriu(" motos.\n");
+            }else{
+                Consola.escriu("La importacio s'ha completat amb exit.\n");
+            }
     }
 }

@@ -20,7 +20,7 @@ public class Client extends Usuari{
     private final float descompteVip = 0.10f;
     private int faltes;
     private Direccio direccio;
-    private Data dataRegistre = new Data();
+    private Data dataRegistre;
     private ArrayList<Reserva> listReserva = new ArrayList<>();
     private EstatClient estatClient;
 
@@ -29,7 +29,7 @@ public class Client extends Usuari{
         
     }
     
-    public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
+    public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, String[] direccio){
         this.id = idClient;
         this.nom = nom;
         this.cognom1 = cognom1;
@@ -39,9 +39,14 @@ public class Client extends Usuari{
         this.password = password;
         this.vip = vip;
         this.faltes = faltes;
-        this.direccio = direccio;
-        this.dataRegistre = dataRegistre;
-        this.estatClient = estatClient;
+        this.direccio = crearDireccio(direccio);
+        this.dataRegistre = new Data();
+        this.estatClient = Estats.getEstatClientSenseReserva();
+    }
+    
+    
+    private Direccio crearDireccio(String[] adreca){
+            return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
     }
     
     @Override

@@ -7,8 +7,14 @@ package Controlador;
 
 import Excepcions.LlistaBuidaException;
 import Vista.Consola;
-import Model.*;
-import Model.Estats.*;
+
+import Model.Usuari;
+import Model.Administrador;
+import Model.Gerent;
+import Model.Client;
+import Model.Local;
+import Model.Reserva;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -36,31 +42,31 @@ public class MotoRent {
     /*----------------------------------------------------------------
     ---------------METODES QUE GUARDEN DADES--------------------------
     -----------------------------------------------------------------*/
-    public void guardarLocal(String idLocal, int capacitat, Direccio direccioLocal, String idGestor){
+    public void guardarLocal(String idLocal, int capacitat, String[] direccioLocal, String idGestor){
         Gerent gestor = (Gerent) buscarUsuari(idGestor);
         llistaLocals.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), gestor));
     }
     
-    public void guardarMoto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
-        llistaLocals.get(llistaLocals.size()-1).afegirMoto(new Moto(idMoto, matricula, model, color, estatMoto));
+    public void guardarMoto(String idMoto, String matricula, String model, String color, String estatMoto){
+        llistaLocals.get(llistaLocals.size()-1).afegirMoto(idMoto, matricula, model, color, estatMoto);
     }
     
-    public void guardarReserva(String id, String idClient, String idMoto, String cost, String falta, String local_inici, String local_fi, Data dataInicial, Data dataFinal){
+    public void guardarReserva(String id, String idClient, String idMoto, String cost, String falta, String local_inici, String local_fi, String dataInicial, String horaInicial, String dataFinal, String horaFinal){
         Client client = (Client) buscarUsuari(idClient);
         if (Integer.parseInt(falta) == 0){ // si no hi ha faltes, afegim normalment.
-            llistaReserves.add(new Reserva(id, Integer.parseInt(cost), false, false, 0, dataInicial, dataFinal, buscarLocal(local_inici), buscarLocal(local_fi), client, buscarMoto(idMoto)));
+            llistaReserves.add(new Reserva(id, Integer.parseInt(cost), false, false, 0, dataInicial, horaInicial, dataFinal, horaFinal, buscarLocal(local_inici), buscarLocal(local_fi), client, idMoto));
         }else{ //en cas q hi hagi faltes, afegim un cost addicional a la reserva q anirà de 0 a 20.
             Random ran = new Random(); 
             int i;
-            llistaReserves.add(new Reserva(id, Integer.parseInt(cost), true, true, ran.nextInt(20), dataInicial, dataFinal, buscarLocal(local_inici), buscarLocal(local_fi), client, buscarMoto(idMoto)));
+            llistaReserves.add(new Reserva(id, Integer.parseInt(cost), true, true, ran.nextInt(20), dataInicial, horaInicial, dataFinal, horaFinal, buscarLocal(local_inici), buscarLocal(local_fi), client, idMoto));
             for (i = 0; i < Integer.parseInt(falta); i++){
                 client.afegirFalta();
             }
         }
     }
     
-    public void guardarClient(String id, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, Direccio direccio, Data dataRegistre, EstatClient estatClient){
-        llistaUsuaris.add(new Client(id, nom, cognom1, cognom2, DNI, userName, password, vip, faltes, direccio, dataRegistre, estatClient));
+    public void guardarClient(String id, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, String[] direccio){
+        llistaUsuaris.add(new Client(id, nom, cognom1, cognom2, DNI, userName, password, vip, faltes, direccio));
     }
     
     public void guardarGerent(String nom, String cognom1, String cognom2, String userName, String password,  String idEmpresa){
@@ -97,10 +103,8 @@ public class MotoRent {
     
     private void comprovarEstatsMotos(){
         int i;
-        Moto motoActual;
         for (i = 0; i < llistaReserves.size(); i++){
-            motoActual = llistaReserves.get(i).getMotoReserva();
-            motoActual.setEstat("reservada");
+            llistaReserves.get(i).getMotoReserva().setEstat("reservada");
         }
     }
     
@@ -124,17 +128,6 @@ public class MotoRent {
         }
     }
     
-    private Moto buscarMoto(String idMoto){
-        int i, j;
-        for (i = 0; i < llistaLocals.size(); i++){
-            for (j = 0; j < llistaLocals.get(i).getNumeroMotosActual(); j++){
-                if (llistaLocals.get(i).getMoto(j).getIdMoto().equals(idMoto)){
-                    return llistaLocals.get(i).getMoto(j);
-                }
-            }
-        }
-        return null;
-    }
     
     private Usuari buscarUsuari(String idUsuari){
         int i;
@@ -196,10 +189,10 @@ public class MotoRent {
     }
     
     public void generarInformeMensual(String mes){
-        boolean error;
+        boolean correcte;
         int i;
-        error = comprovarDataCorrecte(mes);
-        if (!error){
+        correcte = comprovarDataCorrecte(mes);
+        if (correcte){
             for (i = 0; i < llistaUsuaris.size(); i++) {
                 if (llistaUsuaris.get(i).getTipus().equals("Client")) {
                     Client clientActual = (Client) llistaUsuaris.get(i);
@@ -214,7 +207,8 @@ public class MotoRent {
     }
     
     private boolean comprovarDataCorrecte(String mes) {
-        return Integer.parseInt(new Data().getMes()) >= Integer.parseInt(mes);
+        return (Integer.parseInt(mes)) <= (Integer.parseInt(Consola.llegeixDataSistema().getMes())+1); // el +1 es perque
+                                                                                                    // el Date té representa els mesos de l'any de 0 a 11.
     }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
@@ -519,33 +513,10 @@ public class MotoRent {
 
     private void importarMotos(int motosAImportar) {
         Local localPerImportar;
-        Moto motoImportar;
-        int i, nombreMotos;
-        boolean control = true;
-        i = 0;
         localPerImportar = getLocalAmbMesMotosDisponibles();
         if (localPerImportar != null){
             localPerImportar.mostrarInfoImportacio(motosAImportar);
-            while (i < motosAImportar && control){
-                nombreMotos = localPerImportar.getNMotosDisp();
-                if (nombreMotos > 0){
-                    motoImportar = localPerImportar.getMotoDisponible();
-                    localPerImportar.eliminarMoto(motoImportar);
-                    usuariLogat.importarMoto(motoImportar);
-                    i += 1;
-                }else{
-                    control = false;
-                }
-            }
-            if (i < motosAImportar){
-                Consola.escriu("Error. Nomes s'han pogut importar ");
-                Consola.escriu(i+1);
-                Consola.escriu(" de ");
-                Consola.escriu(motosAImportar);
-                Consola.escriu(" motos.\n");
-            }else{
-                Consola.escriu("La importacio s'ha completat amb exit.\n");
-            }
+            usuariLogat.importarMotos(motosAImportar,localPerImportar);
         }else{
             Consola.escriu("No hi ha locals per a importar motos.\n");
         }
@@ -554,33 +525,10 @@ public class MotoRent {
 
     private void exportarMotos(int motosAExportar) {
         Local localPerExportar;
-        Moto motoExportar;
-        int i, nombreMotos;
-        boolean control = true;
-        i = 0;
         localPerExportar = getLocalAmbMesCapacitatDisponible();
         if (localPerExportar != null){
             localPerExportar.mostrarInfoExportacio(motosAExportar);
-            while (i < motosAExportar && control){
-                nombreMotos = usuariLogat.getNMotosDisp();
-                if (nombreMotos > 0){
-                    motoExportar = usuariLogat.getMotoDisponible();
-                    usuariLogat.exportarMoto(motoExportar);
-                    localPerExportar.afegirMoto(motoExportar);
-                    i += 1;
-                }else{
-                    control = false;
-                }
-            }
-            if (i < motosAExportar){
-                Consola.escriu("Error. Nomes s'han pogut exportar ");
-                Consola.escriu(i+1);
-                Consola.escriu(" de ");
-                Consola.escriu(motosAExportar);
-                Consola.escriu(" motos.\n");
-            }else{
-                Consola.escriu("La exportacio s'ha completat amb exit.\n");
-            }
+            usuariLogat.exportarMotos(motosAExportar,localPerExportar);   
         }else{
             Consola.escriu("No hi ha locals per exportar.\n");
         }

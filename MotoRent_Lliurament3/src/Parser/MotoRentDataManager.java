@@ -47,7 +47,7 @@ public class MotoRentDataManager {
 	 */
 	
 	public void crearLocal(String id, String capacitat, String gestorID, String[] adreca) {
-            controlador.guardarLocal(id, Integer.parseInt(capacitat), crearDireccio(adreca), gestorID);
+            controlador.guardarLocal(id, Integer.parseInt(capacitat), adreca, gestorID);
 	}
 
 	/**
@@ -62,19 +62,7 @@ public class MotoRentDataManager {
 	 */
 
 	public void crearMoto(String id, String matricula, String marca, String model, String color, String estat) {
-            EstatMoto estatMoto;
-            switch (estat) {
-                case "disponible":
-                    estatMoto = Estats.getEstatMotoDisponible();
-                    break;
-                case "avariada":
-                    estatMoto = Estats.getEstatMotoReparant();
-                    break;
-                default:
-                    estatMoto = Estats.getEstatMotoReservada();
-                    break;
-            }
-            controlador.guardarMoto(id, matricula, model, color, estatMoto);
+            controlador.guardarMoto(id, matricula, model, color, estat);
 	
 
 		
@@ -97,7 +85,7 @@ public class MotoRentDataManager {
 	 */
 	
 	public void crearReserva(String id,String client,String moto, String cost, String falta, String local_inici,String hora_inici,String fecha_inici, String local_fi,String hora_fi,String fecha_fi) {
-            controlador.guardarReserva(id, client, moto, cost, falta, local_inici, local_fi, crearData(fecha_inici, hora_inici), crearData(fecha_fi, hora_fi)); 
+            controlador.guardarReserva(id, client, moto, cost, falta, local_inici, local_fi, fecha_inici, hora_inici, fecha_fi, hora_fi); 
 	}
 
 	/**
@@ -139,22 +127,16 @@ public class MotoRentDataManager {
 	 */
 
 	public void crearClient(String id, String[] nom, String dni, String[] adreca, String usuari, String password, String vip, String renovacio, String faltes) {
-            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), crearDireccio(adreca), new Data(), Estats.getEstatClientSenseReserva());
+            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), adreca);
 	}
         
         
         // METODES AUXILIARS
-        private Direccio crearDireccio(String[] adreca){
-            return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
-        }
+
         
         private boolean esVip(String vip){
             return "true".equals(vip);
         }
         
-        private Data crearData(String diaComplet, String horaCompleta){
-            String[] aux = diaComplet.split("/");
-            String[] aux2 = horaCompleta.split(":");
-            return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
-        }
+
 }

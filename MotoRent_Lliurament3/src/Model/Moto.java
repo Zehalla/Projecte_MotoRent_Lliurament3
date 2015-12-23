@@ -21,12 +21,12 @@ public class Moto {
     public Moto(){
     }
     
-    public Moto(String idMoto, String matricula, String model, String color, EstatMoto estatMoto){
+    public Moto(String idMoto, String matricula, String model, String color, String estat){
         this.idMoto = idMoto;
         this.matricula = matricula;
         this.model = model;
         this.color = color;
-        this.estatMoto = estatMoto;
+        this.setEstat(estat);
     }
 
     public String getEstat(){
@@ -53,7 +53,7 @@ public class Moto {
             case "DISPONIBLE":
                 this.estatMoto = Estats.getEstatMotoDisponible();
                 break;
-            default:
+            case "AVARIADA":
                 this.estatMoto = Estats.getEstatMotoReparant();
                 break;
         }
