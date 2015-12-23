@@ -24,18 +24,18 @@ public class Reserva {
     private Client clientReserva;
     private Moto motoReserva;
     
-    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, Data dataInicial, Data dataFinal, Local localInicial, Local localFinal, Client clientReserva, Moto motoReserva){
+    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, String dataInicial, String horaInicial, String dataFinal, String horaFinal, Local localInicial, Local localFinal, Client clientReserva, String idMoto){
         this.id = id;
         this.preu = preu;
         this.penalitzacioTemps = penalitzacioTemps;
         this.penalitzacioMoto = penalitzacioMoto;
         this.penalitzacio = penalitzacio;
-        this.dataInicial = dataInicial;
-        this.dataFinal = dataFinal;
+        this.dataInicial = crearData(dataInicial, horaInicial);
+        this.dataFinal = crearData(dataFinal, horaFinal);
         this.localInicial = localInicial;
         this.localFinal = localFinal;
         this.clientReserva = clientReserva;
-        this.motoReserva = motoReserva;
+        this.motoReserva = localFinal.getMoto(idMoto);
     }
     
     public String getId(){
@@ -159,6 +159,12 @@ public class Reserva {
         }
     }
 
+    private Data crearData(String diaComplet, String horaCompleta){
+            String[] aux = diaComplet.split("/");
+            String[] aux2 = horaCompleta.split(":");
+            return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
+    }
+    
     public boolean isActiva() {
         Data dataActual = new Data();
         return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
