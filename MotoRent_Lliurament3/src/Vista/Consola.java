@@ -267,8 +267,34 @@ public class Consola extends DefaultHandler{
      * Mètode cridat quan un Gerent vol comprovar una reserva d'un Client.
      */
     private void opcioComprovarReserva(){
-        escriu("Has comprovat la reserva");
+        int opcio;
+        boolean tornar;
+        escriu("Introdueixi 1 per comprovar un lliurament de moto, 2 per comprovar una entrega.\n");
+        escriu("Opcio: ");
+        opcio = llegeixInt();
+        escriu("\n");
+        do{
+            switch (opcio){
+                case(1):
+                    controlador.lliurarMotoAClient();
+                    tornar = true;
+                    break;
+                case(2):
+                    controlador.tornarMoto();
+                    tornar = true;
+                    break;
+                case(3):
+                    tornar = true;
+                    break;
+                default:
+                    escriu("Introdueixi 1,2 o 3 per tornar enrrere.\n");
+                    opcio = llegeixInt();
+                    tornar = false;
+                    break;
     }
+        }while(!tornar);
+    }
+    
     
     /**
      * Mètode cridat quan un Gerent vol actualitzar l'estat d'una Moto.
