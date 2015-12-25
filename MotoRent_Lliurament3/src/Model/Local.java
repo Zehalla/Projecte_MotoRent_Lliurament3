@@ -5,7 +5,6 @@
  */
 package Model;
 
-import Model.Estats.EstatMoto;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -184,7 +183,10 @@ public class Local {
     public int getNMotos(){
         return llistaMotos.size();
     }  
-    
+    /**
+     * Metode que calcula el percentatge d'ocupacio del local i determina si s'han d'importar motos o exportar-les en funcio del nombre de motos del local i del seu percentatge d'ocupacio
+     * @return accio a emprendre
+     */
     String gestionarLocal() {
         String accio = "Cap";
         int ocupacioPercent;
@@ -202,7 +204,10 @@ public class Local {
         }
         return accio;
     }
-
+    /**
+     * Metode que demana al gerent quantes motos vol importar, es comprova que el nombre demanat sigui valid
+     * @return motosAImportar
+     */
     int demanarNombreMotosAImportar() {
         int motosAImportar, minim;
         ocupacio = llistaMotos.size();
@@ -226,7 +231,10 @@ public class Local {
         }
         return motosAImportar;
     }
-
+    /**
+     * Metode que demana al gerent quantes motos vol exportar, es comprova que el nombre demanat sigui valid
+     * @return motosAExportar
+     */
     int demanarNombreMotosAExportar() {
         boolean error = true;
         String tmp;
@@ -249,14 +257,20 @@ public class Local {
         }
         return motosAExportar;
     }
-
+    /**
+     * Metode que informa al gerent sobre quantes motos s'importaran al local
+     * @param motosAImportar 
+     */
     public void mostrarInfoImportacio(int motosAImportar) {
         Consola.escriu("S'importaran ");
         Consola.escriu(motosAImportar);
         Consola.escriu(" motos del local:\n");
         Consola.escriu(direccioLocal.toString());
     }
-
+    /**
+     * Metode que agafa la primera moto disponible que troba en el local
+     * @return 
+     */
     public Moto getMotoDisponible() {
         String disponible;
         for (Moto mi: llistaMotos){
@@ -267,14 +281,21 @@ public class Local {
         }
         return null;
     }
-
+    /**
+     * Metode que informa al gerent sobre quantes motos s'exportaran del local
+     * @param motosAExportar 
+     */
     public void mostrarInfoExportacio(int motosAExportar) {
         Consola.escriu("S'exportaran ");
         Consola.escriu(motosAExportar);
         Consola.escriu(" motos del local:\n");
         Consola.escriu(direccioLocal.toString());
     }
-
+    /**
+     * Metode que calcula quantes motos es poden importar del local
+     * @param nombreMotosDisponibles
+     * @return nombreMotosImportables
+     */
     public int calcMotosImportables(int nombreMotosDisponibles) {
         int nombreMotosImportables, nombreMotosNoImportables;
         ocupacio = llistaMotos.size();
@@ -285,7 +306,10 @@ public class Local {
         nombreMotosImportables = ocupacio - nombreMotosNoImportables;
         return nombreMotosImportables;
     }
-
+    /**
+     * Metode que calcula quanta capacitat lliure te el local
+     * @return capacitatDisponible 
+     */
     public int getCapacitatDisponible() {
         int capacitatDisponible = 0;
         ocupacio = llistaMotos.size();
@@ -294,7 +318,10 @@ public class Local {
         }
         return capacitatDisponible;
     }
-
+    /**
+     * Metode que exporta una moto al local indicat
+     * @param localPerExportar 
+     */
     void exportarMoto(Local localPerExportar) {
         Moto motoExportar;
         motoExportar = getMotoDisponible();
@@ -302,7 +329,10 @@ public class Local {
         eliminarMoto(motoExportar);
         localPerExportar.afegirMoto(motoExportar);
     }
-
+    /**
+     * Metode que importa una moto del local indicat
+     * @param localPerImportar 
+     */
     void importarMoto(Local localPerImportar) {
         Moto motoImportar;
         motoImportar = localPerImportar.getMotoDisponible();

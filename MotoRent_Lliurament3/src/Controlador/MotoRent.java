@@ -492,7 +492,10 @@ public class MotoRent {
             }
         }
     }
-
+    
+    /**
+     * Metode per gestinar la importacio/exportacio de motos de un local
+     */
     public void gestionarLocal() {
         String accio;
         int nombreMotos;
@@ -510,7 +513,10 @@ public class MotoRent {
                 break;
         }
     }
-
+    /**
+     * Metode que importa el nombre de motos pasat per parametre
+     * @param motosAImportar 
+     */
     private void importarMotos(int motosAImportar) {
         Local localPerImportar;
         localPerImportar = getLocalAmbMesMotosDisponibles();
@@ -522,7 +528,10 @@ public class MotoRent {
         }
         
     }
-
+    /**
+     * Metode que exporta el nombre de motos pasat per parametre
+     * @param motosAExportar 
+     */
     private void exportarMotos(int motosAExportar) {
         Local localPerExportar;
         localPerExportar = getLocalAmbMesCapacitatDisponible();
@@ -533,7 +542,10 @@ public class MotoRent {
             Consola.escriu("No hi ha locals per exportar.\n");
         }
     }
-
+    /**
+     * Metode que cerca el local que dispon de mes motos disponibles
+     * @return localPerImportar
+     */
     private Local getLocalAmbMesMotosDisponibles() {
         int nombreMotosDisponibles, comparador;
         Local localPerImportar = null;
@@ -548,7 +560,10 @@ public class MotoRent {
         }
         return localPerImportar;
     }
-
+    /**
+     * Metode que cerca el local que disposa de mes capacitat disponible
+     * @return localPerExportar
+     */
     private Local getLocalAmbMesCapacitatDisponible() {
         int capacitatDisponible, comparador;
         Local localPerExportar = null;
