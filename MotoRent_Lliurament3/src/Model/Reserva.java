@@ -37,6 +37,20 @@ public class Reserva {
         this.clientReserva = clientReserva;
         this.motoReserva = localFinal.getMoto(idMoto);
     }
+        //Constructor necessari en fer Reserva. esta fet de manera que no te dependencia de dades si es fa desde MotoREnt. 
+    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, String dataInicialS, String dataFinalS, Local localInicial, Local localFinal, Client clientReserva, int numMotoReserva){
+        this.id = id;
+        this.preu = preu;
+        this.penalitzacioTemps = penalitzacioTemps;
+        this.penalitzacioMoto = penalitzacioMoto;
+        this.penalitzacio = penalitzacio;
+        this.dataInicial = new Data(dataInicialS);
+        this.dataFinal = new Data(dataFinalS);
+        this.localInicial = localInicial;
+        this.localFinal = localFinal;
+        this.clientReserva = clientReserva;
+        this.motoReserva = localInicial.getMoto(numMotoReserva); //Si no volem restringir a que sigui un numero de posicio o la id, podem fer un try
+    }
     
     public String getId(){
         return id;
@@ -166,7 +180,22 @@ public class Reserva {
     }
     
     public boolean isActiva() {
-        Data dataActual = new Data();
+        String dataS;
+        Consola.escriu("Introdueix la data 'actual': ");
+        dataS = Consola.llegeixString();
+        Data dataActual = new Data(dataS);
         return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
+    }
+
+    
+    public boolean comprovarDates(){
+        return dataInicial.compara(dataFinal) == -1;
+}
+    public void setEstatMoto(String estat){
+        motoReserva.setEstat(estat);
+    }
+    
+    public void afegirMotoLocalFinal(){
+        localFinal.afegirMoto(motoReserva);
     }
 }

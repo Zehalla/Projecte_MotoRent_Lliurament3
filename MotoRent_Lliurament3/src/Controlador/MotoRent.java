@@ -305,16 +305,15 @@ public class MotoRent {
         boolean correcte  = false;
         int idLocalInici = 0;
         int idLocalFinal = 0;
+        int idMoto = 0;
         String opcio;
-        String dataIniciS = null, horaIniciS = null;
-        String dataFinalS = null, horaFinalS = null;
+        String dataInicialS = null;
+        String dataFinalS = null;
         Local localInici;
         Local localFinal;
-        Moto moto = null;
-        Data dataInicial = null;
-        Data dataFinal = null;
-        Reserva r;
+        Reserva r = null;
         ArrayList<Local> auxiliar;
+        Client clientReserva = (Client) usuariLogat;
         
         if (!comprovacionsInicials()){
             return;
@@ -338,7 +337,6 @@ public class MotoRent {
         Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
         Consola.escriu(localInici.mostrarMotosDisponibles());
         int num = localInici.getNMotosDisp();
-        int idMoto = 0;
         correcte = false;
         while (!correcte) {
             Consola.escriu("\nSelecciona una moto: ");
@@ -349,7 +347,7 @@ public class MotoRent {
                 Consola.escriu("Escriu el valor un altre cop.\n");
             }
         }
-        moto = localInici.getMoto(idMoto-1);
+        //moto = localInici.getMoto(idMoto-1);
         //------------------LOCAL DE DESTI------------------
         auxiliar = crearLlistaAuxiliarLocalsFinals();
          
@@ -364,28 +362,28 @@ public class MotoRent {
             } else {
                 Consola.escriu("Escriu el valor un altre cop.");
             }
+   
         }
         localFinal = auxiliar.get(idLocalFinal - 1);
         //------------------DATES------------------
         correcte = false;
         while (!correcte) {
             Consola.escriu("Selecciona la data de sortida (hh/dd/mm/aaaa): ");
-            dataIniciS = Consola.llegeixString();
+            dataInicialS = Consola.llegeixString();
 
             Consola.escriu("Selecciona la data de desti (hh/dd/mm/aaaa): ");
             dataFinalS = Consola.llegeixString();
             
-            dataInicial = new Data(dataIniciS);
-            dataFinal = new Data(dataFinalS);
+            //CREACIO DE RESERVA 
+            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicialS, dataFinalS, localInici, localFinal, clientReserva, idMoto);            
 
-            
-            if (dataInicial.compara(dataFinal) > 1) {
-                Consola.escriu("Les dades introduides no son correctes: la data final es inferior o igual a la data inicial.\n");
-            } else {
+            if (r.comprovarDates()){
                 correcte = true;
+            }else{
+                Consola.escriu("Les dades introduides no son correctes: la data final es inferior o igual a la data inicial.\n");
             }
-        }
 
+        }
         //------------------CONFIRMACIO------------------
         correcte = false;
         while (!correcte) {
@@ -404,16 +402,11 @@ public class MotoRent {
         }
 
         //------------------CREACIO DE RESERVA------------------
-        moto.setEstat("reservada");
-        localInici.afegirMoto(moto);
-        Client clientReserva = (Client) usuariLogat;
-        lastIDreserva ++;
-        r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicial, dataFinal, localInici, localFinal, clientReserva, moto);
-        r.calcularPreu();
-        Consola.escriu("La reserva te un preu de: ");
-        Consola.escriu(r.getPreu());
-        Consola.escriu("€.\n");
         llistaReserves.add(r);
+        r.setEstatMoto("Reservada");
+        r.afegirMotoLocalFinal();
+        lastIDreserva ++;
+        r.calcularPreu();
         clientReserva.afegirReserva(r);
 
         Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
@@ -472,23 +465,23 @@ public class MotoRent {
         boolean trobat = false;
         String reservaID;
         Reserva r = null;
+        Boolean stop = false;
         
-        while(!correcte){
+        while(!correcte && !stop){
             Consola.escriu("Introdueix la ID de la reserva: ");
             reservaID = Consola.llegeixString();
             
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
-                if(r.isActiva()){
                     trobat = r.getId().equals(reservaID);  
                 }
-            }
             if(trobat){
                 r.cobrarReserva();
                 correcte = true;
             }else{
                 Consola.escriu("No s'ha trobat la reserva. Comprovi que la ID sigui correcte.");
+                stop = !Consola.reintroduirDades();
             }
         }
     }
@@ -566,28 +559,31 @@ public class MotoRent {
     
     public void lliurarMotoAClient(){
         String idReserva;
+        String idClient;
         boolean trobat = false;
         Reserva r = null;
         boolean correcte = false;
+        boolean stop = false;
         
-        while(!correcte){
+        while(!correcte && !stop){
+            Consola.escriu("Introdueix l'identificador del client: ");
+            idClient = Consola.llegeixString();
+            
             Consola.escriu("Introdueix l'identificador de la reserva: ");
             idReserva = Consola.llegeixString();
-        
         
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
-                if(r.isActiva()){
-                    trobat = r.getId().equals(idReserva);  
+                trobat = r.getId().equals(idReserva) && r.getClientReserva().getId().equals(idClient);  
                 }
-            }
             if(trobat){
                 r.getLocalInicial().eliminarMoto(r.getMotoReserva());
-                Consola.escriu("La reserva es correcte.");
+                Consola.escriu("La reserva es correcte.\n");
                 correcte = true;
             }else{
-                Consola.escriu("No s'ha trobat la reserva demanada.");
+                Consola.escriu("No s'ha trobat la reserva demanada.\n");
+                stop = !Consola.reintroduirDades();
             }
         }
     }
