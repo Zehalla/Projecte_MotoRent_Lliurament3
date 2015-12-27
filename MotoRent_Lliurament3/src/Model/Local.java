@@ -45,6 +45,10 @@ public class Local {
             return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
     }
     
+    /**
+     * UC 3_5 Metode que compta el numero de motos de tipus disponibles de un local.
+     * @return numero de motos que son disponibles per a llogar.
+     */
     public int getNMotosDisp(){
         int NMotosDisp = 0;
         for (Moto m : llistaMotos) { 

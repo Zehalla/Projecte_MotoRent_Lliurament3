@@ -114,6 +114,10 @@ public class Reserva {
         return str;
     }
 
+    /**
+     * UC 3_9 Metode que estableix el preu de una reserva basant-se en les dates, sense tenir en compte 
+     * penalitzacions. Tambe es te en compte si el client es vip.
+     */
     public void calcularPreu() {
         int hores;
         hores = dataFinal.calcularDiferencia(dataInicial);
@@ -130,11 +134,22 @@ public class Reserva {
         Consola.escriu(hores%24);
         Consola.escriu(" hora/es.\n");
     }
-    
+    /**
+     * UC 5_1 Metode que calcula el preu final de la reserva, tenint en compte totes les possibles penalitzacions.
+     * Tambe canvia el estat de la moto.
+     */
     public void cobrarReserva() {
+        String horaActualS;
+        
+        Consola.escriu("Introdueix la data 'actual' (hh/dd/mm/aaaa):"); 
+        horaActualS = Consola.llegeixString();
+        Data dataEntrega = new Data(horaActualS); 
+        
+        //Data dataEntrega = new Data(); //es pot seleccionar aquesta opcio si es vol fer automatic.
+        
         float diferencia;
         clientReserva.setEstat("NO RESERVA");
-        Data dataEntrega = new Data(); 
+        
         diferencia = dataEntrega.calcularDiferencia(dataFinal);
         
         if(diferencia > 0.0f){
@@ -146,6 +161,10 @@ public class Reserva {
         gestionarAveria();
     }
     
+    /**
+     * UC 5_1_2 Metode que gestiona possibles averies de la moto quan el client la retorna de la reserva.
+     * En cas de tenir averies, es gestiona la averia, i si fa falta, es desactiva el client.
+     */
     private void gestionarAveria() {
         String opcio;
         boolean error = true;
@@ -179,22 +198,37 @@ public class Reserva {
             return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
     }
     
-    public boolean isActiva() {
-        String dataS;
-        Consola.escriu("Introdueix la data 'actual': ");
-        dataS = Consola.llegeixString();
-        Data dataActual = new Data(dataS);
+    
+    /**
+     * UC 4_1 Metode que comprova si una reserva es activa segons la hora passada per parametre.
+     * La hora passada per parametre sera o la hora actual o una introduida per un usuari.
+     * @param dataActualS Data que es suposa la actual.
+     * @return Retorna si aquesta data es troba dins del periode de la reserva.
+     */
+    public boolean isActiva(String dataActualS) {
+        Data dataActual = new Data(dataActualS);
         return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
     }
 
-    
+    /**
+     * Metode que s'utilitza en ferReserva per comprovar si les dates son correctes. 
+     * @return True si les dates son correctes.
+     */
     public boolean comprovarDates(){
         return dataInicial.compara(dataFinal) == -1;
-}
+    }
+    
+    /**
+     * Metode que posa el estat de la moto desde reserva. 
+     * @param estat estat de la moto de la reserva que volem posar.
+     */
     public void setEstatMoto(String estat){
         motoReserva.setEstat(estat);
     }
     
+    /**
+     *Metode que posa la moto de la reserva al seu local final.
+     */
     public void afegirMotoLocalFinal(){
         localFinal.afegirMoto(motoReserva);
     }
