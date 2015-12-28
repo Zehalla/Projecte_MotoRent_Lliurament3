@@ -93,10 +93,9 @@ public class Local {
         return llistaMotos.get(i);
     }
     
-    public Moto getMoto(String id){
-        int i;
-        for (i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(id)){
+    public Moto getMoto(String id){ 
+        for (int i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(id) && llistaMotos.get(i).getEstat() == "Disponible"){
                 return llistaMotos.get(i);
             }
         }
@@ -317,7 +316,7 @@ public class Local {
     
     public boolean checkID(String motoId){
         for (int i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(motoId)){
+            if (llistaMotos.get(i).getIdMoto().equals(motoId) && llistaMotos.get(i).getEstat() == "Disponible"){
                 return true;
             }
         }

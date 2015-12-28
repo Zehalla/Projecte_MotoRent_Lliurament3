@@ -321,8 +321,7 @@ public class MotoRent {
         Client clientReserva = (Client) usuariLogat;
         Local l = null;
         Boolean trobat = false;
-        Boolean stop = false;
-        
+
         if (!comprovacionsInicials()){
             return;
         }
