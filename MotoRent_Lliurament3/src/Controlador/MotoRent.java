@@ -6,6 +6,7 @@
 package Controlador;
 
 import Excepcions.LlistaBuidaException;
+import Excepcions.LlistaPlenaException;
 import Vista.Consola;
 
 import Model.Usuari;
@@ -48,7 +49,11 @@ public class MotoRent {
     }
     
     public void guardarMoto(String idMoto, String matricula, String model, String color, String estatMoto){
-        llistaLocals.get(llistaLocals.size()-1).afegirMoto(idMoto, matricula, model, color, estatMoto);
+        try{
+            llistaLocals.get(llistaLocals.size()-1).afegirMoto(idMoto, matricula, model, color, estatMoto);
+        }catch(LlistaPlenaException ex){
+            Consola.escriu(ex.getMessage());
+        }
     }
     
     public void guardarReserva(String id, String idClient, String idMoto, String cost, String falta, String local_inici, String local_fi, String dataInicial, String horaInicial, String dataFinal, String horaFinal){
@@ -305,7 +310,7 @@ public class MotoRent {
         boolean correcte  = false;
         int idLocalInici = 0;
         int idLocalFinal = 0;
-        int idMoto = 0;
+        String idMoto;
         String opcio;
         String dataInicialS = null;
         String dataFinalS = null;
@@ -336,18 +341,8 @@ public class MotoRent {
         //------------------MOTO------------------
         Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
         Consola.escriu(localInici.mostrarMotosDisponibles());
-        int num = localInici.getNMotosDisp();
-        correcte = false;
-        while (!correcte) {
-            Consola.escriu("\nSelecciona una moto: ");
-            idMoto = Consola.llegeixInt();
-            if (idMoto > 0 && idMoto <= num) {
-                correcte = true;
-            } else {
-                Consola.escriu("Escriu el valor un altre cop.\n");
-            }
-        }
-        //moto = localInici.getMoto(idMoto-1);
+        Consola.escriu("Selecciona la moto que vols llogar (id): ");
+        idMoto = Consola.llegeixString();
         //------------------LOCAL DE DESTI------------------
         auxiliar = crearLlistaAuxiliarLocalsFinals();
          

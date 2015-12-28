@@ -20,6 +20,7 @@ public class Consola extends DefaultHandler{
     private final String[] menuUsuari = {"Menú de l'Usuari:", "1.- Registrar-se.", "2.- Log-in.", "3.- Sortir"};
     private final String[] menuClient = {"Menú del Client:", "1.- Fer reserva d'una moto.", "2.- Modificar reserva.", "3.- Modificar dades personals", "4.- Donar-se de baixa.", "5.- Log-out."};
     private final String[] menuGerent = {"Menú del Gerent:", "1.- Gestionar Local", "2.- Comprovar reserva", "3.- Actualitzar estat moto", "4.- Log-out"};
+    private final String[] menuComprovarReserva = {"Menú Comprovar Reserva:", "1.- Lliurar una Moto a un Client.", "2.- Retornar una Moto al Local."};
     private final String[] menuAdministrador = {"Menú de l'Administrador:", "1.- Generar Informe Mensual", "2.- Log-out."};
     private static final Scanner scanner = new Scanner(System.in);
     private final MotoRent controlador;
@@ -269,11 +270,12 @@ public class Consola extends DefaultHandler{
     private void opcioComprovarReserva(){
         int opcio;
         boolean tornar;
-        escriu("Introdueixi 1 per comprovar un lliurament de moto, 2 per comprovar una entrega.\n");
-        escriu("Opcio: ");
-        opcio = llegeixInt();
-        escriu("\n");
+
         do{
+            escriu(mostrarMenu(menuComprovarReserva));
+            escriu("Opcio: ");
+            opcio = llegeixInt();   
+            escriu("\n");
             switch (opcio){
                 case(1):
                     controlador.lliurarMotoAClient();

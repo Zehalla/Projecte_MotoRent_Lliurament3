@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Excepcions.LlistaPlenaException;
 import Vista.Consola;
 
 /**
@@ -38,7 +39,7 @@ public class Reserva {
         this.motoReserva = localFinal.getMoto(idMoto);
     }
         //Constructor necessari en fer Reserva. esta fet de manera que no te dependencia de dades si es fa desde MotoREnt. 
-    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, String dataInicialS, String dataFinalS, Local localInicial, Local localFinal, Client clientReserva, int numMotoReserva){
+    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, String dataInicialS, String dataFinalS, Local localInicial, Local localFinal, Client clientReserva, String numMotoReserva){
         this.id = id;
         this.preu = preu;
         this.penalitzacioTemps = penalitzacioTemps;
@@ -196,6 +197,11 @@ public class Reserva {
     }
     
     public void afegirMotoLocalFinal(){
-        localFinal.afegirMoto(motoReserva);
+        try{
+            localFinal.afegirMoto(motoReserva);
+        }catch (LlistaPlenaException ex){
+            Consola.escriu(ex.getMessage());
+        }
+        
     }
 }

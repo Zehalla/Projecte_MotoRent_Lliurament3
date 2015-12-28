@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Model.Estats.EstatMoto;
+import Excepcions.LlistaPlenaException;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -128,19 +128,19 @@ public class Local {
         }  
     }
     
-    public void afegirMoto(Moto moto){
+    public void afegirMoto(Moto moto) throws LlistaPlenaException{
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(moto);
         }else{
-            //throw new LlistaPlenaException();
+            throw new LlistaPlenaException();
         }
     }
     
-    public void afegirMoto(String id, String matricula, String model, String color, String estat){
+    public void afegirMoto(String id, String matricula, String model, String color, String estat) throws LlistaPlenaException{
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(new Moto(id, matricula, model, color, estat));
         }else{
-            //throw new LlistaPlenaException();
+            throw new LlistaPlenaException();
         }
     }
     
@@ -295,19 +295,27 @@ public class Local {
         return capacitatDisponible;
     }
 
-    void exportarMoto(Local localPerExportar) {
+    void exportarMoto(Local localPerExportar){
         Moto motoExportar;
         motoExportar = getMotoDisponible();
         Consola.escriu("Exportant "+ motoExportar.toString() + "\n");
         eliminarMoto(motoExportar);
-        localPerExportar.afegirMoto(motoExportar);
+        try{
+            localPerExportar.afegirMoto(motoExportar);
+        }catch (LlistaPlenaException ex){
+            Consola.escriu(ex.getMessage());
+        }
     }
 
-    void importarMoto(Local localPerImportar) {
+    void importarMoto(Local localPerImportar){
         Moto motoImportar;
         motoImportar = localPerImportar.getMotoDisponible();
         localPerImportar.eliminarMoto(motoImportar);
         Consola.escriu("Important "+ motoImportar.toString() + "\n");
-        afegirMoto(motoImportar);
+        try{
+            afegirMoto(motoImportar);
+        }catch (LlistaPlenaException ex){
+            Consola.escriu(ex.getMessage());
+        }
     }
 }
