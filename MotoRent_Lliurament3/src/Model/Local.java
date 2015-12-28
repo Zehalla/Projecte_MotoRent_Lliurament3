@@ -60,7 +60,7 @@ public class Local {
     }
 
     public String mostrarDadesLocal() {
-        return "\n"+direccioLocal.toString() +"\nCapacitat local: " + capacitat;
+        return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
     }
 
     public String mostrarMotosDisponibles() {
@@ -313,5 +313,14 @@ public class Local {
         localPerImportar.eliminarMoto(motoImportar);
         Consola.escriu("Important "+ motoImportar.toString() + "\n");
         afegirMoto(motoImportar);
+    }
+    
+    public boolean checkID(String motoId){
+        for (int i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(motoId)){
+                return true;
+            }
+        }
+        return false;
     }
 }

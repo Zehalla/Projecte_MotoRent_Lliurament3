@@ -308,17 +308,20 @@ public class MotoRent {
     */
    public void ferReserva(){
         boolean correcte  = false;
-        int idLocalInici = 0;
-        int idLocalFinal = 0;
-        int idMoto = 0;
+        String idLocalInici;
+        String idLocalFinal;
+        String idMoto = "";
         String opcio;
         String dataInicialS;
         String dataFinalS;
-        Local localInici;
-        Local localFinal;
+        Local localInici = null;
+        Local localFinal = null;
         Reserva r = null;
         ArrayList<Local> auxiliar;
         Client clientReserva = (Client) usuariLogat;
+        Local l = null;
+        Boolean trobat = false;
+        Boolean stop = false;
         
         if (!comprovacionsInicials()){
             return;
@@ -329,24 +332,30 @@ public class MotoRent {
         imprimirLlistaLocals(auxiliar);
             
         while (!correcte){
-            Consola.escriu("\nSelecciona el local de sortida: ");
-            idLocalInici = Consola.llegeixInt();
-            if (idLocalInici > 0 && idLocalInici <= auxiliar.size()) {
+            Consola.escriu("\nEscriu la ID del local de sortida: ");
+            idLocalInici = Consola.llegeixString();
+
+            Iterator itr = auxiliar.iterator();
+            while(itr.hasNext() && !trobat){
+                l = (Local) itr.next();
+                trobat = l.getIdLocal().equals(idLocalInici);
+            }
+            if (trobat){
                 correcte = true;
-            } else {
+                localInici = getLocal(auxiliar,idLocalInici);
+            }else{
                 Consola.escriu("Escriu el valor un altre cop.\n");
             }
         }
-        localInici = auxiliar.get(idLocalInici - 1);
         //------------------MOTO------------------
         Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
         Consola.escriu(localInici.mostrarMotosDisponibles());
-        int num = localInici.getNMotosDisp();
+        //int num = localInici.getNMotosDisp();
         correcte = false;
         while (!correcte) {
             Consola.escriu("\nSelecciona una moto: ");
-            idMoto = Consola.llegeixInt();
-            if (idMoto > 0 && idMoto <= num) {
+            idMoto = Consola.llegeixString();
+            if (localInici.checkID(idMoto)) {
                 correcte = true;
             } else {
                 Consola.escriu("Escriu el valor un altre cop.\n");
@@ -358,19 +367,26 @@ public class MotoRent {
         imprimirLlistaLocals(auxiliar);
             
         correcte = false;
+        trobat = false;
         while (!correcte) {
             Consola.escriu("\nSelecciona el local de desti: ");
-            idLocalFinal = Consola.llegeixInt();
-            if (idLocalFinal > 0 && idLocalFinal <= auxiliar.size()) {
-                correcte = true;
-            } else {
-                Consola.escriu("Escriu el valor un altre cop.");
+            idLocalFinal = Consola.llegeixString();
+            
+            Iterator itr = auxiliar.iterator();
+            while(itr.hasNext() && !trobat){
+                l = (Local) itr.next();
+                trobat = l.getIdLocal().equals(idLocalFinal);
             }
-   
+            if (trobat){
+                localFinal = getLocal(auxiliar,idLocalFinal);
+                correcte = true;
+            }else{
+                Consola.escriu("Escriu el valor un altre cop.\n");
+            }  
         }
-        localFinal = auxiliar.get(idLocalFinal - 1);
         //------------------DATES------------------
         correcte = false;
+        trobat = false;
         while (!correcte) {
             Consola.escriu("Selecciona la data de sortida (hh/dd/mm/aaaa): ");
             dataInicialS = Consola.llegeixString();
@@ -379,7 +395,7 @@ public class MotoRent {
             dataFinalS = Consola.llegeixString();
             
             //CREACIO DE RESERVA 
-            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicialS, dataFinalS, localInici, localFinal, clientReserva, idMoto -1 );            
+            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicialS, dataFinalS, localInici, localFinal, clientReserva, idMoto);            
 
             if (r.comprovarDates()){
                 correcte = true;
@@ -389,6 +405,8 @@ public class MotoRent {
 
         }
         //------------------CONFIRMACIO------------------
+        r.calcularPreu();
+        
         correcte = false;
         while (!correcte) {
             Consola.escriu("Vols confirmar la reserva amb aquestes dates?(Y/N): ");
@@ -410,12 +428,10 @@ public class MotoRent {
         r.setEstatMoto("Reservada");
         r.afegirMotoLocalFinal();
         lastIDreserva ++;
-        r.calcularPreu();
         clientReserva.afegirReserva(r);
 
         Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
-        
-    }
+   }
    
    /**
     * UC 3_1 Metode que fa totes les comprovacions possibles per assegurar que la reserva es correcte.
@@ -480,7 +496,6 @@ public class MotoRent {
     private void imprimirLlistaLocals(ArrayList<Local> llista){
         Consola.escriu("\nLlistat de Locals Disponibles: \n");
         for (int k = 0; k < llista.size(); k++) {
-            Consola.escriu("\nLocal n" + (k + 1) + ": ");
             Consola.escriu(llista.get(k).mostrarDadesLocal() + "\n");
         }
     }
@@ -498,13 +513,17 @@ public class MotoRent {
         String idClient;
         
         while(!correcte && !stop){
-            Consola.escriu("Introdueix la ID de la reserva: ");
+            Consola.escriu("Introdueix l'identificador de la reserva: ");
             reservaID = Consola.llegeixString();
             
             Consola.escriu("Introdueix l'identificador del client: ");
             idClient = Consola.llegeixString();
             
             Iterator itr = llistaReserves.iterator();
+            while(itr.hasNext() && !trobat){
+                
+            }
+            
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
                     trobat = r.getId().equals(reservaID) && r.getClientReserva().getId().equals(idClient);    
@@ -627,6 +646,15 @@ public class MotoRent {
                 stop = !Consola.reintroduirDades();
             }
         }
+    }
+
+    private Local getLocal(ArrayList<Local> auxiliar, String idLocal) {
+        for (int i = 0; i < auxiliar.size(); i++){
+            if (auxiliar.get(i).getIdLocal().equals(idLocal)){
+                return auxiliar.get(i);
+            }
+        }
+        return null;
     }
 }
 
