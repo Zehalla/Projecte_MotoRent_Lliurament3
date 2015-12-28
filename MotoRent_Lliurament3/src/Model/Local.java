@@ -45,6 +45,10 @@ public class Local {
             return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
     }
     
+    /**
+     * UC 3_5 Metode que compta el numero de motos de tipus disponibles de un local.
+     * @return numero de motos que son disponibles per a llogar.
+     */
     public int getNMotosDisp(){
         int NMotosDisp = 0;
         for (Moto m : llistaMotos) { 
@@ -56,7 +60,7 @@ public class Local {
     }
 
     public String mostrarDadesLocal() {
-        return "\n"+direccioLocal.toString() +"\nCapacitat local: " + capacitat;
+        return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
     }
 
     public String mostrarMotosDisponibles() {
@@ -89,10 +93,9 @@ public class Local {
         return llistaMotos.get(i);
     }
     
-    public Moto getMoto(String id){
-        int i;
-        for (i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(id)){
+    public Moto getMoto(String id){ 
+        for (int i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(id) && llistaMotos.get(i).getEstat() == "Disponible"){
                 return llistaMotos.get(i);
             }
         }
@@ -317,5 +320,14 @@ public class Local {
         }catch (LlistaPlenaException ex){
             Consola.escriu(ex.getMessage());
         }
+    }
+    
+    public boolean checkID(String motoId){
+        for (int i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(motoId) && llistaMotos.get(i).getEstat() == "Disponible"){
+                return true;
+            }
+        }
+        return false;
     }
 }

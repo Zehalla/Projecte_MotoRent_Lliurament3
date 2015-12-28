@@ -306,20 +306,27 @@ public class MotoRent {
         return trobat;
     }
    
+   /**
+    * UC 3 Metode de client que guia a un usuari fins a la creacio de una reserva. Es contemplent tots els casos posibles.
+    * El codi es divideix en diferents parts: comprovacions inicials , seleccio del local inicial, seleccio de la moto, seleccio del
+    * local de desti, seleccio de hores, confimacio i processament de la reserva.
+    */
    public void ferReserva(){
         boolean correcte  = false;
-        int idLocalInici = 0;
-        int idLocalFinal = 0;
-        String idMoto;
+        String idLocalInici;
+        String idLocalFinal;
+        String idMoto = "";
         String opcio;
-        String dataInicialS = null;
-        String dataFinalS = null;
-        Local localInici;
-        Local localFinal;
+        String dataInicialS;
+        String dataFinalS;
+        Local localInici = null;
+        Local localFinal = null;
         Reserva r = null;
         ArrayList<Local> auxiliar;
         Client clientReserva = (Client) usuariLogat;
-        
+        Local l = null;
+        Boolean trobat = false;
+
         if (!comprovacionsInicials()){
             return;
         }
@@ -329,39 +336,63 @@ public class MotoRent {
         imprimirLlistaLocals(auxiliar);
             
         while (!correcte){
-            Consola.escriu("\nSelecciona el local de sortida: ");
-            idLocalInici = Consola.llegeixInt();
-            if (idLocalInici > 0 && idLocalInici <= auxiliar.size()) {
+            Consola.escriu("\nEscriu la ID del local de sortida: ");
+            idLocalInici = Consola.llegeixString();
+
+            Iterator itr = auxiliar.iterator();
+            while(itr.hasNext() && !trobat){
+                l = (Local) itr.next();
+                trobat = l.getIdLocal().equals(idLocalInici);
+            }
+            if (trobat){
+                correcte = true;
+                localInici = getLocal(auxiliar,idLocalInici);
+            }else{
+                Consola.escriu("Escriu el valor un altre cop.\n");
+            }
+        }
+        //------------------MOTO------------------
+        Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
+        Consola.escriu(localInici.mostrarMotosDisponibles());
+
+        //int num = localInici.getNMotosDisp();
+        correcte = false;
+        while (!correcte) {
+            Consola.escriu("\nSelecciona una moto: ");
+            idMoto = Consola.llegeixString();
+            if (localInici.checkID(idMoto)) {
                 correcte = true;
             } else {
                 Consola.escriu("Escriu el valor un altre cop.\n");
             }
         }
-        localInici = auxiliar.get(idLocalInici - 1);
-        //------------------MOTO------------------
-        Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
-        Consola.escriu(localInici.mostrarMotosDisponibles());
-        Consola.escriu("Selecciona la moto que vols llogar (id): ");
-        idMoto = Consola.llegeixString();
+
         //------------------LOCAL DE DESTI------------------
         auxiliar = crearLlistaAuxiliarLocalsFinals();
          
         imprimirLlistaLocals(auxiliar);
             
         correcte = false;
+        trobat = false;
         while (!correcte) {
             Consola.escriu("\nSelecciona el local de desti: ");
-            idLocalFinal = Consola.llegeixInt();
-            if (idLocalFinal > 0 && idLocalFinal <= auxiliar.size()) {
-                correcte = true;
-            } else {
-                Consola.escriu("Escriu el valor un altre cop.");
+            idLocalFinal = Consola.llegeixString();
+            
+            Iterator itr = auxiliar.iterator();
+            while(itr.hasNext() && !trobat){
+                l = (Local) itr.next();
+                trobat = l.getIdLocal().equals(idLocalFinal);
             }
-   
+            if (trobat){
+                localFinal = getLocal(auxiliar,idLocalFinal);
+                correcte = true;
+            }else{
+                Consola.escriu("Escriu el valor un altre cop.\n");
+            }  
         }
-        localFinal = auxiliar.get(idLocalFinal - 1);
         //------------------DATES------------------
         correcte = false;
+        trobat = false;
         while (!correcte) {
             Consola.escriu("Selecciona la data de sortida (hh/dd/mm/aaaa): ");
             dataInicialS = Consola.llegeixString();
@@ -380,6 +411,8 @@ public class MotoRent {
 
         }
         //------------------CONFIRMACIO------------------
+        r.calcularPreu();
+        
         correcte = false;
         while (!correcte) {
             Consola.escriu("Vols confirmar la reserva amb aquestes dates?(Y/N): ");
@@ -401,13 +434,17 @@ public class MotoRent {
         r.setEstatMoto("Reservada");
         r.afegirMotoLocalFinal();
         lastIDreserva ++;
-        r.calcularPreu();
         clientReserva.afegirReserva(r);
 
         Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
-        
-    }
+   }
    
+   /**
+    * UC 3_1 Metode que fa totes les comprovacions possibles per assegurar que la reserva es correcte.
+    * Contempla dos casos: que el usuari no sigui un client (no possible en teoria donat que la opcio de 
+    * reservar nomes la te el usuari) i si el usuari ja te una reserva en curs.
+    * @return si el usuari pot fer una reserva.
+    */
     private boolean comprovacionsInicials(){
        if(!usuariLogat.getTipus().equals("Client")){
             Consola.escriu("Error. El usuari no es un client. No es pot completar la reserva.");
@@ -421,6 +458,12 @@ public class MotoRent {
         return true;
     }
     
+    /**
+     * UC 3_2 Per tal de fer mes clar el codi, creem una llista ja filtrada de manera que nomes conte locals que poden ser
+     * locals inicials. Per tant, es un subconjunt de la llista total de locals. Per a saber si un local pot ser local incial
+     * mirem si te com a minim una moto que es pugui llogar. Es crida al UC 3_5 getNMotosDisp
+     * @return tota la llista de locals inicials
+     */
     private ArrayList crearLlistaAuxiliarLocalsInicials(){
         Iterator itr = llistaLocals.iterator();
         ArrayList <Local> auxiliar = new ArrayList<>();
@@ -434,6 +477,12 @@ public class MotoRent {
         return auxiliar;
     }
     
+    /**
+     * UC 3_7 Per tal de fer mes clar el codi, creem una llista ja filtrada de manera que nomes conte els locals que poden ser
+     * locals finals. Per tant , es un subconjunt de la llista total de locals. Per a saber si un local pot ser local final
+     * mirem si te una plaça lliure com a minim. Es crida a getNMotos que retorna el numero de motos totals del local. 
+     * @return tota la llista de locals finals
+     */
     private ArrayList crearLlistaAuxiliarLocalsFinals(){
         Iterator itr2 = llistaLocals.iterator();
         ArrayList<Local> auxiliar = new ArrayList <>();
@@ -446,30 +495,44 @@ public class MotoRent {
         return auxiliar;
     }
     
+    /**
+     * UC 3_3 Metode que mostra una llista de objectes tipus local. 
+     * @param llista llista que es vol mostrar.
+     */
     private void imprimirLlistaLocals(ArrayList<Local> llista){
         Consola.escriu("\nLlistat de Locals Disponibles: \n");
         for (int k = 0; k < llista.size(); k++) {
-            Consola.escriu("\nLocal n" + (k + 1) + ": ");
             Consola.escriu(llista.get(k).mostrarDadesLocal() + "\n");
         }
     }
     
-
+    /**
+     * Metode de gerent que engloba totes les accions que es fan quan un client retorna una moto.
+     * Es comprova la reserva, i si es troba, es cobra la reserva, i es cobren les possibles penalitzacions.
+     */
     public void tornarMoto(){
         boolean correcte = false;
         boolean trobat = false;
         String reservaID;
         Reserva r = null;
         Boolean stop = false;
+        String idClient;
         
         while(!correcte && !stop){
-            Consola.escriu("Introdueix la ID de la reserva: ");
+            Consola.escriu("Introdueix l'identificador de la reserva: ");
             reservaID = Consola.llegeixString();
+            
+            Consola.escriu("Introdueix l'identificador del client: ");
+            idClient = Consola.llegeixString();
             
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
+                
+            }
+            
+            while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
-                    trobat = r.getId().equals(reservaID);  
+                    trobat = r.getId().equals(reservaID) && r.getClientReserva().getId().equals(idClient);    
                 }
             if(trobat){
                 r.cobrarReserva();
@@ -551,7 +614,10 @@ public class MotoRent {
         return localPerExportar;
     }
 
-    
+    /**
+     * Metode de gerent que engloba totes les accions que es fan quan el client ve a recollir una moto del local.
+     * Es comprova la reserva, i es treu la moto del local incial.
+     */
     public void lliurarMotoAClient(){
         String idReserva;
         String idClient;
@@ -559,8 +625,12 @@ public class MotoRent {
         Reserva r = null;
         boolean correcte = false;
         boolean stop = false;
+        String horaActual;
         
         while(!correcte && !stop){
+            Consola.escriu("Introdueix la data 'actual' (hh/dd/mm/aaaa):");
+            horaActual = Consola.llegeixString();
+            
             Consola.escriu("Introdueix l'identificador del client: ");
             idClient = Consola.llegeixString();
             
@@ -570,8 +640,9 @@ public class MotoRent {
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
-                trobat = r.getId().equals(idReserva) && r.getClientReserva().getId().equals(idClient);  
-                }
+                trobat = r.getId().equals(idReserva) && r.getClientReserva().getId().equals(idClient) && r.isActiva(horaActual);      
+            }
+            
             if(trobat){
                 r.getLocalInicial().eliminarMoto(r.getMotoReserva());
                 Consola.escriu("La reserva es correcte.\n");
@@ -582,10 +653,15 @@ public class MotoRent {
             }
         }
     }
+
+    private Local getLocal(ArrayList<Local> auxiliar, String idLocal) {
+        for (int i = 0; i < auxiliar.size(); i++){
+            if (auxiliar.get(i).getIdLocal().equals(idLocal)){
+                return auxiliar.get(i);
+            }
+        }
+        return null;
+    }
 }
-    
-    //--------------------------------------------------------------------
-    //-----------------FI FER RESERVA-------------------------------------
-    //--------------------------------------------------------------------
 
 

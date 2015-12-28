@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- *
+ * Classe que conté la nostra especificació de Data segons el problema.
  * @author Oriol
  */
 public class Data{
@@ -41,6 +41,10 @@ public class Data{
         this.segon = segon;
     } 
     
+    /**
+     * Metode que construeix una nova data a partir d'un string.
+     * @param dataS string de format hh/dd/mm/aaaa.
+     */
     public Data(String dataS){
         String[] sliced = dataS.split("/");
         this.any = sliced[3];
