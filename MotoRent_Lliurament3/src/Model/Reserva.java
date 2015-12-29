@@ -138,8 +138,13 @@ public class Reserva {
         
         if(diferencia > 0.0f){
             penalitzacio = diferencia*2;
+            Consola.escriu("La moto s'ha entregat amb retras.\n La reserva tindra un preu adicional de ");
+            Consola.escriu(penalitzacio);
             penalitzacioTemps = true;
-            preu += penalitzacio;   
+            preu += penalitzacio;
+            Consola.escriu("€ tinguent un preu final de ");
+            Consola.escriu(preu);
+            Consola.escriu("€.\n");
         }
         
         gestionarAveria();
@@ -170,6 +175,9 @@ public class Reserva {
                 
                 preu += reparacio;
                 penalitzacioMoto = true;
+                Consola.escriu("La reserva tindra un preu final de");
+                Consola.escriu(preu);
+                Consola.escriu("€.\n");
                 
                 clientReserva.afegirFalta();
             }  
@@ -181,11 +189,12 @@ public class Reserva {
      * UC 4_1 Metode que comprova si una reserva es activa segons la hora passada per parametre.
      * La hora passada per parametre sera o la hora actual o una introduida per un usuari.
      * @param diaActual Data que es suposa la actual.
+     * @param horaActual
      * @return Retorna si aquesta data es troba dins del periode de la reserva.
      */
     public boolean isActiva(String diaActual, String horaActual) {
         Data dataActual = Data.crearData(diaActual, horaActual);
-        return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
+        return dataActual.compara(dataInicial) >= 0 && dataActual.compara(dataFinal) <= 0;
     }
 
     /**

@@ -17,8 +17,10 @@ public class Client extends Usuari{
 
     /**
      * Constructor buit usat a l'hora de registrar un nou client
+     * @param id
      */
-    public Client(){      
+    public Client(String id){
+        this.id = id;
     }
     /**
      * Constructor d'un client a partir de les dades donades en el fitxer xml

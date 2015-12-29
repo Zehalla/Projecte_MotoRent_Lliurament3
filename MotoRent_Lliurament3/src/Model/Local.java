@@ -368,16 +368,18 @@ public class Local {
             }
         }
         return false;
+    }    
+    /**
+     * Mètode que retorna el Gerent que gestiona el Local.
+     * @return 
+     */
+    public Gerent getGestor() {
+        return gestor;
     }
     
     //////////////////////GETTERS I SETTERS
     
-    
-    public Gerent getGestor() {
-        return gestor;
-}
-    
-        public String getIdLocal(){
+    public String getIdLocal(){
         return idLocal;
     }
     
