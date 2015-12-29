@@ -59,14 +59,6 @@ public class Local {
     }
 
     /**
-     * Metode que mostre la info del local en un string. No ho escriu a la consola, nomes ho retorna.
-     * @return String que conte tota la informacio de local.
-     */
-    public String mostrarDadesLocal() {
-        return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
-    }
-
-    /**
      * Metode que mostra tota informacio de totes les motos disponibles que te el local una per una. Si no hi ha motos
      * disponibles llavors retorna la excepcio perque no hi ha res per mostrar.
      * @return un String amb el format correcte que conte tota la info de totes les motos del local.
@@ -377,35 +369,53 @@ public class Local {
         return gestor;
     }
     
-    //////////////////////GETTERS I SETTERS
-    
+    /**
+     * Mètode que retorna el id d'un Local donat.
+     * @return 
+     */
     public String getIdLocal(){
         return idLocal;
     }
     
+    /**
+     * Mètode que actualitza i retorna la població actual de Motos d'un Local donat.
+     * @return 
+     */
     public int getOcupacio(){
         this.ocupacio = llistaMotos.size();
         return this.ocupacio;
     }
     
+    /**
+     * Mètode que retorna la capacitat total d'un Local donat.
+     * @return 
+     */
     public int getCapacitat() {
         return capacitat;
     }
     
+    /**
+     * Mètode que retorna la direcció d'un Local donat.
+     * @return 
+     */
     public Direccio getDireccioLocal() {
         return direccioLocal;
     }
 
+    /**
+     * Mètode que modifica la direcció d'un Local donat.
+     * @param direccioLocal 
+     */
     public void setDireccioLocal(Direccio direccioLocal) {
         this.direccioLocal = direccioLocal;
     }
 
+    /**
+     * Mètode que modifica la llista de Motos d'un Local donat.
+     * @param llistaMotos 
+     */
     public void setLlistaMotos(ArrayList<Moto> llistaMotos) {
         this.llistaMotos = llistaMotos;
-    }
-    
-    public int getNMotos(){
-        return llistaMotos.size();
     }
     
 }
