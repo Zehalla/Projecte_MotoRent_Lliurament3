@@ -630,9 +630,6 @@ public class MotoRent {
             idClient = Consola.llegeixString();
             
             Iterator itr = llistaReserves.iterator();
-            while(itr.hasNext() && !trobat){
-                
-            }
             
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
