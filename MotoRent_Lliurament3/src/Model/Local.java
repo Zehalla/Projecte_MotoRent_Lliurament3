@@ -368,42 +368,62 @@ public class Local {
             }
         }
         return false;
-    }
-    
-    //////////////////////GETTERS I SETTERS
-    
-    
+    }    
+    /**
+     * Mètode que retorna el Gerent que gestiona el Local.
+     * @return 
+     */
     public Gerent getGestor() {
         return gestor;
-}
+    }
     
-        public String getIdLocal(){
+    /**
+     * Mètode que retorna el id d'un Local donat.
+     * @return 
+     */
+    public String getIdLocal(){
         return idLocal;
     }
     
+    /**
+     * Mètode que actualitza i retorna la població actual de Motos d'un Local donat.
+     * @return 
+     */
     public int getOcupacio(){
         this.ocupacio = llistaMotos.size();
         return this.ocupacio;
     }
     
+    /**
+     * Mètode que retorna la capacitat total d'un Local donat.
+     * @return 
+     */
     public int getCapacitat() {
         return capacitat;
     }
     
+    /**
+     * Mètode que retorna la direcció d'un Local donat.
+     * @return 
+     */
     public Direccio getDireccioLocal() {
         return direccioLocal;
     }
 
+    /**
+     * Mètode que modifica la direcció d'un Local donat.
+     * @param direccioLocal 
+     */
     public void setDireccioLocal(Direccio direccioLocal) {
         this.direccioLocal = direccioLocal;
     }
 
+    /**
+     * Mètode que modifica la llista de Motos d'un Local donat.
+     * @param llistaMotos 
+     */
     public void setLlistaMotos(ArrayList<Moto> llistaMotos) {
         this.llistaMotos = llistaMotos;
-    }
-    
-    public int getNMotos(){
-        return llistaMotos.size();
     }
     
 }
