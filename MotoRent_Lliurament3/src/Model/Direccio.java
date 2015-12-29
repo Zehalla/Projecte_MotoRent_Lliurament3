@@ -9,9 +9,9 @@ public class Direccio {
     private String poblacio;
     
     
-    public Direccio(){
-        
+    public Direccio(){    
     }
+    
     public Direccio(String carrer, String numero, String codiPostal, String poblacio){
         this.carrer = carrer;
         this.numero = numero;
