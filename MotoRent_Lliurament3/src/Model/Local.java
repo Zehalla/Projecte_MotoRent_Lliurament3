@@ -19,11 +19,7 @@ public class Local {
         return gestor;
     }
     
-    public Local(){
-        this.idLocal = null;
-        this.capacitat = 0;
-        this.gestor = null;
-    }
+
     
     public Local(String idLocal, int capacitat, String[] direccioLocal, ArrayList<Moto> llistaMotos, Gerent gestor){
         this.idLocal = idLocal;
@@ -335,8 +331,8 @@ public class Local {
     }
     
     public boolean checkID(String motoId){
-        for (int i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(motoId) && "Disponible".equals(llistaMotos.get(i).getEstat())){
+        for (Moto llistaMoto : llistaMotos) {
+            if (llistaMoto.getIdMoto().equals(motoId) && "Disponible".equals(llistaMoto.getEstat())) {
                 return true;
             }
         }
