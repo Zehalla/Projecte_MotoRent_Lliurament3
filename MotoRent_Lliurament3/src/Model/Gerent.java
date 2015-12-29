@@ -1,19 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import Vista.Consola;
 
-/**
- *
- * @author atorraag7.alumnes
- */
 public class Gerent extends Usuari{
     private Local localAGestionar;
 
+    /**
+     * Constructor de la classe Gerent.
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param userName
+     * @param password
+     * @param idEmpresa 
+     */
     public Gerent(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;
         this.cognom1 = cognom1;
@@ -25,16 +25,17 @@ public class Gerent extends Usuari{
     }
     
     @Override
+    /**
+     * Mètode que retorna el tipus de Gerent.
+     */
     public String getTipus() {
         return "Gerent";
     }
     
     @Override
-    public String getId(){
-        return id;
-    }
-    
-    @Override
+    /**
+     * Mètode per a enllaçar un Gerent amb el Local que gestiona.
+     */
     public void setLocalAGestionar(Local local){
         this.localAGestionar = local;
     }
@@ -42,6 +43,9 @@ public class Gerent extends Usuari{
 
     
     @Override
+    /**
+     * Mètode per imprimir la informació relativa a un Gerent.
+     */
     public String toString(){
         String str;
         str = "\nGestor ID: " + this.id + "\n";

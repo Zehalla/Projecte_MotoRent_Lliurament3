@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
-/**
- *
- * @author atorraag7.alumnes
- */
 public abstract class Usuari {
     protected String id;
     protected String DNI;
@@ -40,14 +31,20 @@ public abstract class Usuari {
         return this.password;
     }
 
-    public abstract String getId();
+    /**
+     * Mètode que retorna l'id de l'Usuari en qüestió
+     * @return 
+     */
+    public String getId(){
+        return this.id;
+    }
     
     public void setLocalAGestionar(Local local){
         
     }
     
     /**
-     * Métode que retorna true si newUserName es igual a userName.
+     * UC 2_1. Métode que retorna true si newUserName es igual a userName.
      * @param newUserName
      * @return 
      */
@@ -56,7 +53,7 @@ public abstract class Usuari {
     }
     
     /**
-     * Métode que retorna true si newPassword es igual a password.
+     * UC 2_2. Métode que retorna true si newPassword es igual a password.
      * @param newPassword
      * @return 
      */
@@ -64,20 +61,24 @@ public abstract class Usuari {
         return newPassword.equals(this.password);
     }
 
+    
+    /*----------------------------------------------------------------
+    -------------METODES QUE IMPLEMENTARAN LES SUBCLASSES-------------
+    -----------------------------------------------------------------*/
     public String gestionarLocal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;    
     }
 
     public int demanarNombreMotosAImportar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return -1;    
     }
 
     public int demanarNombreMotosAExportar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return -1;
     }
 
     public int getNMotosDisp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return -1;
     }
 
     public String getEstat() {
@@ -85,11 +86,9 @@ public abstract class Usuari {
     }
 
     public void exportarMotos(int motosAExportar, Local localPerExportar) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void importarMotos(int motosAImportar, Local localPerImportar) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

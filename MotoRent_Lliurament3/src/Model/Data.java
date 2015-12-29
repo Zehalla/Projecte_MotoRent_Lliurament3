@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import java.text.ParseException;
@@ -13,14 +8,16 @@ import java.util.GregorianCalendar;
 
 /**
  * Classe que conté la nostra especificació de Data segons el problema.
- * @author Oriol
  */
 public class Data{
     private String any, mes, dia, hora, minut, segon;
     private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
 
     
-    // Constructor que inicialitza un Objecte Data al dia actual.
+    /**
+     * Constructor de la classe Data.
+     * Aquest constructor inicialitza una data al dia i hora actuals.
+     */
     public Data(){
         GregorianCalendar day = new GregorianCalendar();
         this.any = Integer.toString(day.get(Calendar.YEAR));
@@ -32,6 +29,16 @@ public class Data{
         
     }
    
+    /**
+     * Constructor de la classe Data.
+     * Aquest constructor inicialitza una data al dia i hora especificats.
+     * @param any
+     * @param mes
+     * @param dia
+     * @param hora
+     * @param minut
+     * @param segon 
+     */
     public Data(String any, String mes, String dia, String hora, String minut, String segon){
         this.any = any;
         this.mes = mes;
@@ -40,34 +47,7 @@ public class Data{
         this.minut = minut;
         this.segon = segon;
     } 
-    
-    /**
-     * Metode que construeix una nova data a partir d'un string.
-     * @param dataS string de format hh/dd/mm/aaaa.
-     */
-    public Data(String dataS){
-        String[] sliced = dataS.split("/");
-        this.any = sliced[3];
-        this.mes = sliced[2];
-        this.dia = sliced[1];
-        this.hora = sliced[0];
-    } 
-    
-    
-    
-    private Data dateToData(Date dt){
-        String format = df.format(dt);
-        String[] sliced = format.split("-");
-        Data data = new Data();
-        data.setAny(sliced[0]);
-        data.setMes(sliced[1]);
-        data.setDia(sliced[2]);
-        data.setHora(sliced[3]);
-        data.setMinut(sliced[4]);
-        data.setSegon(sliced[5]);
-        return data;
-    }
-    
+        
     public Date dataToDate() throws ParseException{
         String format = this.any+"-"+this.mes+"-"+this.dia+"-"+this.hora+"-"+this.minut+"-"+this.segon;
         Date date;
@@ -163,7 +143,13 @@ public class Data{
         dif = (dif + Integer.parseInt(this.dia) - Integer.parseInt(dat.getDia()))*24;
         dif = (dif + Integer.parseInt(this.hora) - Integer.parseInt(dat.getHora()));
         return dif;
-    }   
+    }  
+    
+    public static Data crearData(String diaComplet, String horaCompleta){
+            String[] aux = diaComplet.split("/");
+            String[] aux2 = horaCompleta.split(":");
+            return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
+    }
     
 
 }
