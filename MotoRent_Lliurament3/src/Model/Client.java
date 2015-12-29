@@ -15,10 +15,24 @@ public class Client extends Usuari{
     private ArrayList<Reserva> listReserva = new ArrayList<>();
     private EstatClient estatClient;
 
-    
+    /**
+     * Constructor buit usat a l'hora de registrar un nou client
+     */
     public Client(){      
     }
-    
+    /**
+     * Constructor d'un client a partir de les dades donades en el fitxer xml
+     * @param idClient
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param DNI
+     * @param userName
+     * @param password
+     * @param vip
+     * @param faltes
+     * @param direccio 
+     */
     public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, String[] direccio){
         this.id = idClient;
         this.nom = nom;
