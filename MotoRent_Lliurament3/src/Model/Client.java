@@ -17,8 +17,10 @@ public class Client extends Usuari{
 
     /**
      * Constructor buit usat a l'hora de registrar un nou client
+     * @param id
      */
-    public Client(){      
+    public Client(String id){
+        this.id = id;
     }
     /**
      * Constructor d'un client a partir de les dades donades en el fitxer xml
@@ -84,7 +86,7 @@ public class Client extends Usuari{
      */
     public void afegirFalta(){
         this.faltes += 1;
-        if(faltes <= 3){
+        if(this.faltes >= 3){
             this.setEstat("Desactivat");
             Consola.escriu("El client s'ha desactivat perque te 3 faltes o mes.");
         }               
