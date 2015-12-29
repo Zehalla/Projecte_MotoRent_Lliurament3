@@ -180,7 +180,7 @@ public class Reserva {
                 motoReserva.setEstat("Disponible");
             }else if(opcio.equals("Y")){
                 error = false;
-                motoReserva.setEstat("Reparant");
+                motoReserva.setEstat("Avariada");
                 
                 Consola.escriu("Introdueix el preu de la reparacio: ");
                 reparacio = Float.parseFloat(Consola.llegeixString()); //Si no funciona partir en dos declaraciones
