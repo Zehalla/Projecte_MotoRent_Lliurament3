@@ -1,26 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import Vista.Consola;
 
-/**
- *
- * @author atorraag7.alumnes
- */
 public class Direccio {
     private String carrer;
     private String numero;
     private String codiPostal;
     private String poblacio;
     
-    
-    public Direccio(){
-        
+    /**
+     * Constructor de la classe Direccio.
+     * S'usa com a pas previ a demanar les dades. 
+     * S'ha implementat aquest constructor per a mantenir el disseny del
+     * diagrama de classes.
+     */
+    public Direccio(){    
     }
+    
+    /**
+     * Constructor de la classe Direccio.
+     * @param carrer
+     * @param numero
+     * @param codiPostal
+     * @param poblacio 
+     */
     public Direccio(String carrer, String numero, String codiPostal, String poblacio){
         this.carrer = carrer;
         this.numero = numero;
@@ -46,6 +49,9 @@ public class Direccio {
     }
     
     @Override
+    /**
+     * Mètode que imprimeix per pantalla la informació referent a la Direccio.
+     */
     public String toString(){
         String str;
         str = "Carrer: "+carrer+"\n";

@@ -1,26 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import Model.Estats.*;
 
-/**
- *
- * @author atorraag7.alumnes
- */
+
 public class Moto {
-    private String idMoto;
-    private String matricula;
-    private String model;
-    private String color;
+    private final String idMoto;
+    private final String matricula;
+    private final String model;
+    private final String color;
     private EstatMoto estatMoto;
 
-    public Moto(){
-    }
-    
+
+    /**
+     * Constructor de la classe Moto.
+     * @param idMoto
+     * @param matricula
+     * @param model
+     * @param color
+     * @param estat 
+     */
     public Moto(String idMoto, String matricula, String model, String color, String estat){
         this.idMoto = idMoto;
         this.matricula = matricula;
@@ -29,6 +27,14 @@ public class Moto {
         this.setEstat(estat);
     }
 
+    /**
+     * Mètode cridat per a saber l'estat d'una Moto.
+     * Retorna una entre les tres possibilitats:
+     * Disponible.
+     * Reparant.
+     * Reservada.
+     * @return 
+     */
     public String getEstat(){
         if(this.estatMoto instanceof EstatMotoDisponible){
             return "Disponible";
@@ -39,11 +45,20 @@ public class Moto {
         }
     }
     
-    
+    /**
+     * Mètode cridat per a saber el id d'una Moto.
+     * @return 
+     */
     public String getIdMoto(){
         return idMoto;
     }
     
+    /**
+     * Mètode cridat per a modifcar l'estat d'una Moto.
+     * L'Estat final serà un d'entre els tres possibles:
+     * Reservada, Disponible o Reparant.
+     * @param estat 
+     */
     public void setEstat(String estat){
         estat = estat.toUpperCase();
         switch (estat) {
@@ -60,6 +75,9 @@ public class Moto {
     }
     
     @Override
+    /**
+     * Mètode per a imprimir les dades referents a una Moto.
+     */
     public String toString(){
         String str;
         str = "\nmoto amb ID: " + idMoto + "\n";

@@ -1,19 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import Vista.Consola;
 
-/**
- *
- * @author atorraag7.alumnes
- */
 public class Gerent extends Usuari{
     private Local localAGestionar;
 
+    /**
+     * Constructor de la classe Gerent.
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param userName
+     * @param password
+     * @param idEmpresa 
+     */
     public Gerent(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;
         this.cognom1 = cognom1;
@@ -25,16 +25,17 @@ public class Gerent extends Usuari{
     }
     
     @Override
+    /**
+     * Mètode que retorna el tipus de Gerent.
+     */
     public String getTipus() {
         return "Gerent";
     }
     
     @Override
-    public String getId(){
-        return id;
-    }
-    
-    @Override
+    /**
+     * Mètode per a enllaçar un Gerent amb el Local que gestiona.
+     */
     public void setLocalAGestionar(Local local){
         this.localAGestionar = local;
     }
@@ -42,6 +43,9 @@ public class Gerent extends Usuari{
 
     
     @Override
+    /**
+     * Mètode per imprimir la informació relativa a un Gerent.
+     */
     public String toString(){
         String str;
         str = "\nGestor ID: " + this.id + "\n";
@@ -53,7 +57,10 @@ public class Gerent extends Usuari{
         str += "Local a gestionar: \n"+ localAGestionar.toString() +"\n";
         return str;
     }
-    
+    /**
+     * Metode que determina si el local gestionat necesita importar o exportar motos
+     * @return accio a empendre
+     */
     @Override
     public String gestionarLocal(){
             String accio;
@@ -61,20 +68,35 @@ public class Gerent extends Usuari{
             accio = localAGestionar.gestionarLocal();
             return accio;
     }
+    /**
+     * Metode que demana el nombre de motos que es volen importar
+     * @return nombre de motos a importar
+     */
     @Override
     public int demanarNombreMotosAImportar(){
         return localAGestionar.demanarNombreMotosAImportar();
     }
+    /**
+     * Metode que demana el nombre de motos que es volen exportar
+     * @return nombre de motos a exportar
+     */
     @Override
     public int demanarNombreMotosAExportar(){
         return localAGestionar.demanarNombreMotosAExportar();
     }
-        
+    /**
+     * Metode que calcula el nombre de motos disponibles del local
+     * @return nombre de motos disponibles en el local
+     */    
     @Override
     public int getNMotosDisp(){
         return localAGestionar.getNMotosDisp();
     }
-    
+    /**
+     * Metode que exporta el nombre de motos indicat al local donat
+     * @param motosAExportar
+     * @param localPerExportar 
+     */
     @Override
     public void exportarMotos(int motosAExportar, Local localPerExportar){
         boolean control = true;
@@ -98,7 +120,11 @@ public class Gerent extends Usuari{
                 Consola.escriu("La exportacio s'ha completat amb exit.\n");
             }
     }
-    
+    /**
+     * Metode que importa el nombre de motos indicat del local donat
+     * @param motosAImportar
+     * @param localPerImportar 
+     */
     @Override
     public void importarMotos(int motosAImportar, Local localPerImportar){
         boolean control = true;

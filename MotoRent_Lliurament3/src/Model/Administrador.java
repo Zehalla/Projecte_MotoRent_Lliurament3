@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
-/**
- *
- * @author atorraag7.alumnes
- */
 public class Administrador extends Usuari{
 
+    /**
+     * Constructor de la classe Administrador.
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param userName
+     * @param password
+     * @param idEmpresa 
+     */
     public Administrador(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         this.nom = nom;
         this.cognom1 = cognom1;
@@ -21,16 +21,18 @@ public class Administrador extends Usuari{
     }
     
     @Override
+    /**
+     * Mètode que retorna el tipus d'Administrador.
+     */
     public String getTipus() {
         return "Administrador";
     }
     
-    @Override
-    public String getId(){
-        return id;
-    }
     
     @Override
+    /**
+     * Mètode per a imprimir la informació relativa a un Administrador.
+     */
       public String toString(){
         String str;
         str = "\nAdministrador ID: " + this.getId() + "\n";

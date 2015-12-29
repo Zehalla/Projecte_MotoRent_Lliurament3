@@ -1,26 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- *
- * @author Oriol
+ * Classe que conté la nostra especificació de Data segons el problema.
  */
 public class Data{
     private String any, mes, dia, hora, minut, segon;
     private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
 
     
-    // Constructor que inicialitza un Objecte Data al dia actual.
+    /**
+     * Constructor de la classe Data.
+     * Aquest constructor inicialitza una data al dia i hora actuals.
+     */
     public Data(){
         GregorianCalendar day = new GregorianCalendar();
         this.any = Integer.toString(day.get(Calendar.YEAR));
@@ -32,6 +27,16 @@ public class Data{
         
     }
    
+    /**
+     * Constructor de la classe Data.
+     * Aquest constructor inicialitza una data al dia i hora especificats.
+     * @param any
+     * @param mes
+     * @param dia
+     * @param hora
+     * @param minut
+     * @param segon 
+     */
     public Data(String any, String mes, String dia, String hora, String minut, String segon){
         this.any = any;
         this.mes = mes;
@@ -39,92 +44,74 @@ public class Data{
         this.hora = hora;
         this.minut = minut;
         this.segon = segon;
-    } 
-    
-    public Data(String dataS){
-        String[] sliced = dataS.split("/");
-        this.any = sliced[3];
-        this.mes = sliced[2];
-        this.dia = sliced[1];
-        this.hora = sliced[0];
-    } 
-    
-    
-    
-    private Data dateToData(Date dt){
-        String format = df.format(dt);
-        String[] sliced = format.split("-");
-        Data data = new Data();
-        data.setAny(sliced[0]);
-        data.setMes(sliced[1]);
-        data.setDia(sliced[2]);
-        data.setHora(sliced[3]);
-        data.setMinut(sliced[4]);
-        data.setSegon(sliced[5]);
-        return data;
-    }
-    
-    public Date dataToDate() throws ParseException{
-        String format = this.any+"-"+this.mes+"-"+this.dia+"-"+this.hora+"-"+this.minut+"-"+this.segon;
-        Date date;
-        date = df.parse(format);
-        return date;
     }
 
      @Override
+     /**
+      * Mètode per a imprimir un objecte de tipus Data.
+      */
     public String toString(){
         return dia+"/"+mes+"/"+any+" - "+hora+":"+minut+":"+segon;
         
     }
-    
-    private void setAny(String any) {
-        this.any = any;
-    }
 
-    public void setMes(String mes) {
-        this.mes = mes;
-    }
-
-    public void setDia(String dia) {
-        this.dia = dia;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
-    }     
-
-    public void setMinut(String minut) {
-        this.minut = minut;
-    }
-
-    public void setSegon(String segon) {
-        this.segon = segon;
-    }
-
+    /**
+     * Mètode que retorna l'any d'una Data donada.
+     * @return 
+     */
     public String getAny() {
         return any;
     }
 
+    /**
+     * Mètode que retorna el mes d'una Data donada.
+     * @return 
+     */
     public String getMes() {
         return mes;
     }
 
+    /**
+     * Mètode que retorna el dia d'una Data donada.
+     * @return 
+     */
     public String getDia() {
         return dia;
     }
 
+    /**
+     * Mètode que retorna la hora d'una Data donada.
+     * @return 
+     */
     public String getHora() {
         return hora;
     }
 
+    /**
+     * Mètode que retorna el minut d'una Data donada.
+     * @return 
+     */
     public String getMinut() {
         return minut;
     }
 
+    /**
+     * Mètode que retorna el segon d'una Data donada.
+     * @return 
+     */
     public String getSegon() {
         return segon;
     }
 
+    /**
+     * Mètode que compara dues dates donades.
+     * Retorna 1 si la data passada per paràmetre és més petita que la cridada.
+     * Retorna -1 si la data passada per paràmetre és més gran que la cridada.
+     * Retorna 0 si són iguals.
+     * Retorna -2 en cas d'error inesperat.
+     * @param cmp
+     * @return 
+     */
     public int compara(Data cmp) {
 
         int anyComp = Integer.parseInt(cmp.getAny());
@@ -152,6 +139,11 @@ public class Data{
         }
     }
         
+    /**
+     * Mètode que calcula la diferencia, en dies, de dues Dates donades.
+     * @param dat
+     * @return 
+     */
     public int calcularDiferencia(Data dat) {    
         int dif;
         dif = (Integer.parseInt(this.any)-Integer.parseInt(dat.getAny()))*12;
@@ -159,7 +151,20 @@ public class Data{
         dif = (dif + Integer.parseInt(this.dia) - Integer.parseInt(dat.getDia()))*24;
         dif = (dif + Integer.parseInt(this.hora) - Integer.parseInt(dat.getHora()));
         return dif;
-    }   
+    }  
+    
+    /**
+     * Mètode Static que retorna un objecte Data corresponent al dia i hora 
+     * passats com a paràmetre.
+     * @param diaComplet
+     * @param horaCompleta
+     * @return 
+     */
+    public static Data crearData(String diaComplet, String horaCompleta){
+            String[] aux = diaComplet.split("/");
+            String[] aux2 = horaCompleta.split(":");
+            return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
+    }
     
 
 }

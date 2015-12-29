@@ -1,16 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Excepcions;
 
 /**
- *
- * @author Adry
+ * Classe que representa l'excepció de llista buida a l'aplicació.
  */
+
 public class LlistaBuidaException extends Exception{
+    
     @Override
+    /**
+     * Mostra un missatge d'error relatiu a l'excepció que es tracta.
+     */
     public String getMessage(){
         return "La llista esta buida.";
     }
