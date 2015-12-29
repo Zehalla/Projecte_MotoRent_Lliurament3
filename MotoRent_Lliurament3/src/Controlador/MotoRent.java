@@ -517,6 +517,7 @@ public class MotoRent {
         llistaReserves.add(r);
         r.setEstatMoto("Reservada");
         r.afegirMotoLocalFinal();
+        
         clientReserva.afegirReserva(r);
 
         Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
@@ -630,6 +631,7 @@ public class MotoRent {
             idClient = Consola.llegeixString();
             
             Iterator itr = llistaReserves.iterator();
+            
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
                     trobat = r.getId().equals(reservaID) && r.getClientReserva().getId().equals(idClient);    
