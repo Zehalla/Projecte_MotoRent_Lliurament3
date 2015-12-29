@@ -273,7 +273,7 @@ public class Local {
     }
     /**
      * Metode que agafa la primera moto disponible que troba en el local
-     * @return 
+     * @return Moto mi
      */
     public Moto getMotoDisponible() {
         String disponible;
@@ -355,7 +355,7 @@ public class Local {
     
     public boolean checkID(String motoId){
         for (int i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(motoId) && llistaMotos.get(i).getEstat() == "Disponible"){
+            if (llistaMotos.get(i).getIdMoto().equals(motoId) && "Disponible".equals(llistaMotos.get(i).getEstat())){
                 return true;
             }
         }
