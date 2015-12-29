@@ -22,12 +22,14 @@ public class MotoRent {
     private final ArrayList<Reserva> llistaReserves;
     private Usuari usuariLogat;
     private int lastIDreserva;
+    private int lastIDclient;
 
     /**
      * Constructor de MotoRent que inicialitza les tres llistes.
      */
     public MotoRent() {
         this.lastIDreserva = 3;
+        this.lastIDclient = 6;
         this.llistaLocals = new ArrayList<>();
         this.llistaUsuaris = new ArrayList<>();
         this.llistaReserves = new ArrayList<>();
@@ -309,9 +311,11 @@ public class MotoRent {
                }
            }
        }
-       newClient = new Client();
+       lastIDclient++;
+       newClient = new Client("c"+lastIDclient);
        newClient.introduirDades(newUserName);
        llistaUsuaris.add(newClient);
+       Consola.escriu("El teu id de Client és: "+newClient.getId());
        this.usuariLogat = newClient;
        return tornarErrere;
    }
@@ -476,7 +480,7 @@ public class MotoRent {
             
             Consola.escriu("Selecciona la data de finalització (dd/mm/aaaa): ");
             dataFinal = Consola.llegeixString();
-            Consola.escriu("Selecciona la hora de finalització (hh:mm:ss)");
+            Consola.escriu("Selecciona la hora de finalització (hh:mm:ss): ");
             horaFinal = Consola.llegeixString();
             //CREACIO DE RESERVA 
             r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicial, horaInicial, dataFinal, horaFinal, localInici, localFinal, clientReserva, idMoto);            
@@ -580,7 +584,7 @@ public class MotoRent {
     private void imprimirLlistaLocals(ArrayList<Local> llista){
         Consola.escriu("\nLlistat de Locals Disponibles: \n");
         for (int k = 0; k < llista.size(); k++) {
-            Consola.escriu(llista.get(k).mostrarDadesLocal() + "\n");
+            Consola.escriu(llista.get(k).toString() + "\n");
         }
     }
     

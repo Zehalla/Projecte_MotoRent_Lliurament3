@@ -59,14 +59,6 @@ public class Local {
     }
 
     /**
-     * Metode que mostre la info del local en un string. No ho escriu a la consola, nomes ho retorna.
-     * @return String que conte tota la informacio de local.
-     */
-    public String mostrarDadesLocal() {
-        return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
-    }
-
-    /**
      * Metode que mostra tota informacio de totes les motos disponibles que te el local una per una. Si no hi ha motos
      * disponibles llavors retorna la excepcio perque no hi ha res per mostrar.
      * @return un String amb el format correcte que conte tota la info de totes les motos del local.
