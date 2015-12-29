@@ -6,7 +6,10 @@ import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
+/**
+ * Classe essencial del model que engloba totes les funcions d'un local: contenir i gestionar motos.
+ * @author Oriol
+ */
 public class Local {
     private final String idLocal;
     private final int capacitat;
@@ -15,16 +18,15 @@ public class Local {
     private ArrayList<Moto> llistaMotos;
     private final Gerent gestor;
 
-    public Gerent getGestor() {
-        return gestor;
-    }
-    
-    public Local(){
-        this.idLocal = null;
-        this.capacitat = 0;
-        this.gestor = null;
-    }
-    
+    /**
+     * Constructor basic de local. Només es creen locals quan carreguem les dades, o sigui que sempre ens
+     * donaran la informacio de la direccio com un string amb el mateix format.
+     * @param idLocal String identificaro del local
+     * @param capacitat numero maxim de motos en qualsevol estat
+     * @param direccioLocal String amb la informacio de la direccio
+     * @param llistaMotos Conte una llista de motos que conte el local.
+     * @param gestor gestor encarregat del local
+     */
     public Local(String idLocal, int capacitat, String[] direccioLocal, ArrayList<Moto> llistaMotos, Gerent gestor){
         this.idLocal = idLocal;
         this.capacitat = capacitat;
@@ -33,7 +35,11 @@ public class Local {
         this.gestor = gestor;
     }
     
-    
+    /**
+     * Metode auxiliar del constructor que a partir de un array de Strings crida al constructor de direccio.
+     * @param adreca
+     * @return 
+     */
     private Direccio crearDireccio(String[] adreca){
             return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
     }
@@ -52,10 +58,20 @@ public class Local {
         return NMotosDisp;
     }
 
+    /**
+     * Metode que mostre la info del local en un string. No ho escriu a la consola, nomes ho retorna.
+     * @return String que conte tota la informacio de local.
+     */
     public String mostrarDadesLocal() {
         return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
     }
 
+    /**
+     * Metode que mostra tota informacio de totes les motos disponibles que te el local una per una. Si no hi ha motos
+     * disponibles llavors retorna la excepcio perque no hi ha res per mostrar.
+     * @return un String amb el format correcte que conte tota la info de totes les motos del local.
+     * @throws LlistaBuidaException Si el local no te cap moto de estat disponible
+     */
     public String mostrarMotosDisponibles() throws LlistaBuidaException {
         String tipus, str = "";
         int i = 0;
@@ -76,6 +92,10 @@ public class Local {
         }
     }
     
+    /**
+     * Semblant a mostrarMotosDisponibles pero mostra totes les motos.
+     * @return 
+     */
     public String mostrarMotos(){
         String str = "";
         Iterator itr = llistaMotos.iterator();
@@ -86,10 +106,12 @@ public class Local {
         return str;
     }
     
-    public Moto getMoto(int i){
-        return llistaMotos.get(i);
-    }
-    
+    /**
+     * Donat un identificador busca la moto del local que te aquest identificador amb un for. En cas de no
+     * trobar cap, retorna null.
+     * @param id Identificador de la moto que busquem.
+     * @return Moto amb la id desitjada.
+     */
     public Moto getMoto(String id){ 
         for (Moto llistaMoto : llistaMotos) {
             if (llistaMoto.getIdMoto().equals(id)) {
@@ -99,7 +121,9 @@ public class Local {
         return null;
     }
  
-
+    /**
+     * 
+     */
     public void obtenirMotosLocal(){
         int i;
         for (i = 0; i < llistaMotos.size(); i++){
@@ -107,10 +131,21 @@ public class Local {
         }
     }
 
+    /**
+     * Metode que donat una moto, l'elimina del local.
+     * @param moto
+     * @return 
+     */
     public boolean eliminarMoto(Moto moto){
         return llistaMotos.remove(moto);
     }
     
+    /**
+     * Metode que afegeix un objecte moto a la llista de motos del local. Si el local esta ple, retorna la 
+     * excepcio de llista plena, perque no es pot afegir.
+     * @param moto moto que es vol afegir.
+     * @throws LlistaPlenaException si el local esta ple.
+     */
     public void afegirMoto(Moto moto) throws LlistaPlenaException{
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(moto);
@@ -119,6 +154,16 @@ public class Local {
         }
     }
     
+    /**
+     * Metode semblant a afegirMoto(Moto moto) pero ara no passem el objecte construit sino que li passem
+     * els parametres i la moto es crea aqui.
+     * @param id
+     * @param matricula
+     * @param model
+     * @param color
+     * @param estat
+     * @throws LlistaPlenaException 
+     */
     public void afegirMoto(String id, String matricula, String model, String color, String estat) throws LlistaPlenaException{
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(new Moto(id, matricula, model, color, estat));
@@ -127,31 +172,10 @@ public class Local {
         }
     }
     
-    public String getIdLocal(){
-        return idLocal;
-    }
-    
-    public int getOcupacio(){
-        this.ocupacio = llistaMotos.size();
-        return this.ocupacio;
-    }
-    
-    public int getCapacitat() {
-        return capacitat;
-    }
-    
-    public Direccio getDireccioLocal() {
-        return direccioLocal;
-    }
-
-    public void setDireccioLocal(Direccio direccioLocal) {
-        this.direccioLocal = direccioLocal;
-    }
-
-    public void setLlistaMotos(ArrayList<Moto> llistaMotos) {
-        this.llistaMotos = llistaMotos;
-    }
-    
+    /**
+     * Metode basic que retorna un string de tota la informacio del local.
+     * @return 
+     */
     @Override
     public String toString(){
         String str;
@@ -165,9 +189,6 @@ public class Local {
         return str;
     }
     
-    public int getNMotos(){
-        return llistaMotos.size();
-    }  
     /**
      * Metode que calcula el percentatge d'ocupacio del local i determina si s'han d'importar motos o exportar-les en funcio del nombre de motos del local i del seu percentatge d'ocupacio
      * @return accio a emprendre
@@ -334,12 +355,55 @@ public class Local {
         }
     }
     
+    /**
+     * UC 3.5 Metode que comprova si un ID de moto es troba a dins del local, o sigui si alguna moto te 
+     * aquest id. Serveix unicament per saber que el client ha introduit al sistema un valor correcte.
+     * @param motoId
+     * @return 
+     */
     public boolean checkID(String motoId){
-        for (int i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(motoId) && "Disponible".equals(llistaMotos.get(i).getEstat())){
+        for (Moto llistaMoto : llistaMotos) {
+            if (llistaMoto.getIdMoto().equals(motoId) && "Disponible".equals(llistaMoto.getEstat())) {
                 return true;
             }
         }
         return false;
     }
+    
+    //////////////////////GETTERS I SETTERS
+    
+    
+    public Gerent getGestor() {
+        return gestor;
+}
+    
+        public String getIdLocal(){
+        return idLocal;
+    }
+    
+    public int getOcupacio(){
+        this.ocupacio = llistaMotos.size();
+        return this.ocupacio;
+    }
+    
+    public int getCapacitat() {
+        return capacitat;
+    }
+    
+    public Direccio getDireccioLocal() {
+        return direccioLocal;
+    }
+
+    public void setDireccioLocal(Direccio direccioLocal) {
+        this.direccioLocal = direccioLocal;
+    }
+
+    public void setLlistaMotos(ArrayList<Moto> llistaMotos) {
+        this.llistaMotos = llistaMotos;
+    }
+    
+    public int getNMotos(){
+        return llistaMotos.size();
+    }
+    
 }
