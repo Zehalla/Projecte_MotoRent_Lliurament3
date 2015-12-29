@@ -5,23 +5,20 @@ import Model.Data;
 import Parser.MotoRentDataManager;
 import java.util.Scanner;
 import org.xml.sax.helpers.DefaultHandler;
-/**
- *
- * @author Adry
- */
+
  
 public class Consola extends DefaultHandler{
-    /*
+    /**
     Atributs de la classe App.
-    Contenten 4 llistes d'String, representant les opcions dels diferents menús.
+    Contenten 5 llistes d'String, representant les opcions dels diferents menús.
     Conté un atribut Scanner per a l'entrada de dades per part de l'Usuari.
     Conté un atribut Menu que representarà els diferents menús.
     */
     private final String[] menuUsuari = {"Menú de l'Usuari:", "1.- Registrar-se.", "2.- Log-in.", "3.- Sortir"};
     private final String[] menuClient = {"Menú del Client:", "1.- Fer reserva d'una moto.", "2.- Modificar reserva.", "3.- Modificar dades personals", "4.- Donar-se de baixa.", "5.- Log-out."};
     private final String[] menuGerent = {"Menú del Gerent:", "1.- Gestionar Local", "2.- Comprovar reserva", "3.- Actualitzar estat moto", "4.- Log-out"};
-    private final String[] menuComprovarReserva = {"Menú Comprovar Reserva:", "1.- Lliurar una Moto a un Client.", "2.- Retornar una Moto al Local."};
-    private final String[] menuAdministrador = {"Menú de l'Administrador:", "1.- Generar Informe Mensual", "2.- Log-out."};
+    private final String[] menuComprovarReserva = {"Menú Comprovar Reserva:", "1.- Lliurar una Moto a un Client.", "2.- Retornar una Moto al Local.", "3.- Tornar al menú anterior."};
+    private final String[] menuAdministrador = {"Menú de l'Administrador:", "1.- Generar Informe Mensual", "2.- Veure Totes les Motos de tots els Locals.","3.- Veure Tots els Locals que tenen menys de 5 Motos.", "4.- Veure Tots els Locals que tenen més del 75% d'Ocupació de Motos.", "5.- Log-out."};
     private static final Scanner scanner = new Scanner(System.in);
     private final MotoRent controlador;
     private final MotoRentDataManager dataManager;
@@ -51,7 +48,11 @@ public class Consola extends DefaultHandler{
         aplicacio.iniciarPrograma();
     }
     
-    
+    /**
+     * Mètode usar per a mostrar els menús de l'aplicació.
+     * @param menu
+     * @return un string amb els menús a mostrar.
+     */
     private String mostrarMenu(String[] menu){
         int i;
         String str = "\n";
@@ -273,7 +274,6 @@ public class Consola extends DefaultHandler{
      */
     private void opcioComprovarReserva(){
         int opcio;
-        boolean tornar;
 
         do{
             escriu(mostrarMenu(menuComprovarReserva));
@@ -283,21 +283,12 @@ public class Consola extends DefaultHandler{
             switch (opcio){
                 case(1):
                     controlador.lliurarMotoAClient();
-                    tornar = true;
                     break;
                 case(2):
                     controlador.tornarMoto();
-                    tornar = true;
                     break;
-                case(3):
-                    tornar = true;
-                    break;
-                default:
-                    escriu("Introdueixi 1,2 o 3 per tornar enrrere.\n");
-                    tornar = false;
-                    break;
-    }
-        }while(!tornar);
+            }
+        }while(opcio != 3);
     }
     
     
@@ -312,7 +303,9 @@ public class Consola extends DefaultHandler{
     //==============================================================
     //==============================================================
         
-   
+   /**
+    * Mètode cridat quan l'Usuari que es loga es un Administrador.
+    */
     private void opcioLoginAdministrador() {
         int opcio;
         escriu("T'has logat com a Administrador\n");
@@ -324,15 +317,47 @@ public class Consola extends DefaultHandler{
                 case 1:
                     opcioInformeMensual();
                     break;
+                case 2:
+                    opcioVeureTotesLesMotos();
+                    break;
+                case 3:
+                    opcioVeureLocalsPocaPoblacioMotos();
+                    break;
+                case 4:
+                    opcioVeureLocalsMoltaPoblacioMotos();
+                    break;
             }
-        } while (opcio != 2);
+        } while (opcio != 5);
     } 
 
+    /**
+     * Mètode cridat quan l'Administrador vol realitzar un informe mensual.
+     */
     private void opcioInformeMensual() {
         escriu("De quin mes vols generar un informe? (1,...,12) ");
         controlador.generarInformeMensual(llegeixString());
     }
     
+    /**
+     * Mètode cridat quan l'Administrador vol veure totes les motos que hi ha en tots els locals.
+     */
+    private void opcioVeureTotesLesMotos(){
+        controlador.mostrarTotesLesMotos();
+    }
+    
+   /**
+    * Mètode cridat quan l'Administrador vol veure els Locals amb poca població de Motos.
+    */
+    private void opcioVeureLocalsPocaPoblacioMotos(){
+        controlador.veureLocalsPocaPoblacioMotos();
+    }
+    
+    /**
+     * Mètode cridat quan l'Administrador vol veure els Locals amb molta població de Motos.
+     */
+    private void opcioVeureLocalsMoltaPoblacioMotos(){
+        controlador.veureLocalsMoltaPoblacioMotos();
+    }
     
     //==============================================================
     //=======METODES DE SORTIDA ====================================

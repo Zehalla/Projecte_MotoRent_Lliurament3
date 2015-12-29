@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
 import Excepcions.LlistaBuidaException;
@@ -20,10 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-/**
- *
- * @author atorraag7.alumnes dkjfla
- */
+
 public class MotoRent {
     private final ArrayList<Local> llistaLocals;
     private final ArrayList<Usuari> llistaUsuaris;
@@ -32,7 +24,7 @@ public class MotoRent {
     private int lastIDreserva;
 
     /**
-     * Constructor de MotoRent que inicialitza les dues llistes.
+     * Constructor de MotoRent que inicialitza les tres llistes.
      */
     public MotoRent() {
         this.lastIDreserva = 3;
@@ -43,11 +35,28 @@ public class MotoRent {
     /*----------------------------------------------------------------
     ---------------METODES QUE GUARDEN DADES--------------------------
     -----------------------------------------------------------------*/
+    /**
+     * Mètode cridat quan es vol guardar un Local al Sistema.
+     * Usat únicament al carregar dades al Sistema.
+     * @param idLocal
+     * @param capacitat
+     * @param direccioLocal
+     * @param idGestor 
+     */
     public void guardarLocal(String idLocal, int capacitat, String[] direccioLocal, String idGestor){
         Gerent gestor = (Gerent) buscarUsuari(idGestor);
         llistaLocals.add(new Local(idLocal, capacitat, direccioLocal, new ArrayList<>(), gestor));
     }
     
+    /**
+     * Mètode cridat quan es vol guardar una Moto al Sistema.
+     * Usat únicament al carregar dades al Sistema.
+     * @param idMoto
+     * @param matricula
+     * @param model
+     * @param color
+     * @param estatMoto 
+     */
     public void guardarMoto(String idMoto, String matricula, String model, String color, String estatMoto){
         try{
             llistaLocals.get(llistaLocals.size()-1).afegirMoto(idMoto, matricula, model, color, estatMoto);
@@ -56,6 +65,21 @@ public class MotoRent {
         }
     }
     
+    /**
+     * Mètode cridat quan es vol guardar una Reserva al Sistema.
+     * Usat únicament al carregar dades al Sistema.
+     * @param id
+     * @param idClient
+     * @param idMoto
+     * @param cost
+     * @param falta
+     * @param local_inici
+     * @param local_fi
+     * @param dataInicial
+     * @param horaInicial
+     * @param dataFinal
+     * @param horaFinal 
+     */
     public void guardarReserva(String id, String idClient, String idMoto, String cost, String falta, String local_inici, String local_fi, String dataInicial, String horaInicial, String dataFinal, String horaFinal){
         Client client = (Client) buscarUsuari(idClient);
         if (Integer.parseInt(falta) == 0){ // si no hi ha faltes, afegim normalment.
@@ -70,28 +94,74 @@ public class MotoRent {
         }
     }
     
+    /**
+     * Mètode cridat quan es vol guardar un Client al Sistema.
+     * Usat únicament al carregar dades al Sistema.
+     * @param id
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param DNI
+     * @param userName
+     * @param password
+     * @param vip
+     * @param faltes
+     * @param direccio 
+     */
     public void guardarClient(String id, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, String[] direccio){
         llistaUsuaris.add(new Client(id, nom, cognom1, cognom2, DNI, userName, password, vip, faltes, direccio));
     }
     
+   /**
+    * Mètode cridat quan es vol guardar un Gerent al Sistema.
+    * Usat únicament al carregar dades al Sistema.
+    * @param nom
+    * @param cognom1
+    * @param cognom2
+    * @param userName
+    * @param password
+    * @param idEmpresa 
+    */
     public void guardarGerent(String nom, String cognom1, String cognom2, String userName, String password,  String idEmpresa){
         llistaUsuaris.add(new Gerent(nom, cognom1, cognom2, userName, password, idEmpresa));
     }
     
+    /**
+     * Mètode cridat quan es vol guardar un Administrador al Sistema.
+     * Usat únicament al carregar dades al Sistema.
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param userName
+     * @param password
+     * @param idEmpresa 
+     */
     public void guardarAdministrador(String nom, String cognom1, String cognom2, String userName, String password, String idEmpresa){
         llistaUsuaris.add(new Administrador(nom, cognom1, cognom2, userName, password, idEmpresa));
     }
     
-    
+    /**
+     * Mètode cridat un cop s'han guardat totes les dades des de l'arxiu XML.
+     * Realitza una serie de comprovacions per a mantenir la coherència de dades.
+     * Les comprovacions són:
+     * 1. Relaciona cada Reserva amb el Client que l'ha efectuat.
+     * 2. Comprova i adequa les Motos al seu estat adient.
+     * 3. Posa cada Client al seu estat adient.
+     * 4. Relaciona cada Local amb el Gerent que el gestiona i viceversa.
+     * 5. Finalment, mostra les dades per a comprovar que són correctes.
+     */
     public void comprovacionsPrevies(){
         comprovarReservesClients();
         comprovarEstatsMotos();
         comprovarEstatsClients();
         comprovarLocalsAGestionar();
         mostrarDades(); //Metodes per a testeig.
-        mostrarTotesLesMotos(); //Metodes per a testeig.
     }
     
+    /**
+     * Mètode que recorre la llista de Reserves i relaciona cada Reserva amb el seu Client.
+     * A part el Client que realitza la reserva, ara rep l'estat de Amb Reserva.
+     */
     private void comprovarReservesClients(){
         int i;
         Client clientActual;
@@ -106,6 +176,9 @@ public class MotoRent {
         }
     }
     
+    /**
+     * Mètode que recorre la llista de Reserves i posa a estat Reservada cada Moto que hi està involucrada.
+     */
     private void comprovarEstatsMotos(){
         int i;
         for (i = 0; i < llistaReserves.size(); i++){
@@ -113,6 +186,10 @@ public class MotoRent {
         }
     }
     
+    /**
+     * Mètode que recorre la llista d'Usuaris i comprova si algun Client té més de 3 faltes.
+     * En cas afirmatiu, assigna a aquell Client l'estat de Desactivat.
+     */
     private void comprovarEstatsClients(){
         int i;
         Client clientActual;
@@ -126,14 +203,22 @@ public class MotoRent {
         }
     }
     
+    /**
+     * Mètode que relaciona cada Gerent del Sistema amb el local que gestiona.
+     */
     private void comprovarLocalsAGestionar(){
         int i;
         for (i = 0; i < llistaLocals.size(); i++){
-            buscarUsuari(llistaLocals.get(i).getGestor().getId()).setLocalAGestionar(llistaLocals.get(i));
+            llistaLocals.get(i).getGestor().setLocalAGestionar(llistaLocals.get(i));
         }
     }
     
-    
+    /**
+     * Mètode que donat un id realitza una cerca al llistat d'Usuaris del Sistema i retorna l'Usuari al qual li correspon aquell id.
+     * Només és usat al carregar les dades al Sistema.
+     * @param idUsuari
+     * @return 
+     */
     private Usuari buscarUsuari(String idUsuari){
         int i;
         for (i = 0; i<llistaUsuaris.size();i++){
@@ -144,6 +229,12 @@ public class MotoRent {
         return null;
     }
     
+    /**
+     * Mètode que donat un id, realitza una cerca al llistat de Locals del Sistema i retorna el Local al qual li correspon aquell id.
+     * Només és usat al carregar les dades al Sistema.
+     * @param idLocal
+     * @return 
+     */
     private Local buscarLocal(String idLocal){
         int i;
         for (i = 0; i < llistaLocals.size(); i++){
@@ -154,6 +245,14 @@ public class MotoRent {
         return null;
     }
   
+    /**
+     * Mètode que imprimeix totes les dades del Sistema.
+     * Ordre:
+     * 1. Usuaris (Clients, Gerents, Administradors).
+     * 2. Locals + Motos del Local.
+     * 3. Reserves.
+     * 4. Per a cada Client, imprimeix l'historic de Reserves.
+     */
     private void mostrarDades(){
         int i;
         Consola.escriu("\n\nUSUARIS\n\n");
@@ -184,44 +283,59 @@ public class MotoRent {
             }
         }
     }
-    
-    public void mostrarTotesLesMotos(){
-        int i;
-        Consola.escriu("\nLLISTAT DE TOTES LES MOTOS:\n");
-        for (i = 0; i < llistaLocals.size(); i++){
-            llistaLocals.get(i).obtenirMotosLocal();
-        }
-    }
-    
-    public void generarInformeMensual(String mes){
-        boolean correcte;
-        int i;
-        correcte = comprovarDataCorrecte(mes);
-        if (correcte){
-            for (i = 0; i < llistaUsuaris.size(); i++) {
-                if (llistaUsuaris.get(i).getTipus().equals("Client")) {
-                    Client clientActual = (Client) llistaUsuaris.get(i);
-                    Consola.escriu(clientActual.toString());
-                    clientActual.obtenirReservesClient(Integer.parseInt(mes));
-                }
-            }
-        }else{
-            Consola.escriu("\nHi ha hagut un error al realitzar l'informe del mes seleccionat.\n");
-        }
-        
-    }
-    
-    private boolean comprovarDataCorrecte(String mes) {
-        return (Integer.parseInt(mes)) <= (Integer.parseInt(Consola.llegeixDataSistema().getMes())+1); // el +1 es perque
-                                                                                                    // el Date té representa els mesos de l'any de 0 a 11.
-    }
     /*----------------------------------------------------------------
     ------------------------------------------------------------------
     -----------------------------------------------------------------*/
     
-    
     /**
-     * Mètode que permet a un Usuari logar-se.
+     * UC 1. Métode que permet registrar un Client
+     * @return tornarErrere: en cas de que l'usuari canvii d'idea i no es registri
+     */
+    public boolean registrarUsuari(){
+       String newUserName = null;
+       Client newClient;
+       boolean error = false;
+       boolean tornarErrere = false;
+            
+       while (!error){
+           Consola.escriu("Introdueixi el nom d'usuari: ");
+           newUserName = Consola.llegeixString();
+           error = !checkUserName(newUserName);
+           if (!error){
+               Consola.escriu("Aquest usuari no es troba disponible. Escolliu-ne un altre.\n");
+               tornarErrere = !Consola.reintroduirDades();
+               if (tornarErrere){
+                   return tornarErrere;
+               }
+           }
+       }
+       newClient = new Client();
+       newClient.introduirDades(newUserName);
+       llistaUsuaris.add(newClient);
+       this.usuariLogat = newClient;
+       return tornarErrere;
+   }
+    
+   /**
+    * UC 1_1. Métode que comprova si el newUserName ja esta en ús.
+    * @param newUserName
+    * @return trobat
+    */ 
+   private boolean checkUserName(String newUserName) {
+        boolean trobat = false;
+        int n = llistaUsuaris.size();
+        int i = 0;
+        
+        while (!trobat && i<n){
+            trobat = llistaUsuaris.get(i).checkUserName(newUserName);
+            i += 1;
+        }
+        return trobat;
+    }
+   
+   
+     /**
+     * UC 2. Mètode que permet a un Usuari logar-se.
      * @return tipus: Retorna el tipus d'Usuari que s'ha logat.
      */
     public String logIn(){
@@ -259,52 +373,10 @@ public class MotoRent {
         }
         return tipus;
     }
-    
-    /**
-     * Métode que permet registrar un Client
-     * @return tornarErrere: en cas de que l'usuari canvii d'idea i no es registri
-     */
-    public boolean registrarUsuari(){
-       String newUserName = null;
-       Client newClient;
-       boolean error = false;
-       boolean tornarErrere = false;
-            
-       while (!error){
-           Consola.escriu("Introdueixi el nom d'usuari: ");
-           newUserName = Consola.llegeixString();
-           error = !checkUserName(newUserName);
-           if (!error){
-               Consola.escriu("Aquest usuari no es troba disponible. Escolliu-ne un altre.\n");
-               tornarErrere = !Consola.reintroduirDades();
-               if (tornarErrere){
-                   return tornarErrere;
-               }
-           }
-       }
-       newClient = new Client();
-       newClient.introduirDades(newUserName);
-       llistaUsuaris.add(newClient);
-       this.usuariLogat = newClient;
-       return tornarErrere;
-   }
-    
-   /**
-    * Métode que comprova si el newUserName ja esta en ús.
-    * @param newUserName
-    * @return trobat
-    */ 
-   private boolean checkUserName(String newUserName) {
-        boolean trobat = false;
-        int n = llistaUsuaris.size();
-        int i = 0;
-        
-        while (!trobat && i<n){
-            trobat = llistaUsuaris.get(i).checkUserName(newUserName);
-            i += 1;
-        }
-        return trobat;
-    }
+   
+   /*----------------------------------------------------------------
+    ------------------------FER RESERVA------------------------------
+    -----------------------------------------------------------------*/
    
    /**
     * UC 3 Metode de client que guia a un usuari fins a la creacio de una reserva. Es contemplent tots els casos posibles.
@@ -317,14 +389,14 @@ public class MotoRent {
         String idLocalFinal;
         String idMoto = "";
         String opcio;
-        String dataInicialS;
-        String dataFinalS;
+        String dataInicial, horaInicial;
+        String dataFinal, horaFinal;
         Local localInici = null;
         Local localFinal = null;
         Reserva r = null;
         ArrayList<Local> auxiliar;
         Client clientReserva = (Client) usuariLogat;
-        Local l = null;
+        Local l;
         Boolean trobat = false;
 
         if (!comprovacionsInicials()){
@@ -353,9 +425,13 @@ public class MotoRent {
         }
         //------------------MOTO------------------
         Consola.escriu("\n\nLLISTAT DE MOTOS DISPONIBLES:\n\n");
-        Consola.escriu(localInici.mostrarMotosDisponibles());
+        try{
+            Consola.escriu(localInici.mostrarMotosDisponibles());
+        }catch(LlistaBuidaException ex){
+            Consola.escriu(ex.getMessage());
+            return;
+        }
 
-        //int num = localInici.getNMotosDisp();
         correcte = false;
         while (!correcte) {
             Consola.escriu("\nSelecciona una moto: ");
@@ -392,16 +468,18 @@ public class MotoRent {
         }
         //------------------DATES------------------
         correcte = false;
-        trobat = false;
         while (!correcte) {
-            Consola.escriu("Selecciona la data de sortida (hh/dd/mm/aaaa): ");
-            dataInicialS = Consola.llegeixString();
-
-            Consola.escriu("Selecciona la data de desti (hh/dd/mm/aaaa): ");
-            dataFinalS = Consola.llegeixString();
+            Consola.escriu("Selecciona la data de sortida (dd/mm/aaaa): ");
+            dataInicial = Consola.llegeixString();
+            Consola.escriu("Selecciona la hora de sortida (hh:mm:ss): ");
+            horaInicial = Consola.llegeixString();
             
+            Consola.escriu("Selecciona la data de finalització (dd/mm/aaaa): ");
+            dataFinal = Consola.llegeixString();
+            Consola.escriu("Selecciona la hora de finalització (hh:mm:ss)");
+            horaFinal = Consola.llegeixString();
             //CREACIO DE RESERVA 
-            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicialS, dataFinalS, localInici, localFinal, clientReserva, idMoto);            
+            r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicial, horaInicial, dataFinal, horaFinal, localInici, localFinal, clientReserva, idMoto);            
 
             if (r.comprovarDates()){
                 correcte = true;
@@ -470,7 +548,7 @@ public class MotoRent {
         
         while (itr.hasNext()) {
             Local l = (Local) itr.next();
-            if (l.getNMotosDisp() > 0) {
+            if (l.getOcupacio() > 0) {
                 auxiliar.add(l);
             }
         }
@@ -488,7 +566,7 @@ public class MotoRent {
         ArrayList<Local> auxiliar = new ArrayList <>();
         while (itr2.hasNext()) {
             Local l = (Local) itr2.next();
-            if (l.getNMotos() < l.getCapacitat()) {
+            if (l.getOcupacio() < l.getCapacitat()) {
                 auxiliar.add(l);
                 }
             }
@@ -507,7 +585,28 @@ public class MotoRent {
     }
     
     /**
-     * Metode de gerent que engloba totes les accions que es fan quan un client retorna una moto.
+     * Mètode que donat un llista de Locals i un id retorna la primera ocurrència del Local amb l'id especificat.
+     * @param auxiliar
+     * @param idLocal
+     * @return 
+     */
+    private Local getLocal(ArrayList<Local> auxiliar, String idLocal) {
+        for (int i = 0; i < auxiliar.size(); i++){
+            if (auxiliar.get(i).getIdLocal().equals(idLocal)){
+                return auxiliar.get(i);
+            }
+        }
+        return null;
+    }
+    
+    /*----------------------------------------------------------------
+    ------------------------------------------------------------------
+    -----------------------------------------------------------------*/
+    
+   
+    
+    /**
+     * UC Metode de gerent que engloba totes les accions que es fan quan un client retorna una moto.
      * Es comprova la reserva, i si es troba, es cobra la reserva, i es cobren les possibles penalitzacions.
      */
     public void tornarMoto(){
@@ -640,12 +739,13 @@ public class MotoRent {
         Reserva r = null;
         boolean correcte = false;
         boolean stop = false;
-        String horaActual;
+        String horaActual, diaActual;
         
         while(!correcte && !stop){
-            Consola.escriu("Introdueix la data 'actual' (hh/dd/mm/aaaa):");
+            Consola.escriu("Introdueix la data 'actual' (dd/mm/aaaa):");
+            diaActual = Consola.llegeixString();
+            Consola.escriu("Introdueix la hora 'actual' (hh:mm:ss): ");
             horaActual = Consola.llegeixString();
-            
             Consola.escriu("Introdueix l'identificador del client: ");
             idClient = Consola.llegeixString();
             
@@ -655,7 +755,7 @@ public class MotoRent {
             Iterator itr = llistaReserves.iterator();
             while(itr.hasNext() && !trobat){
                 r = (Reserva) itr.next();
-                trobat = r.getId().equals(idReserva) && r.getClientReserva().getId().equals(idClient) && r.isActiva(horaActual);      
+                trobat = r.getId().equals(idReserva) && r.getClientReserva().getId().equals(idClient) && r.isActiva(diaActual, horaActual);      
             }
             
             if(trobat){
@@ -668,15 +768,84 @@ public class MotoRent {
             }
         }
     }
-
-    private Local getLocal(ArrayList<Local> auxiliar, String idLocal) {
-        for (int i = 0; i < auxiliar.size(); i++){
-            if (auxiliar.get(i).getIdLocal().equals(idLocal)){
-                return auxiliar.get(i);
+    
+    /*----------------------------------------------------------------
+    ----------------OPERACIONS DE L'ADMINISTRADOR---------------------
+    -----------------------------------------------------------------*/
+    /**
+     * UC 6. Mostrar totes les Motos que té el Sistema.
+     */
+    public void mostrarTotesLesMotos(){
+        int i;
+        Consola.escriu("\nLLISTAT DE TOTES LES MOTOS:\n");
+        for (i = 0; i < llistaLocals.size(); i++){
+            llistaLocals.get(i).obtenirMotosLocal();
+        }
+    }
+    
+    /**
+     * Mètode que permet veure els Locals que tenen menys de 5 Motos.
+     */
+    public void veureLocalsPocaPoblacioMotos(){
+        int i;
+        Consola.escriu("\nLLISTAT DELS LOCALS QUE TENEN MENYS DE 5 MOTOS:\n");
+        for (i = 0; i <llistaLocals.size(); i++){
+            if (llistaLocals.get(i).getOcupacio() < 5){
+                Consola.escriu(llistaLocals.get(i).toString());
             }
         }
-        return null;
     }
+    
+    /**
+     * Mètode que permet veure els Locals que tenen més d'un 75% d'ocupació.
+     */
+    public void veureLocalsMoltaPoblacioMotos(){
+        int i;
+        Consola.escriu("\nLLISTAT DELS LOCALS QUE TENEN MES DEL 75% DE LA CAPACITAT OCUPADA:\n");
+        for (i = 0; i < llistaLocals.size(); i++){
+            if (llistaLocals.get(i).getOcupacio()/llistaLocals.get(i).getCapacitat() > 0.75){
+                Consola.escriu(llistaLocals.get(i).toString());
+            }
+        }
+    }
+    
+ 
+   /**
+    * UC 8. Generar l'informe d'un mes concret.
+    * @param mes 
+    */ 
+    public void generarInformeMensual(String mes){
+        boolean correcte;
+        int i;
+        correcte = comprovarDataCorrecte(mes);
+        if (correcte){
+            for (i = 0; i < llistaUsuaris.size(); i++) {
+                if (llistaUsuaris.get(i).getTipus().equals("Client")) {
+                    Client clientActual = (Client) llistaUsuaris.get(i);
+                    Consola.escriu(clientActual.toString());
+                    clientActual.obtenirReservesClient(Integer.parseInt(mes));
+                }
+            }
+        }else{
+            Consola.escriu("\nHi ha hagut un error al realitzar l'informe del mes seleccionat.\n");
+        }
+        
+    }
+    /**
+     * UC 8_1. Comprovar data correcte.
+     * @param mes
+     * @return 
+     */
+    private boolean comprovarDataCorrecte(String mes) {
+        return (Integer.parseInt(mes)) <= (Integer.parseInt(Consola.llegeixDataSistema().getMes())+1); // el +1 es perque
+                                                                                                    // el Date té representa els mesos de l'any de 0 a 11.
+    }
+    
+    /*----------------------------------------------------------------
+    ------------------------------------------------------------------
+    -----------------------------------------------------------------*/
+
+
 }
 
 

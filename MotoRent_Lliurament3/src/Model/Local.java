@@ -1,19 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
+import Excepcions.LlistaBuidaException;
 import Excepcions.LlistaPlenaException;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- *
- * @author atorraag7.alumnes
- */
+
 public class Local {
     private final String idLocal;
     private final int capacitat;
@@ -63,7 +56,7 @@ public class Local {
         return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
     }
 
-    public String mostrarMotosDisponibles() {
+    public String mostrarMotosDisponibles() throws LlistaBuidaException {
         String tipus, str = "";
         int i = 0;
         Iterator itr = llistaMotos.iterator();
@@ -74,9 +67,13 @@ public class Local {
             if("Disponible".equalsIgnoreCase(tipus)){
                 str += Integer.toString(i) + ": ";
                 str += m.toString();
-            } else {
             }
-        }return str;
+        }
+        if (!str.equals("")){
+            return str;
+        }else{
+            throw new LlistaBuidaException();
+        }
     }
     
     public String mostrarMotos(){
@@ -94,9 +91,9 @@ public class Local {
     }
     
     public Moto getMoto(String id){ 
-        for (int i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(id) && "Disponible".equals(llistaMotos.get(i).getEstat())){
-                return llistaMotos.get(i);
+        for (Moto llistaMoto : llistaMotos) {
+            if (llistaMoto.getIdMoto().equals(id)) {
+                return llistaMoto;
             }
         }
         return null;
@@ -112,23 +109,6 @@ public class Local {
 
     public boolean eliminarMoto(Moto moto){
         return llistaMotos.remove(moto);
-    }
-    // preguntar quin metode es millor usar, el q proporciona Java (eliminat per objecte) o el dissenyat (eliminat per index)
-    public void eliminarMoto2(int index){
-        int i = 0;
-        String tipus;
-        
-        Iterator itr = llistaMotos.iterator();
-        while(itr.hasNext()){
-            Moto m = (Moto) itr.next();
-            tipus = m.getEstat();
-            if("Disponible".equalsIgnoreCase(tipus)){
-                i++;
-            }
-            if(index == i){
-                llistaMotos.remove(i);
-            }
-        }  
     }
     
     public void afegirMoto(Moto moto) throws LlistaPlenaException{
@@ -151,12 +131,13 @@ public class Local {
         return idLocal;
     }
     
+    public int getOcupacio(){
+        this.ocupacio = llistaMotos.size();
+        return this.ocupacio;
+    }
+    
     public int getCapacitat() {
         return capacitat;
-    }
-
-    public int getNumeroMotosActual(){
-        return llistaMotos.size();
     }
     
     public Direccio getDireccioLocal() {

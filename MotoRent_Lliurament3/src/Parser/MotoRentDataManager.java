@@ -1,9 +1,6 @@
 package Parser;
 
 import Controlador.MotoRent;
-import Model.Data;
-import Model.Direccio;
-import Model.Estats.*;
 
 /**
  * Data manager per MotoRent
@@ -127,16 +124,7 @@ public class MotoRentDataManager {
 	 */
 
 	public void crearClient(String id, String[] nom, String dni, String[] adreca, String usuari, String password, String vip, String renovacio, String faltes) {
-            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, esVip(vip), Integer.parseInt(faltes), adreca);
-	}
-        
-        
-        // METODES AUXILIARS
-
-        
-        private boolean esVip(String vip){
-            return "true".equals(vip);
-        }
-        
+            controlador.guardarClient(id, nom[0], nom[1], "", dni, usuari, password, "true".equals(vip), Integer.parseInt(faltes), adreca);
+	}        
 
 }

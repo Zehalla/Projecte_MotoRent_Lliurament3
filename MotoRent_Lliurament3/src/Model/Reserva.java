@@ -1,29 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 import Excepcions.LlistaPlenaException;
 import Vista.Consola;
 
-/**
- *
- * @author atorraag7.alumnes
- */
 public class Reserva {
     private final String id;
     private float preu;
     private boolean penalitzacioTemps;
     private boolean penalitzacioMoto;
     private float penalitzacio;
-    private Data dataInicial;
-    private Data dataFinal;
-    private Local localInicial;
-    private Local localFinal;
-    private Client clientReserva;
-    private Moto motoReserva;
+    private final Data dataInicial;
+    private final Data dataFinal;
+    private final Local localInicial;
+    private final Local localFinal;
+    private final Client clientReserva;
+    private final Moto motoReserva;
     
     public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, String dataInicial, String horaInicial, String dataFinal, String horaFinal, Local localInicial, Local localFinal, Client clientReserva, String idMoto){
         this.id = id;
@@ -31,26 +22,17 @@ public class Reserva {
         this.penalitzacioTemps = penalitzacioTemps;
         this.penalitzacioMoto = penalitzacioMoto;
         this.penalitzacio = penalitzacio;
-        this.dataInicial = crearData(dataInicial, horaInicial);
-        this.dataFinal = crearData(dataFinal, horaFinal);
+        this.dataInicial = Data.crearData(dataInicial, horaInicial);
+        this.dataFinal = Data.crearData(dataFinal, horaFinal);
         this.localInicial = localInicial;
         this.localFinal = localFinal;
         this.clientReserva = clientReserva;
-        this.motoReserva = localFinal.getMoto(idMoto);
-    }
-        //Constructor necessari en fer Reserva. esta fet de manera que no te dependencia de dades si es fa desde MotoREnt. 
-    public Reserva(String id,float preu,boolean penalitzacioTemps,boolean penalitzacioMoto,float penalitzacio, String dataInicialS, String dataFinalS, Local localInicial, Local localFinal, Client clientReserva, String numMotoReserva){
-        this.id = id;
-        this.preu = preu;
-        this.penalitzacioTemps = penalitzacioTemps;
-        this.penalitzacioMoto = penalitzacioMoto;
-        this.penalitzacio = penalitzacio;
-        this.dataInicial = new Data(dataInicialS);
-        this.dataFinal = new Data(dataFinalS);
-        this.localInicial = localInicial;
-        this.localFinal = localFinal;
-        this.clientReserva = clientReserva;
-        this.motoReserva = localInicial.getMoto(numMotoReserva); //Si no volem restringir a que sigui un numero de posicio o la id, podem fer un try
+        if (localFinal.getMoto(idMoto) != null){
+            this.motoReserva = localFinal.getMoto(idMoto);
+        }else{
+            this.motoReserva = localInicial.getMoto(idMoto);
+        }
+           
     }
     
     public String getId(){
@@ -140,11 +122,12 @@ public class Reserva {
      * Tambe canvia el estat de la moto.
      */
     public void cobrarReserva() {
-        String horaActualS;
-        
-        Consola.escriu("Introdueix la data 'actual' (hh/dd/mm/aaaa):"); 
-        horaActualS = Consola.llegeixString();
-        Data dataEntrega = new Data(horaActualS); 
+        String diaActual, horaActual;
+        Consola.escriu("Introdueix la data 'actual' (dd/mm/aaaa):"); 
+        diaActual = Consola.llegeixString();
+        Consola.escriu("Introdueix la hora 'actual' (hh:mm:ss): ");
+        horaActual = Consola.llegeixString();
+        Data dataEntrega = Data.crearData(diaActual, horaActual);
         
         //Data dataEntrega = new Data(); //es pot seleccionar aquesta opcio si es vol fer automatic.
         
@@ -192,22 +175,16 @@ public class Reserva {
             }  
         }
     }
-
-    private Data crearData(String diaComplet, String horaCompleta){
-            String[] aux = diaComplet.split("/");
-            String[] aux2 = horaCompleta.split(":");
-            return new Data(aux[2], aux[1], aux[0], aux2[0], aux2[1], aux2[2]);
-    }
     
     
     /**
      * UC 4_1 Metode que comprova si una reserva es activa segons la hora passada per parametre.
      * La hora passada per parametre sera o la hora actual o una introduida per un usuari.
-     * @param dataActualS Data que es suposa la actual.
+     * @param diaActual Data que es suposa la actual.
      * @return Retorna si aquesta data es troba dins del periode de la reserva.
      */
-    public boolean isActiva(String dataActualS) {
-        Data dataActual = new Data(dataActualS);
+    public boolean isActiva(String diaActual, String horaActual) {
+        Data dataActual = Data.crearData(diaActual, horaActual);
         return dataActual.compara(dataInicial) > 0 && dataActual.compara(dataFinal) < 0;
     }
 
@@ -224,7 +201,7 @@ public class Reserva {
      * @param estat estat de la moto de la reserva que volem posar.
      */
     public void setEstatMoto(String estat){
-        motoReserva.setEstat(estat);
+        this.motoReserva.setEstat(estat);
     }
     
     /**
