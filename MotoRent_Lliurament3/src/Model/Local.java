@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Excepcions.LlistaPlenaException;
 import Vista.Consola;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,6 +45,10 @@ public class Local {
             return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
     }
     
+    /**
+     * UC 3_5 Metode que compta el numero de motos de tipus disponibles de un local.
+     * @return numero de motos que son disponibles per a llogar.
+     */
     public int getNMotosDisp(){
         int NMotosDisp = 0;
         for (Moto m : llistaMotos) { 
@@ -55,7 +60,7 @@ public class Local {
     }
 
     public String mostrarDadesLocal() {
-        return "\n"+direccioLocal.toString() +"\nCapacitat local: " + capacitat;
+        return "-----\n" + "\nID: " + idLocal + "\n"+direccioLocal.toString() +"Capacitat local: " + capacitat;
     }
 
     public String mostrarMotosDisponibles() {
@@ -88,10 +93,9 @@ public class Local {
         return llistaMotos.get(i);
     }
     
-    public Moto getMoto(String id){
-        int i;
-        for (i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(id)){
+    public Moto getMoto(String id){ 
+        for (int i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(id) && llistaMotos.get(i).getEstat() == "Disponible"){
                 return llistaMotos.get(i);
             }
         }
@@ -127,19 +131,19 @@ public class Local {
         }  
     }
     
-    public void afegirMoto(Moto moto){
+    public void afegirMoto(Moto moto) throws LlistaPlenaException{
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(moto);
         }else{
-            //throw new LlistaPlenaException();
+            throw new LlistaPlenaException();
         }
     }
     
-    public void afegirMoto(String id, String matricula, String model, String color, String estat){
+    public void afegirMoto(String id, String matricula, String model, String color, String estat) throws LlistaPlenaException{
         if (llistaMotos.size() < capacitat){
             llistaMotos.add(new Moto(id, matricula, model, color, estat));
         }else{
-            //throw new LlistaPlenaException();
+            throw new LlistaPlenaException();
         }
     }
     
@@ -269,7 +273,7 @@ public class Local {
     }
     /**
      * Metode que agafa la primera moto disponible que troba en el local
-     * @return 
+     * @return Moto mi
      */
     public Moto getMotoDisponible() {
         String disponible;
@@ -327,7 +331,11 @@ public class Local {
         motoExportar = getMotoDisponible();
         Consola.escriu("Exportant "+ motoExportar.toString() + "\n");
         eliminarMoto(motoExportar);
-        localPerExportar.afegirMoto(motoExportar);
+        try{
+            localPerExportar.afegirMoto(motoExportar);
+        }catch (LlistaPlenaException ex){
+            Consola.escriu(ex.getMessage());
+        }
     }
     /**
      * Metode que importa una moto del local indicat
@@ -338,6 +346,19 @@ public class Local {
         motoImportar = localPerImportar.getMotoDisponible();
         localPerImportar.eliminarMoto(motoImportar);
         Consola.escriu("Important "+ motoImportar.toString() + "\n");
-        afegirMoto(motoImportar);
+        try{
+            afegirMoto(motoImportar);
+        }catch (LlistaPlenaException ex){
+            Consola.escriu(ex.getMessage());
+        }
+    }
+    
+    public boolean checkID(String motoId){
+        for (int i = 0; i < llistaMotos.size(); i++){
+            if (llistaMotos.get(i).getIdMoto().equals(motoId) && "Disponible".equals(llistaMotos.get(i).getEstat())){
+                return true;
+            }
+        }
+        return false;
     }
 }
