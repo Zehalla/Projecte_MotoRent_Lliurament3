@@ -53,7 +53,7 @@ public class Moto {
             case "DISPONIBLE":
                 this.estatMoto = Estats.getEstatMotoDisponible();
                 break;
-            case "AVARIADA":
+            case "REPARANT":
                 this.estatMoto = Estats.getEstatMotoReparant();
                 break;
         }

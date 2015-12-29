@@ -95,7 +95,7 @@ public class Local {
     
     public Moto getMoto(String id){ 
         for (int i = 0; i < llistaMotos.size(); i++){
-            if (llistaMotos.get(i).getIdMoto().equals(id) && llistaMotos.get(i).getEstat() == "Disponible"){
+            if (llistaMotos.get(i).getIdMoto().equals(id) && "Disponible".equals(llistaMotos.get(i).getEstat())){
                 return llistaMotos.get(i);
             }
         }
