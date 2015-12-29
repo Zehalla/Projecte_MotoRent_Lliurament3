@@ -15,11 +15,24 @@ public class Client extends Usuari{
     private ArrayList<Reserva> listReserva = new ArrayList<>();
     private EstatClient estatClient;
 
-    
-    public Client(){
-        
+    /**
+     * Constructor buit usat a l'hora de registrar un nou client
+     */
+    public Client(){      
     }
-    
+    /**
+     * Constructor d'un client a partir de les dades donades en el fitxer xml
+     * @param idClient
+     * @param nom
+     * @param cognom1
+     * @param cognom2
+     * @param DNI
+     * @param userName
+     * @param password
+     * @param vip
+     * @param faltes
+     * @param direccio 
+     */
     public Client(String idClient, String nom, String cognom1, String cognom2, String DNI, String userName, String password, boolean vip, int faltes, String[] direccio){
         this.id = idClient;
         this.nom = nom;
@@ -35,37 +48,52 @@ public class Client extends Usuari{
         this.estatClient = Estats.getEstatClientSenseReserva();
     }
     
-    
+    /**
+     * Crea una direccio a partir d'una adreca donada
+     * @param adreca
+     * @return 
+     */
     private Direccio crearDireccio(String[] adreca){
             return new Direccio(adreca[0], adreca[1], adreca[2], adreca[3]);
     }
     
     @Override
+    /**
+     * Retorna la id del client
+     */
     public String getId(){
         return id;
     }
     
     @Override
+    /**
+     * Retorna un string indicant que es un Client
+     */
     public String getTipus() {
         return "Client";
     }
-    
+    /**
+     * Indica si el client es vip o no
+     * @return 
+     */
     public boolean getVip(){
         return this.vip;
     }
-    
+    /**
+     * Mètode que afegeix una falta al client
+     */
     public void afegirFalta(){
         this.faltes += 1;
         if(faltes <= 3){
             this.setEstat("Desactivat");
             Consola.escriu("El client s'ha desactivat perque te 3 faltes o mes.");
-        }
-
-
-                    
+        }               
     }
     
     @Override
+    /**
+     * Metode que indica en quin estat es troba el client
+     */
     public String getEstat(){
         if(this.estatClient instanceof EstatClientAmbReserva){
             return "Amb Reserva";
@@ -75,7 +103,10 @@ public class Client extends Usuari{
             return "Sense Reserva";   
         }
     }
-    
+    /**
+     * Metode que canvia l'estat del client
+     * @param estat 
+     */
     public void setEstat(String estat){
         estat = estat.toUpperCase();
         switch (estat) {
@@ -91,6 +122,10 @@ public class Client extends Usuari{
         }
     }
     
+    /**
+     * Metode que retorna les reserves que ha fet el client en un mes donat
+     * @param mes 
+     */
     public void obtenirReservesClient(int mes){
         int i, numReserves = 0, mesReservaActual;
         float total = 0;
@@ -139,15 +174,19 @@ public class Client extends Usuari{
         this.direccio = new Direccio();
         this.direccio.introduirDades();
     }
-
+    /**
+     * Metode que afegeix una reserva al client
+     * @param reserva 
+     */
     public void afegirReserva(Reserva reserva){
         listReserva.add(reserva);
         this.estatClient = Estats.getEstatClientAmbReserva();
-    }    
-    public boolean checkEstatDisponible() {
-        return true;
     }
-    
+    /**
+     * Metode que mostra totes les reserves que ha fet un client
+     * @return
+     * @throws LlistaBuidaException 
+     */
     public String mostrarReservesClient() throws LlistaBuidaException{
         int i;
         String str = "";
@@ -160,12 +199,18 @@ public class Client extends Usuari{
         }
         return str;
     }
-
+    /**
+     * Metode que retorna el nombre de faltes que ha comes el client
+     * @return faltes
+     */
     public int getFaltes(){
         return faltes;
     }
     
     @Override
+    /**
+     * Metode que retorna tota la informacio sobre un client en forma d'String
+     */
     public String toString(){
         String str;
         str = "\nClient ID: " + this.id + "\n";
@@ -182,48 +227,4 @@ public class Client extends Usuari{
         str += "Estat: "+ getEstat() +"\n";
         return str;
     }
-
-    public boolean isVip() {
-        return vip;
-    }
-
-    public void setVip(boolean vip) {
-        this.vip = vip;
-    }
-
-    public Direccio getDireccio() {
-        return direccio;
-    }
-
-    public void setDireccio(Direccio direccio) {
-        this.direccio = direccio;
-    }
-
-    public Data getDataRegistre() {
-        return dataRegistre;
-    }
-
-    public void setDataRegistre(Data dataRegistre) {
-        this.dataRegistre = dataRegistre;
-    }
-
-    public ArrayList<Reserva> getListReserva() {
-        return listReserva;
-    }
-
-    public void setListReserva(ArrayList<Reserva> listReserva) {
-        this.listReserva = listReserva;
-    }
-
-    public EstatClient getEstatClient() {
-        return estatClient;
-    }
-
-    public void setEstatClient(EstatClient estatClient) {
-        this.estatClient = estatClient;
-    }
-    
-    
-    
-    
 }
