@@ -483,6 +483,7 @@ public class MotoRent {
             Consola.escriu("Selecciona la hora de finalització (hh:mm:ss): ");
             horaFinal = Consola.llegeixString();
             //CREACIO DE RESERVA 
+            lastIDreserva ++;
             r = new Reserva("r"+Integer.toString(lastIDreserva), 0, false, false, 0, dataInicial, horaInicial, dataFinal, horaFinal, localInici, localFinal, clientReserva, idMoto);            
 
             if (r.comprovarDates()){
@@ -515,7 +516,7 @@ public class MotoRent {
         llistaReserves.add(r);
         r.setEstatMoto("Reservada");
         r.afegirMotoLocalFinal();
-        lastIDreserva ++;
+        
         clientReserva.afegirReserva(r);
 
         Consola.escriu("Reserva creada. El codi de la reserva es: r" +Integer.toString(lastIDreserva)+"\n");
